@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace consoleApp
+﻿namespace consoleApp
 {
     public interface IController
     {
-        void UpdateUserInput();
+        IView View { get; set; }
+        public void UpdateToNextView();
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace consoleApp
 {
-    class View
+    class AddView : IView
     {
         private string userInput;
 
@@ -12,7 +12,7 @@ namespace consoleApp
 
         private IController controller;
 
-        public View()
+        public AddView()
         {
             UserInput = "";
             UpperCaseUserInput = "";
@@ -24,7 +24,7 @@ namespace consoleApp
             set { userInput = value; }
         }
 
-        public IController Controller
+        public Controller Controller
         {
             get { return Controller; }
             set { Controller = value; }
@@ -37,11 +37,13 @@ namespace consoleApp
         }
 
 
-        public void GetUserInput()
+        public void Show()
         {
             bool isUserInputValid = false;
 
-            Console.WriteLine("Veuillez saisir la chaîne de caractères(entre 1 et 8 caractères) à convertir");
+            Console.WriteLine("Name of backup work to create :");
+
+
 
             while (isUserInputValid != true)
             {
@@ -56,28 +58,29 @@ namespace consoleApp
             controller = cont;
         }
 
-        public void ShowConvertedInput()
-        {
-            Console.WriteLine("Le résultat de la conversion est : " + UpperCaseUserInput);
-        }
-
-
 
         private bool CheckIfUserInputIsValid(string userInput)
         {
-            bool stringIsValid = false;
-
-            if (userInput.Length <= 8 && userInput.Length >= 1)
+            try
             {
-                stringIsValid = true;
-                controller.UpdateUserInput();
-            }
-            else
-            {
-                Console.WriteLine("La chaîne de caractères ne respecte pas le format demandé(entre 1 et 8 caractères). Veuillez saisir une chaîne valide");
-            }
+                bool stringIsValid = false;
+                if (userInput.Length >= 1)
+                {
+                    stringIsValid = true;
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    Console.WriteLine("\nInvalid response.Try again\n");
+                }
 
-            return stringIsValid;
+                return stringIsValid;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
         }
     }
 }
