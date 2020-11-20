@@ -11,19 +11,25 @@ namespace consoleApp
 
 
         public IView View { get => view; set => view = value; }
+        public Model Model { get => model; set => model = value; }
 
-
+        public Boolean end = false;
 
         public Controller()
         {
             //The model and the view can be instantiate in the controller, or in the main program(see graphicalApp)
             model = new Model();
-            view = new HomeView();
+            this.View = new HomeView();
 
             //Linking the controller to the view, so the view is able to notice the controller when the user gives a valid input
-            view.SetController(this);
 
-            view.Show();
+            
+            while (!end)
+            {
+                this.View.SetController(this);
+                this.View.Show();
+            }
+            
         }
 
 
@@ -37,7 +43,8 @@ namespace consoleApp
             //view.UpperCaseUserInput = model.ConvertToUpperCase();
 
             //Display the result in the console
-            view.Show();
+            //this.View.SetController(this);
+            //this.View.Show();
         }
     }
 }

@@ -8,14 +8,11 @@ namespace consoleApp
     {
         private string userInput;
 
-        private string upperCaseUserInput;
-
         private IController controller;
 
         public AddView()
         {
             UserInput = "";
-            UpperCaseUserInput = "";
         }
 
         public string UserInput
@@ -24,31 +21,64 @@ namespace consoleApp
             set { userInput = value; }
         }
 
-        public Controller Controller
+        public IController Controller
         {
-            get { return Controller; }
-            set { Controller = value; }
+            get { return controller; }
+            set { controller = value; }
         }
 
-        public string UpperCaseUserInput
-        {
-            get { return upperCaseUserInput; }
-            set { upperCaseUserInput = value; }
-        }
 
 
         public void Show()
         {
+            //TODO: do while instead of while
+
             bool isUserInputValid = false;
-
             Console.WriteLine("Name of backup work to create :");
-
-
-
             while (isUserInputValid != true)
             {
                 userInput = Console.ReadLine();
                 isUserInputValid = CheckIfUserInputIsValid(userInput);
+            }
+            String name = userInput;
+
+            isUserInputValid = false;
+            Console.WriteLine("Source of backup work to create :");
+            while (isUserInputValid != true)
+            {
+                userInput = Console.ReadLine();
+                isUserInputValid = CheckIfUserInputIsValid(userInput);
+            }
+            String source = userInput;
+
+            isUserInputValid = false;
+            Console.WriteLine("Destination of backup work to create :");
+            while (isUserInputValid != true)
+            {
+                userInput = Console.ReadLine();
+                isUserInputValid = CheckIfUserInputIsValid(userInput);
+            }
+            String destination = userInput;
+
+
+            try
+            {
+                BackupWork backupWork = new BackupWork(name, source, destination);
+                //Console.WriteLine(backupWork);
+                //Console.WriteLine(this.controller);
+                if (this.controller.Model.createBackupWork(backupWork))
+                {
+                    Console.WriteLine("Backup work added with success.\n");
+                }
+                else
+                {
+                    Console.WriteLine("Unable to create, make sure you don't have already 5 backup works.\n");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Console.WriteLine("\nUnable to generate this backup work.\n");
             }
         }
 
@@ -67,7 +97,7 @@ namespace consoleApp
                 if (userInput.Length >= 1)
                 {
                     stringIsValid = true;
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
                 else
                 {
