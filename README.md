@@ -118,11 +118,11 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Tanguy Lhinares - [LinkedIn](https://www.linkedin.com/in/tanguy-lhinares-6a0723197/) - tanguy.lhinares@viacesi.com  
-Quentin Aoustin - [LinkedIn](https://lhinares-technologies.com/) - tanguy.lhinares@viacesi.com  
-Vincent Jacques - [LinkedIn](https://lhinares-technologies.com/) - tanguy.lhinares@viacesi.com  
-Jérémy Gabriel - [LinkedIn](https://lhinares-technologies.com/) - tanguy.lhinares@viacesi.com  
-Rémi Mounier - [LinkedIn](https://lhinares-technologies.com/) - tanguy.lhinares@viacesi.com  
+Tanguy Lhinares - [Website](https://www.lhinares-technologies.com/) - tanguy.lhinares@viacesi.com  
+Quentin Aoustin - [Resume](http://quentinaoustin.redirectme.net/ISN/CV.html/) - quentin.aoustin@viacesi.com  
+Vincent Jacques - [LinkedIn](https://www.linkedin.com/in/vincent-jacques-a173bb1a2/) - vincent.jacques@viacesi.com  
+Jérémy Gabriel - [NO LINK YET](https://example.com/) - jeremy.gabriel@viacesi.com  
+Rémi Mounier - [NO LINK YET](https://example.com/) - remi.mounier@viacesi.com  
 
 Project Link: [https://github.com/5c0rp264/C-Project/](https://github.com/5c0rp264/C-Project/)
 
