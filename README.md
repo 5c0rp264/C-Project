@@ -3,7 +3,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/5c0rp264/C-Project">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://raw.githubusercontent.com/othneildrew/Best-README-Template/master/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">EasySave</h3>
@@ -46,7 +46,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
 Here will come a small description of our project
 
@@ -118,11 +118,11 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Tanguy Lhinares - [LinkedIn](https://www.linkedin.com/in/tanguy-lhinares-6a0723197/) - tanguy.lhinares@viacesi.com
-Quentin Aoustin - [LinkedIn](https://lhinares-technologies.com/) - tanguy.lhinares@viacesi.com
-Vincent Jacques - [LinkedIn](https://lhinares-technologies.com/) - tanguy.lhinares@viacesi.com
-Jérémy Gabriel - [LinkedIn](https://lhinares-technologies.com/) - tanguy.lhinares@viacesi.com
-Rémi Mounier - [LinkedIn](https://lhinares-technologies.com/) - tanguy.lhinares@viacesi.com
+Tanguy Lhinares - [LinkedIn](https://www.linkedin.com/in/tanguy-lhinares-6a0723197/) - tanguy.lhinares@viacesi.com  
+Quentin Aoustin - [LinkedIn](https://lhinares-technologies.com/) - tanguy.lhinares@viacesi.com  
+Vincent Jacques - [LinkedIn](https://lhinares-technologies.com/) - tanguy.lhinares@viacesi.com  
+Jérémy Gabriel - [LinkedIn](https://lhinares-technologies.com/) - tanguy.lhinares@viacesi.com  
+Rémi Mounier - [LinkedIn](https://lhinares-technologies.com/) - tanguy.lhinares@viacesi.com  
 
 Project Link: [https://github.com/5c0rp264/C-Project/](https://github.com/5c0rp264/C-Project/)
 
