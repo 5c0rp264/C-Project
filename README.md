@@ -166,18 +166,18 @@ Contributions are what make the open source community such an amazing place to b
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 
 
 <!-- CONTACT -->
 ## Contact
 
-Tanguy Lhinares - [Website](https://www.lhinares-technologies.com/) - tanguy.lhinares@viacesi.com  
-Quentin Aoustin - [Resume](http://quentinaoustin.redirectme.net/ISN/CV.html/) - quentin.aoustin@viacesi.com  
-Vincent Jacques - [LinkedIn](https://www.linkedin.com/in/vincent-jacques-a173bb1a2/) - vincent.jacques@viacesi.com  
-Jérémy Gabriel - jeremy.gabriel@viacesi.com  
-Rémi Mounier - remi.mounier@viacesi.com  
+Tanguy Lhinares - [Website](https://www.lhinares-technologies.com/) - tanguy.lhinares@viacesi.fr  
+Quentin Aoustin - [Resume](http://quentinaoustin.redirectme.net/ISN/CV.html/) - quentin.aoustin@viacesi.fr  
+Vincent Jacques - [LinkedIn](https://www.linkedin.com/in/vincent-jacques-a173bb1a2/) - vincent.jacques@viacesi.fr  
+Jérémy Gabriel - jeremy.gabriel@viacesi.fr  
+Rémi Mounier - remi.mounier@viacesi.fr  
 
 Project Link: [https://github.com/5c0rp264/C-Project/](https://github.com/5c0rp264/C-Project/)
 
