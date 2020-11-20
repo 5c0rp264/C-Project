@@ -28,7 +28,7 @@
 ## Table of Contents
 
 * [About the Project](#about-the-project)
-  * [Our tools](#built-with)
+  * [Software restrictions](#built-with)
    
 * [Version 1.0](#Version-1.0)
 * [Getting Started](#getting-started)
@@ -48,14 +48,21 @@
 
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
-Here will come a small description of our project
+Our team has just integrated the software publisher ProSoft.   
+Under the responsibility of the CIO, we are in charge of managing the "EasySave" project which consists in developing a backup software.  
+As any software of the ProSoft Suite, the software will be integrated into the pricing policy.  
+- Unit price : 200 €HT 
+- Annual maintenance contract 5/7 8-17h (updates included): 12% purchase price (Annual contract tacitly renewed with revaluation based on the SYNTEC index) 
 
-Date of release :
-* XXX
-* XXX
-* XXX
+During this project, we will have to ensure the development, the management of major and minor versions, but also the documentation (user and customer support).  
+To ensure that our work can be taken over by other teams, we must work within certain constraints such as the tools used (see [Software restrictions](#built-with)).  
 
-### Built With
+Release dates and versions :
+* Version 1.0 : 25/11/2020
+* Version 2.0 : 07/12/2020
+* Version 3.0 : 17/12/2020
+
+### Software restrictions
 This section lists each of the major technologies used to complete this project. For anymore details you can see the [acknowledgements](#acknowledgements) section.
 * [Visual Studio 2019](https://visualstudio.microsoft.com/fr/)
 * [GitHub](https://github.com/)
