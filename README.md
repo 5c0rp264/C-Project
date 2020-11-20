@@ -14,9 +14,9 @@
     <a href="https://github.com/5c0rp264/C-Project"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/5c0rp264/Diagrammes">UML Diagrams</a>
+    <a href="https://github.com/5c0rp264/C-Project/tree/main/Diagrammes">UML Diagrams</a>
     ·
-    <a href="hhttps://github.com/5c0rp264/CODE%20Livrable%201">Console Program</a>
+    <a href="https://github.com/5c0rp264/C-Project/tree/main/CODE%20Livrable%201">Console Program</a>
     ·
     <a href="https://github.com/5c0rp264/C-Project/issues">Request Feature</a>
   </p>
@@ -71,7 +71,55 @@ This section lists each of the major technologies used to complete this project.
 
 ## Version 1.0
 
-We are still writing this part
+The specifications of the first version of the software are as follows :  
+
+The software is a Console application using .Net Core. 
+It must allow the creation of up to 5 backup jobs. 
+
+A backup job is defined by :  
+ * An appellation  
+ * A source directory   
+ * A target directory   
+ * One type  
+  * Full  
+  * Differential  
+ * English  
+
+The user may request the execution of one of the backup jobs or the sequential execution of the jobs.  
+The directories (sources and targets) can be on local, external or network drives.  
+All the elements of the source directory are concerned by the backup.   
+
+Daily Log File : 
+
+The software must write in real time in a daily log file the history of the actions of the backup jobs. The minimum expected information is : 
+
+ * Timestamp   
+ * Naming the backup job 
+ * Full address of the Source file (UNC format) 
+ * Full address of the destination file (UNC format) 
+ * File Size  
+ * File transfer time in ms (negative if error)   
+  
+
+Status File 
+The software must record in real time, in a single file, the progress of the backup jobs.  The minimum expected information is :   
+
+ * Timestamp   
+ * Naming the backup job 
+ * Backup job status (e.g. Active, Not Active...) 
+If the job is active 
+     * The total number of eligible files 
+     * The size of the files to be transferred  
+     * The progression          
+     * Number of remaining files   
+     * Size of remaining files   
+     * Full address of the Source file being backed up 
+     * Complete address of the destination file 
+ 
+
+The locations of the two files described above (daily log and status) will have to be studied to work on the clients' servers. As a result, "c:\temp\" type locations are to be avoided. 
+
+The files (daily log and status) and any configuration files will be in XML or JSON format.  In order to allow fast reading via Notepad, it is necessary to put line feeds between the XML (or JSON) elements. A pagination would be a plus. 
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -128,8 +176,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Tanguy Lhinares - [Website](https://www.lhinares-technologies.com/) - tanguy.lhinares@viacesi.com  
 Quentin Aoustin - [Resume](http://quentinaoustin.redirectme.net/ISN/CV.html/) - quentin.aoustin@viacesi.com  
 Vincent Jacques - [LinkedIn](https://www.linkedin.com/in/vincent-jacques-a173bb1a2/) - vincent.jacques@viacesi.com  
-Jérémy Gabriel - [NO LINK YET](https://example.com/) - jeremy.gabriel@viacesi.com  
-Rémi Mounier - [NO LINK YET](https://example.com/) - remi.mounier@viacesi.com  
+Jérémy Gabriel - jeremy.gabriel@viacesi.com  
+Rémi Mounier - remi.mounier@viacesi.com  
 
 Project Link: [https://github.com/5c0rp264/C-Project/](https://github.com/5c0rp264/C-Project/)
 
