@@ -74,12 +74,12 @@ namespace consoleApp
 
         public void ExecuteBackupWork(int backupWorkID)
         {
-            DirectoryCopy(this.BackupWorkList[backupWorkID].Source, this.BackupWorkList[backupWorkID].Destination + "/" + DateTime.Now.ToString("Full MM.dd.yyyy THH.mm.ss.fff"));
+            DirectoryCopy(this.BackupWorkList[backupWorkID].Source, this.BackupWorkList[backupWorkID].Destination + "/Full " + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"));
         }
 
         public void ExecuteDifferentialBackupWork(int backupWorkID, String fullBUDir)
         {
-            DirectoryDifferentialCopy(this.BackupWorkList[backupWorkID].Source, this.BackupWorkList[backupWorkID].Destination + "/" + DateTime.Now.ToString("Full MM.dd.yyyy THH.mm.ss.fff"), fullBUDir);
+            DirectoryDifferentialCopy(this.BackupWorkList[backupWorkID].Source, this.BackupWorkList[backupWorkID].Destination + "/Diff " + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), fullBUDir);
         }
 
 

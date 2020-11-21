@@ -47,10 +47,19 @@ namespace consoleApp
                 userInput = Console.ReadLine();
                 isUserInputValid = CheckIfIDInputIsValid(userInput);
             }
+            int idBUW = int.Parse(userInput)-1;
 
-            if (this.controller.Model.BackupWorkList[int.Parse(userInput) - 1].IsFull)
+            if (this.controller.Model.BackupWorkList[idBUW].IsFull)
             {
-                this.Controller.Model.ExecuteBackupWork(int.Parse(userInput) - 1);
+                try
+                {
+                    this.Controller.Model.ExecuteBackupWork(idBUW);
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
             else
             {
@@ -69,6 +78,14 @@ namespace consoleApp
                     {
                         Console.WriteLine("Please enter it.");
                     }
+                }
+                try
+                {
+                    this.Controller.Model.ExecuteDifferentialBackupWork(idBUW, userInput);
+
+                }catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
                 }
             }
 
