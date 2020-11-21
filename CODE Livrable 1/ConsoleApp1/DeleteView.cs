@@ -39,8 +39,6 @@ namespace consoleApp
             }
             Console.WriteLine("Id of backup work you want to delete :");
 
-
-
             while (isUserInputValid != true)
             {
                 userInput = Console.ReadLine();
