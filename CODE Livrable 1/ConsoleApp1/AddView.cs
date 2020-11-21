@@ -60,10 +60,35 @@ namespace consoleApp
             }
             String destination = userInput;
 
+            isUserInputValid = false;
+            Console.WriteLine("What type of backup do you want :\n[0] Differential\n[1]Full");
+            Boolean isAFullBackup = false;
+            while (isUserInputValid != true)
+            {
+                userInput = Console.ReadLine();
+                if (userInput == "0" || userInput == "1")
+                {
+                    if (userInput == "1")
+                    {
+                        isAFullBackup = true;
+                    }
+                    else
+                    {
+                        isAFullBackup = false;
+                    }
+                    isUserInputValid = true;
+                }
+                else
+                {
+                    Console.WriteLine("Thanks to enter a valid value.");
+                }
+             }
+            
+
 
             try
             {
-                BackupWork backupWork = new BackupWork(name, source, destination);
+                BackupWork backupWork = new BackupWork(name, source, destination, isAFullBackup);
                 //Console.WriteLine(backupWork);
                 //Console.WriteLine(this.controller);
                 if (this.controller.Model.createBackupWork(backupWork))
@@ -74,6 +99,7 @@ namespace consoleApp
                 {
                     Console.WriteLine("Unable to create, make sure you don't have already 5 backup works.\n");
                 }
+                this.Controller.View = new HomeView();
             }
             catch (Exception e)
             {
@@ -108,6 +134,7 @@ namespace consoleApp
             }
             catch (Exception)
             {
+                Console.WriteLine("\nInvalid response.Try again\n");
                 return false;
             }
             

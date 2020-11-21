@@ -7,13 +7,15 @@ namespace consoleApp
         private String name;
         private String source;
         private String destination;
+        private Boolean isFull;
 
 
         public string Name { get => name; set => name = value; }
         public string Source { get => source; set => source = value; }
         public string Destination { get => destination; set => destination = value; }
+        public Boolean IsFull { get => isFull; set => isFull = value; }
 
-        public BackupWork(String Name, String Source, String Destination)
+        public BackupWork(String Name, String Source, String Destination, Boolean IsFull)
         {
             //TODO:adding check if folder is accessible
             if (Name.Length >= 1 && Source.Length >= 1 && Destination.Length >= 1)
@@ -21,6 +23,7 @@ namespace consoleApp
                 this.name = Name;
                 this.source = Source;
                 this.destination = Destination;
+                this.isFull = IsFull;
             }
             else
             {

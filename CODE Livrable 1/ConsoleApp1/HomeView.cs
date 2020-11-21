@@ -40,11 +40,15 @@ namespace consoleApp
         public void Show()
         {
             bool isUserInputValid = false;
-
-            Console.WriteLine("What do you want to do ?");
+            Console.WriteLine("");
             Console.WriteLine("[1] Add a backup work");
             Console.WriteLine("[2] Edit a backup work");
             Console.WriteLine("[3] Delete a backup work");
+            Console.WriteLine("");
+            Console.WriteLine("[0] Execute a backup work");
+            Console.WriteLine("");
+            Console.WriteLine("What do you want to do :");
+
 
 
 
@@ -67,11 +71,14 @@ namespace consoleApp
             try
             {
                 bool stringIsValid = false;
-                if (int.Parse(userInput) <= 3 && int.Parse(userInput) >= 1)
+                if (int.Parse(userInput) <= 3 && int.Parse(userInput) >= 0)
                 {
                     stringIsValid = true;
                     switch (int.Parse(userInput))
                     {
+                        case 0:
+                            controller.View = new ExecuteBackupView();
+                            break;
                         case 1:
                             controller.View = new AddView();
                             break;
@@ -95,6 +102,9 @@ namespace consoleApp
             }
             catch (Exception)
             {
+                
+                Console.WriteLine("\nInvalid response.Try again\n");
+                
                 return false;
             }
             
