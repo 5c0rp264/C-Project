@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -73,7 +74,12 @@ namespace consoleApp
 
         public void ExecuteBackupWork(int backupWorkID)
         {
-            DirectoryCopy(this.BackupWorkList[backupWorkID].Source, this.BackupWorkList[backupWorkID].Destination + "/" + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"));
+            DirectoryCopy(this.BackupWorkList[backupWorkID].Source, this.BackupWorkList[backupWorkID].Destination + "/" + DateTime.Now.ToString("Full MM.dd.yyyy THH.mm.ss.fff"));
+        }
+
+        public void ExecuteDifferentialBackupWork(int backupWorkID, String fullBUDir)
+        {
+            DirectoryDifferentialCopy(this.BackupWorkList[backupWorkID].Source, this.BackupWorkList[backupWorkID].Destination + "/" + DateTime.Now.ToString("Full MM.dd.yyyy THH.mm.ss.fff"), fullBUDir);
         }
 
 
@@ -100,18 +106,71 @@ namespace consoleApp
             FileInfo[] files = dir.GetFiles();
             foreach (FileInfo file in files)
             {
-                string tempPath = Path.Combine(destDirName, file.Name);
-                file.CopyTo(tempPath, false);
+                file.CopyTo(Path.Combine(destDirName, file.Name), false);
             }
 
             // If copying subdirectories, copy them and their contents to new location.
 
             foreach (DirectoryInfo subdir in dirs)
             {
-                string tempPath = Path.Combine(destDirName, subdir.Name);
-                DirectoryCopy(subdir.FullName, tempPath);   
+                DirectoryCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name));   
             }
             
+        }
+        private static void DirectoryDifferentialCopy(string sourceDirName, string destDirName, string comparisonDirName)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dirsrc = new DirectoryInfo(sourceDirName);
+            DirectoryInfo dircomp = new DirectoryInfo(comparisonDirName);
+
+
+            if (!dirsrc.Exists || !dircomp.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source or full backup directory does not exist or could not be found: "
+                    + sourceDirName + "\nor\n" + comparisonDirName);
+            }
+
+            DirectoryInfo[] dirs = dirsrc.GetDirectories();
+            //DirectoryInfo[] dirsComp = dirsrc.GetDirectories();
+
+            // If the destination directory doesn't exist, create it.       
+            Directory.CreateDirectory(destDirName);
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dirsrc.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
+                {
+                    file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                }
+                else if (File.Exists(Path.Combine(comparisonDirName, file.Name))){
+                    if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
+                    {
+                        file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                    }
+                }
+            }
+
+            foreach (DirectoryInfo subdir in dirs)
+            {
+                DirectoryDifferentialCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), Path.Combine(comparisonDirName, subdir.Name));
+            }
+
+        }
+
+
+        static string CalculateMD5(string filename)
+        {
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(filename))
+                {
+                    var hash = md5.ComputeHash(stream);
+                    return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+                }
+            }
         }
 
     }

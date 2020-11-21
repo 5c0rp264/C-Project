@@ -45,10 +45,32 @@ namespace consoleApp
             while (isUserInputValid != true)
             {
                 userInput = Console.ReadLine();
-                isUserInputValid = CheckIfUserInputIsValid(userInput);
+                isUserInputValid = CheckIfIDInputIsValid(userInput);
             }
 
-            this.Controller.Model.ExecuteBackupWork(int.Parse(userInput) - 1);
+            if (this.controller.Model.BackupWorkList[int.Parse(userInput) - 1].IsFull)
+            {
+                this.Controller.Model.ExecuteBackupWork(int.Parse(userInput) - 1);
+            }
+            else
+            {
+                Console.WriteLine("\nPath of the full backup you want to diff from :");
+
+
+                isUserInputValid = false;
+                while (isUserInputValid != true)
+                {
+                    userInput = Console.ReadLine();
+                    if (userInput.Length >= 1)
+                    {
+                        isUserInputValid = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter it.");
+                    }
+                }
+            }
 
             Console.WriteLine("Done.");
             this.Controller.View = new HomeView();
@@ -61,7 +83,7 @@ namespace consoleApp
         }
 
 
-        private bool CheckIfUserInputIsValid(string userInput)
+        private bool CheckIfIDInputIsValid(string userInput)
         {
             try
             {
