@@ -89,6 +89,24 @@ namespace consoleApp
             this.BackupWorkList[idToEdit].Source = source;
             this.BackupWorkList[idToEdit].Destination = destination;
             this.BackupWorkList[idToEdit].IsFull = isFull;
+            FileStream stream = File.Create(pathToJsonDB);
+            TextWriter tw = new StreamWriter(stream);
+            String stringjson = JsonConvert.SerializeObject(BackupWorkList);
+            tw.WriteLine(stringjson);
+            tw.Close();
+            
+
+        }
+
+        public void deleteBackupWork(int idToEdit)
+        {
+            this.BackupWorkList.RemoveAt(idToEdit);
+            FileStream stream = File.Create(pathToJsonDB);
+            TextWriter tw = new StreamWriter(stream);
+            String stringjson = JsonConvert.SerializeObject(BackupWorkList);
+            tw.WriteLine(stringjson);
+            tw.Close();
+
 
         }
 
