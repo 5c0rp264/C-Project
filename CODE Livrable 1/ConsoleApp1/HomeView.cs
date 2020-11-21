@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -40,12 +40,17 @@ namespace consoleApp
         public void Show()
         {
             bool isUserInputValid = false;
+
+            // Clear what is currently displayed in the console and print the menu
+            Console.Clear();
+            Console.WriteLine("With what would you like to start ?");
+            Console.WriteLine("");
+            Console.WriteLine("[0] Execute a backup work");
             Console.WriteLine("");
             Console.WriteLine("[1] Add a backup work");
             Console.WriteLine("[2] Edit a backup work");
             Console.WriteLine("[3] Delete a backup work");
             Console.WriteLine("");
-            Console.WriteLine("[0] Execute a backup work");
             Console.WriteLine("");
             Console.WriteLine("What do you want to do :");
 
