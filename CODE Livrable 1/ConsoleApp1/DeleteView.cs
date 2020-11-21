@@ -8,14 +8,11 @@ namespace consoleApp
     {
         private string userInput;
 
-        private string upperCaseUserInput;
-
         private IController controller;
 
         public DeleteView()
         {
             UserInput = "";
-            UpperCaseUserInput = "";
         }
 
         public string UserInput
@@ -24,31 +21,40 @@ namespace consoleApp
             set { userInput = value; }
         }
 
-        public Controller Controller
+        public IController Controller
         {
-            get { return Controller; }
-            set { Controller = value; }
-        }
-
-        public string UpperCaseUserInput
-        {
-            get { return upperCaseUserInput; }
-            set { upperCaseUserInput = value; }
+            get { return controller; }
+            set { controller = value; }
         }
 
 
         public void Show()
         {
             bool isUserInputValid = false;
+            Console.WriteLine("[Id]     Name");
 
-            Console.WriteLine("Id of backup to delete :");
+            for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++)
+            {
+                Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupWorkList[i].Name);
+            }
+            Console.WriteLine("Id of backup work you want to delete :");
 
 
 
             while (isUserInputValid != true)
             {
                 userInput = Console.ReadLine();
-                isUserInputValid = CheckIfUserInputIsValid(userInput);
+                isUserInputValid = CheckIfIDInputIsValid(userInput);
+            }
+
+            int idToDelete = int.Parse(userInput) - 1;
+
+            try
+            {
+                this.Controller.Model.deleteBackupWork(idToDelete);
+            }
+            catch {
+                Console.WriteLine("Unable to delete this backup work.");
             }
         }
 
@@ -59,15 +65,14 @@ namespace consoleApp
         }
 
 
-        private bool CheckIfUserInputIsValid(string userInput)
+        private bool CheckIfIDInputIsValid(string userInput)
         {
             try
             {
                 bool stringIsValid = false;
-                if (userInput.Length >= 1)
+                if (int.Parse(userInput) > 0 && int.Parse(userInput) <= this.Controller.Model.BackupWorkList.Count)
                 {
                     stringIsValid = true;
-                    Environment.Exit(0);
                 }
                 else
                 {
@@ -80,7 +85,7 @@ namespace consoleApp
             {
                 return false;
             }
-            
+
         }
     }
 }

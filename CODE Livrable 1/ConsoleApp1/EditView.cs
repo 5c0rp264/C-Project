@@ -83,19 +83,18 @@ namespace consoleApp
             {
                 destination = userInput;
             }
-            Console.WriteLine("Do you want [0]Diff or [1]Full [" + this.Controller.Model.BackupWorkList[idToEdit].Name + "] :");
-            userInput = Console.ReadLine();
-
+            Console.WriteLine("Do you want [0]Diff or [1]Full [" + (this.Controller.Model.BackupWorkList[idToEdit].IsFull ? "1" : "0") + "] :");
+            isUserInputValid = false;
             while (isUserInputValid != true)
             {
                 userInput = Console.ReadLine();
-                if (userInput == "0" || userInput == "1")
+                if (userInput == "0" || userInput == "1" || userInput == "")
                 {
                     if (userInput == "1")
                     {
                         isFull = true;
                     }
-                    else
+                    else if (userInput == "0")
                     {
                         isFull = false;
                     }
