@@ -83,6 +83,23 @@ namespace consoleApp
         }
 
 
+        public void editBackupWork(int idToEdit, String name, String source, String destination, Boolean isFull)
+        {
+            this.BackupWorkList[idToEdit].Name = name;
+            this.BackupWorkList[idToEdit].Source = source;
+            this.BackupWorkList[idToEdit].Destination = destination;
+            this.BackupWorkList[idToEdit].IsFull = isFull;
+
+        }
+
+
+
+
+
+
+
+        // --------------------- Function to make life easier ---------------------------------
+
 
 
         private static void DirectoryCopy(string sourceDirName, string destDirName)

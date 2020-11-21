@@ -24,10 +24,10 @@ namespace consoleApp
             set { userInput = value; }
         }
 
-        public Controller Controller
+        public IController Controller
         {
-            get { return Controller; }
-            set { Controller = value; }
+            get { return controller; }
+            set { controller = value; }
         }
 
         public string UpperCaseUserInput
