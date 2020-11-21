@@ -54,6 +54,7 @@ namespace consoleApp
             catch {
                 Console.WriteLine("Unable to delete this backup work.");
             }
+            this.Controller.View = new HomeView();
         }
 
         //Link the view to the controller

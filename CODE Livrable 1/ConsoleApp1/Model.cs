@@ -6,6 +6,10 @@ using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
 
+
+//TODO: Add logs and state file.
+
+
 namespace consoleApp
 {
     public class Model
