@@ -147,8 +147,9 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- Management -->
 ## Project Management
 
-We are still writing this part
+In order to allow each member of our team to create and participate in the most efficient way possible we had to put together a project management strategy. This strategy translates into our collaborative work via the GitHub platform, where our code and the use of design templates such as the VCM have allowed us to easily distribute tasks. Moreover, in a concern of perenniality of the application, these design patterns will allow us to pass in a second time to a graphic interface in a much simpler way.  
 
+Beyond GitHub we also collaborated via Azure Devops via a board, adding To Do list so that everyone knows the remaining tasks and have a simpler and clearer vision of our Github repository. But also to set up pipelines to certify that our code is working properly and that we are using good practices during this project.
 
 <!-- CONTRIBUTING -->
 ## Contributing
