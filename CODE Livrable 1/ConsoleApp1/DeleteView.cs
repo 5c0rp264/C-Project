@@ -82,6 +82,7 @@ namespace consoleApp
             }
             catch (Exception)
             {
+                Console.WriteLine("\nInvalid response.Try again\n");
                 return false;
             }
 

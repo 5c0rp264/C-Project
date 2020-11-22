@@ -52,7 +52,7 @@ namespace consoleApp
             Console.WriteLine("[3] Delete a backup work");
             Console.WriteLine("");
             Console.WriteLine("");
-            Console.WriteLine("What do you want to do :");
+            Console.WriteLine("Your choice :");
 
 
 
