@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace consoleApp
 {
@@ -82,8 +80,8 @@ namespace consoleApp
                 {
                     Console.WriteLine("Thanks to enter a valid value.");
                 }
-             }
-            
+            }
+
 
 
             try
@@ -140,7 +138,7 @@ namespace consoleApp
                 Console.WriteLine("\nInvalid response.Try again\n");
                 return false;
             }
-            
+
         }
     }
 }

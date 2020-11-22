@@ -8,7 +8,7 @@ namespace consoleApp
         {
             Console.Title = "EasySave from ProSoft";
             Controller controller = new Controller();
-            
+
 
         }
     }

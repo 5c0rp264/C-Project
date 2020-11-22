@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace consoleApp
 {
@@ -23,13 +21,13 @@ namespace consoleApp
 
             //Linking the controller to the view, so the view is able to notice the controller when the user gives a valid input
 
-            
+
             while (!end)
             {
                 this.View.SetController(this);
                 this.View.Show();
             }
-            
+
         }
 
 

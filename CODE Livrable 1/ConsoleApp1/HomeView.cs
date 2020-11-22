@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace consoleApp
 {
@@ -107,12 +105,12 @@ namespace consoleApp
             }
             catch (Exception)
             {
-                
+
                 Console.WriteLine("\nInvalid response.Try again\n");
-                
+
                 return false;
             }
-            
+
         }
     }
 }

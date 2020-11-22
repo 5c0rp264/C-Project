@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace consoleApp
 {
@@ -34,9 +32,9 @@ namespace consoleApp
 
             Console.WriteLine("[Id]     Name");
 
-            for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++) 
+            for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++)
             {
-                Console.WriteLine("["+(i+1)+"]     "+this.Controller.Model.BackupWorkList[i].Name);
+                Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupWorkList[i].Name);
             }
             Console.WriteLine("\nId of backup work you want to execute :");
 
@@ -47,7 +45,7 @@ namespace consoleApp
                 userInput = Console.ReadLine();
                 isUserInputValid = CheckIfIDInputIsValid(userInput);
             }
-            int idBUW = int.Parse(userInput)-1;
+            int idBUW = int.Parse(userInput) - 1;
 
             if (this.controller.Model.BackupWorkList[idBUW].IsFull)
             {
@@ -83,7 +81,8 @@ namespace consoleApp
                 {
                     this.Controller.Model.ExecuteDifferentialBackupWork(idBUW, userInput);
 
-                }catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
@@ -122,7 +121,7 @@ namespace consoleApp
             {
                 return false;
             }
-            
+
         }
     }
 }
