@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 
 
@@ -81,7 +82,7 @@ namespace consoleApp
             List<BackupWorkState> BUWStateList = new List<BackupWorkState>();
             for (int i = 0; i < backupWorkIDList.Count; i++)
             {
-                BUWStateList.Add(new BackupWorkState(this.BackupWorkList[backupWorkIDList[i]].Name, this.BackupWorkList[backupWorkIDList[i]].Source, this.BackupWorkList[backupWorkIDList[i]].Destination, (this.BackupWorkList[backupWorkIDList[i]].IsFull ? "/Full" : "/Diff") + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), (this.BackupWorkList[backupWorkIDList[i]].IsFull ? concernedFile(this.BackupWorkList[backupWorkIDList[i]].Source) : concernedFileDiff(this.BackupWorkList[backupWorkIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupWorkList[backupWorkIDList[i]].IsFull, false));
+                BUWStateList.Add(new BackupWorkState(this.BackupWorkList[backupWorkIDList[i]].Name, this.BackupWorkList[backupWorkIDList[i]].Source, this.BackupWorkList[backupWorkIDList[i]].Destination, (this.BackupWorkList[backupWorkIDList[i]].IsFull ? "/Full" : "/Diff") + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), (this.BackupWorkList[backupWorkIDList[i]].IsFull ? concernedFile(this.BackupWorkList[backupWorkIDList[i]].Source).Count : concernedFileDiff(this.BackupWorkList[backupWorkIDList[i]].Source, fullBackupListForDiff[numOfDiff]).Count), (this.BackupWorkList[backupWorkIDList[i]].IsFull ? concernedFile(this.BackupWorkList[backupWorkIDList[i]].Source) : concernedFileDiff(this.BackupWorkList[backupWorkIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupWorkList[backupWorkIDList[i]].IsFull, false));
                 if (!this.BackupWorkList[backupWorkIDList[i]].IsFull)
                 {
                     numOfDiff++;
@@ -141,10 +142,10 @@ namespace consoleApp
             tw.Close();
         }
 
-        private static int concernedFile(string sourceDirName)
+        private static List<myOwnFileInfo> concernedFile(string sourceDirName)
         {
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
-            int totalCount = 0;
+            List<myOwnFileInfo> totalCount = new List<myOwnFileInfo>();
             if (!dir.Exists)
             {
                 throw new DirectoryNotFoundException(
@@ -158,22 +159,22 @@ namespace consoleApp
             FileInfo[] files = dir.GetFiles();
             foreach (FileInfo file in files)
             {
-                totalCount++;
+                totalCount.Add(new myOwnFileInfo(file.Length, file.FullName));
             }
 
             // If copying subdirectories, copy them and their contents to new location.
 
             foreach (DirectoryInfo subdir in dirs)
             {
-                totalCount += concernedFile(subdir.FullName);
+                totalCount.AddRange(concernedFile(subdir.FullName));
             }
             return totalCount;
         }
 
-        private static int concernedFileDiff(string sourceDirName, string comparisonDirName)
+        private static List<myOwnFileInfo> concernedFileDiff(string sourceDirName, string comparisonDirName)
         {
 
-            int totalCount = 0;
+            List<myOwnFileInfo> totalCount = new List<myOwnFileInfo>();
             DirectoryInfo dirsrc = new DirectoryInfo(sourceDirName);
             DirectoryInfo dircomp = new DirectoryInfo(comparisonDirName);
 
@@ -194,20 +195,20 @@ namespace consoleApp
             {
                 if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
-                    totalCount++;
+                    totalCount.Add(new myOwnFileInfo(file.Length, file.FullName));
                 }
                 else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
                     if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
                     {
-                        totalCount++;
+                        totalCount.Add(new myOwnFileInfo(file.Length, file.FullName));
                     }
                 }
             }
 
             foreach (DirectoryInfo subdir in dirs)
             {
-                totalCount += concernedFileDiff(subdir.FullName, Path.Combine(comparisonDirName, subdir.Name));
+                totalCount.AddRange(concernedFileDiff(subdir.FullName, Path.Combine(comparisonDirName, subdir.Name)));
             }
             return totalCount;
 
@@ -236,9 +237,10 @@ namespace consoleApp
             foreach (FileInfo file in files)
             {
                 file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                BUWS[index].FilesTransfered.Add(new classmyOwnFileInfo(file.Length, file.FullName));
+                BUWS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                 //Console.Write(BUWS[index].FilesTransfered.Count / BUWS[index].TotalElligibleFile);
                 BUWS[index].Progress = ((float)BUWS[index].FilesTransfered.Count) / ((float)BUWS[index].TotalElligibleFile);
+                BUWS[index].SizeOfRemainingFiles = BUWS[index].TotalSizeOfElligbleFiles - BUWS[index].FilesTransfered.Sum(item => item.fileSize);
                 writeStateFile(BUWS);
 
             }
@@ -278,8 +280,9 @@ namespace consoleApp
                 if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
                     file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                    BUWS[index].FilesTransfered.Add(new classmyOwnFileInfo(file.Length, file.FullName));
+                    BUWS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                     BUWS[index].Progress = ((float)BUWS[index].FilesTransfered.Count) / ((float)BUWS[index].TotalElligibleFile);
+                    BUWS[index].SizeOfRemainingFiles = BUWS[index].TotalSizeOfElligbleFiles - BUWS[index].FilesTransfered.Sum(item => item.fileSize);
                     writeStateFile(BUWS);
                 }
                 else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
@@ -287,8 +290,9 @@ namespace consoleApp
                     if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
                     {
                         file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                        BUWS[index].FilesTransfered.Add(new classmyOwnFileInfo(file.Length, file.FullName));
+                        BUWS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                         BUWS[index].Progress = ((float)BUWS[index].FilesTransfered.Count) / ((float)BUWS[index].TotalElligibleFile);
+                        BUWS[index].SizeOfRemainingFiles = BUWS[index].TotalSizeOfElligbleFiles - BUWS[index].FilesTransfered.Sum(item => item.fileSize);
                         writeStateFile(BUWS);
                     }
                 }
