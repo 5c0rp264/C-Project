@@ -106,6 +106,9 @@ namespace consoleApp
                 Console.WriteLine(e);
                 Console.WriteLine("\nUnable to generate this backup work.\n");
             }
+
+            Console.WriteLine("Press a key to continue");
+            Console.ReadLine();
         }
 
         //Link the view to the controller

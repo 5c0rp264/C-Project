@@ -114,6 +114,8 @@ namespace consoleApp
                 Console.WriteLine("Unable to edit this backup work.");
             }
             this.Controller.View = new HomeView();
+            Console.WriteLine("Press a key to continue");
+            Console.ReadLine();
         }
 
         //Link the view to the controller
