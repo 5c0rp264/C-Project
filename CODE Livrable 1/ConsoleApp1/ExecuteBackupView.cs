@@ -8,7 +8,6 @@ namespace consoleApp
     {
         private string userInput;
 
-
         private IController controller;
 
         public ExecuteBackupView()
@@ -31,68 +30,80 @@ namespace consoleApp
 
         public void Show()
         {
-
-            Console.WriteLine("[Id]     Name");
-
-            for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++) 
+            if (this.Controller.Model.BackupWorkList.Count == 0)
             {
-                Console.WriteLine("["+(i+1)+"]     "+this.Controller.Model.BackupWorkList[i].Name);
+                this.Controller.View = new HomeView();
+                Console.WriteLine("You don't have any backup work to execute...\nPress a key to continue");
+                Console.ReadLine();
             }
-            Console.WriteLine("\nId of backup work you want to execute :");
-
-
-            List<int> idBUW = new List<int>();
-            bool isUserInputValid = false;
-            while (isUserInputValid != true)
+            else
             {
-                userInput = Console.ReadLine();
-                isUserInputValid = CheckIfIDInputIsValid(userInput);
-                if (isUserInputValid) {
-                    idBUW.Add(int.Parse(userInput) - 1);
-                    Console.WriteLine("Do you want to add other backup job [0]No 1[Yes] :");
-                    userInput = Console.ReadLine();
-                    while (userInput != "0" && userInput != "1")
-                    {
-                        Console.WriteLine("Reminder [0]No [Yes] :");
-                        userInput = Console.ReadLine();
-                    }
-                    if (userInput == "1")
-                    {
-                        isUserInputValid = false;
-                        Console.WriteLine("\nId of backup work you want to execute :");
-                    }
-                }
-            }
-            List<String> dirFullForDiff = new List<String>();
-            for (int i = 0; i < idBUW.Count; i++)
-            {
-                if (!this.Controller.Model.BackupWorkList[idBUW[i]].IsFull)
+                Console.WriteLine("[Id]     Name");
+
+                for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++)
                 {
-                    Console.WriteLine("Full backup of reference for diff backup ["+ idBUW[i] + "] " + this.Controller.Model.BackupWorkList[idBUW[i]].Name + " :");
-                    userInput = Console.ReadLine();
-                    while (!(userInput.Length >= 1))
-                    {
-                        Console.WriteLine("Please :");
-                        userInput = Console.ReadLine();
-                    }
-                    dirFullForDiff.Add(userInput);
+                    Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupWorkList[i].Name);
                 }
-            }
+                Console.WriteLine("\nId of backup work you want to execute :");
 
-            
-            try
-            {
-                this.Controller.Model.executeBUJList(idBUW, dirFullForDiff);
-            }catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            
 
-            Console.WriteLine("Done.");
-            this.Controller.View = new HomeView();
-            Console.WriteLine("Press a key to continue");
-            Console.ReadLine();
+                List<int> idBUW = new List<int>();
+                bool isUserInputValid = false;
+                while (isUserInputValid != true)
+                {
+                    userInput = Console.ReadLine();
+                    isUserInputValid = CheckIfIDInputIsValid(userInput);
+                    if (isUserInputValid)
+                    {
+                        idBUW.Add(int.Parse(userInput) - 1);
+                        Console.WriteLine("Do you want to add other backup job [0]No 1[Yes] :");
+                        userInput = Console.ReadLine();
+                        while (userInput != "0" && userInput != "1")
+                        {
+                            Console.WriteLine("Reminder [0]No [Yes] :");
+                            userInput = Console.ReadLine();
+                        }
+                        if (userInput == "1")
+                        {
+                            isUserInputValid = false;
+                            Console.WriteLine("\nId of backup work you want to execute :");
+                        }
+                    }
+                }
+                List<String> dirFullForDiff = new List<String>();
+                for (int i = 0; i < idBUW.Count; i++)
+                {
+                    if (!this.Controller.Model.BackupWorkList[idBUW[i]].IsFull)
+                    {
+                        Console.WriteLine("Full backup of reference for diff backup [" + idBUW[i] + "] " + this.Controller.Model.BackupWorkList[idBUW[i]].Name + " :");
+                        userInput = Console.ReadLine();
+                        while (!(userInput.Length >= 1))
+                        {
+                            Console.WriteLine("Please :");
+                            userInput = Console.ReadLine();
+                        }
+                        dirFullForDiff.Add(userInput);
+                    }
+                }
+
+
+                var spinner = new Spinner();
+                spinner.Start();
+                try
+                {
+                    this.Controller.Model.executeBUJList(idBUW, dirFullForDiff);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                spinner.Stop();
+
+                Console.WriteLine("\nDone.");
+                this.Controller.View = new HomeView();
+                Console.WriteLine("Press a key to continue");
+                Console.ReadLine();
+            }
         }
 
         //Link the view to the controller
