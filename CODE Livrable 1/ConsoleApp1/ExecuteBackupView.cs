@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace consoleApp
 {
@@ -32,66 +34,63 @@ namespace consoleApp
 
             Console.WriteLine("[Id]     Name");
 
-            for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++)
+            for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++) 
             {
-                Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupWorkList[i].Name);
+                Console.WriteLine("["+(i+1)+"]     "+this.Controller.Model.BackupWorkList[i].Name);
             }
             Console.WriteLine("\nId of backup work you want to execute :");
 
 
+            List<int> idBUW = new List<int>();
             bool isUserInputValid = false;
             while (isUserInputValid != true)
             {
                 userInput = Console.ReadLine();
                 isUserInputValid = CheckIfIDInputIsValid(userInput);
-            }
-            int idBUW = int.Parse(userInput) - 1;
-
-            if (this.controller.Model.BackupWorkList[idBUW].IsFull)
-            {
-                try
-                {
-                    this.Controller.Model.ExecuteBackupWork(idBUW);
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-            else
-            {
-                Console.WriteLine("\nPath of the full backup you want to diff from :");
-
-
-                isUserInputValid = false;
-                while (isUserInputValid != true)
-                {
+                if (isUserInputValid) {
+                    idBUW.Add(int.Parse(userInput) - 1);
+                    Console.WriteLine("Do you want to add other backup job [0]No [Yes] :");
                     userInput = Console.ReadLine();
-                    if (userInput.Length >= 1)
+                    while (userInput != "0" && userInput != "1")
                     {
-                        isUserInputValid = true;
+                        Console.WriteLine("Reminder [0]No [Yes] :");
+                        userInput = Console.ReadLine();
                     }
-                    else
+                    if (userInput == "1")
                     {
-                        Console.WriteLine("Please enter it.");
+                        isUserInputValid = false;
+                        Console.WriteLine("\nId of backup work you want to execute :");
                     }
-                }
-                try
-                {
-                    this.Controller.Model.ExecuteDifferentialBackupWork(idBUW, userInput);
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
                 }
             }
+            List<String> dirFullForDiff = new List<String>();
+            for (int i = 0; i < idBUW.Count; i++)
+            {
+                if (!this.Controller.Model.BackupWorkList[idBUW[i]].IsFull)
+                {
+                    Console.WriteLine("Full backup of reference for diff backup ["+ idBUW[i] + "] " + this.Controller.Model.BackupWorkList[idBUW[i]].Name + " :");
+                    userInput = Console.ReadLine();
+                    while (userInput.Length >= 1)
+                    {
+                        Console.WriteLine("lease :");
+                        userInput = Console.ReadLine();
+                    }
+                    dirFullForDiff.Add(userInput);
+                }
+            }
+
+            
+            try
+            {
+                this.Controller.Model.executeBUJList(idBUW, dirFullForDiff);
+            }catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
 
             Console.WriteLine("Done.");
             this.Controller.View = new HomeView();
-            Console.WriteLine("Press a key to continue");
-            Console.ReadLine();
         }
 
         //Link the view to the controller
@@ -121,7 +120,7 @@ namespace consoleApp
             {
                 return false;
             }
-
+            
         }
     }
 }

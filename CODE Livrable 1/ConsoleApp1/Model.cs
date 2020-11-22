@@ -15,6 +15,7 @@ namespace consoleApp
         private List<BackupWork> backupWorkList;
 
         private String pathToJsonDB = @"./db.json";
+        private String pathToStateFile = @"./state.log";
         public List<BackupWork> BackupWorkList
         {
             get { return backupWorkList; }
@@ -74,14 +75,31 @@ namespace consoleApp
             }
         }
 
-        public void ExecuteBackupWork(int backupWorkID)
+        public void executeBUJList(List<int> backupWorkIDList, List<String> fullBackupListForDiff)
         {
-            DirectoryCopy(this.BackupWorkList[backupWorkID].Source, this.BackupWorkList[backupWorkID].Destination + "/Full " + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"));
-        }
-
-        public void ExecuteDifferentialBackupWork(int backupWorkID, String fullBUDir)
-        {
-            DirectoryDifferentialCopy(this.BackupWorkList[backupWorkID].Source, this.BackupWorkList[backupWorkID].Destination + "/Diff " + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), fullBUDir);
+            int numOfDiff = 0;
+            List <BackupWorkState> BUWStateList= new List<BackupWorkState>();
+            for (int i = 0; i < backupWorkIDList.Count; i++)
+            {
+                BUWStateList.Add(new BackupWorkState(this.BackupWorkList[backupWorkIDList[i]].Name, this.BackupWorkList[backupWorkIDList[i]].Source, this.BackupWorkList[backupWorkIDList[i]].Destination, (this.BackupWorkList[backupWorkIDList[i]].IsFull ? "/Full" : "/Diff") + DateTime.Now.ToString("MM.dd.yyyy THH.mm"), (this.BackupWorkList[backupWorkIDList[i]].IsFull ? concernedFile(this.BackupWorkList[backupWorkIDList[i]].Source) : concernedFileDiff(this.BackupWorkList[backupWorkIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupWorkList[backupWorkIDList[i]].IsFull, false));
+                if (!this.BackupWorkList[backupWorkIDList[i]].IsFull)
+                {
+                    numOfDiff++;
+                }
+            }
+            numOfDiff = 0;
+            for (int i = 0; i < backupWorkIDList.Count; i++)
+            {
+                if (this.BackupWorkList[backupWorkIDList[i]].IsFull)
+                {
+                    DirectoryCopy(this.BackupWorkList[backupWorkIDList[i]].Source, this.BackupWorkList[backupWorkIDList[i]].Destination + "/Full " + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"));
+                }
+                else
+                {
+                    DirectoryDifferentialCopy(this.BackupWorkList[backupWorkIDList[i]].Source, this.BackupWorkList[backupWorkIDList[i]].Destination + "/Diff " + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), fullBackupListForDiff[numOfDiff]);
+                    numOfDiff++;
+                }
+            }
         }
 
 
@@ -109,6 +127,87 @@ namespace consoleApp
 
         // --------------------- Function to make life easier ---------------------------------
 
+        private void writeStateFile(BackupWork BUW, Boolean rewrite)
+        {
+            FileStream stream = File.Create(pathToStateFile);
+            TextWriter tw = new StreamWriter(stream);
+            tw.WriteLine("[Timestamp:"+(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds +"] The backup job " + BUW.Name + "went active");
+            tw.WriteLine("Source directory : " + BUW.Source);
+            tw.WriteLine("Destination directory : " + BUW.Destination);
+            tw.Close();
+        }
+
+        private static int concernedFile(string sourceDirName)
+        {
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+            int totalCount = 0;
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                totalCount++;
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+
+            foreach (DirectoryInfo subdir in dirs)
+            {
+                totalCount += concernedFile(subdir.FullName);
+            }
+            return totalCount;
+        }
+
+        private static int concernedFileDiff(string sourceDirName, string comparisonDirName)
+        {
+
+            int totalCount = 0;
+            DirectoryInfo dirsrc = new DirectoryInfo(sourceDirName);
+            DirectoryInfo dircomp = new DirectoryInfo(comparisonDirName);
+
+
+            if (!dirsrc.Exists || !dircomp.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source or full backup directory does not exist or could not be found: "
+                    + sourceDirName + "\nor\n" + comparisonDirName);
+            }
+
+            DirectoryInfo[] dirs = dirsrc.GetDirectories();
+            //DirectoryInfo[] dirsComp = dirsrc.GetDirectories();
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dirsrc.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
+                {
+                    totalCount++;
+                }
+                else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
+                {
+                    if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
+                    {
+                        totalCount++;
+                    }
+                }
+            }
+
+            foreach (DirectoryInfo subdir in dirs)
+            {
+                totalCount += concernedFileDiff(subdir.FullName, Path.Combine(comparisonDirName, subdir.Name));
+            }
+            return totalCount;
+
+        }
 
 
         private static void DirectoryCopy(string sourceDirName, string destDirName)
@@ -133,6 +232,7 @@ namespace consoleApp
             foreach (FileInfo file in files)
             {
                 file.CopyTo(Path.Combine(destDirName, file.Name), false);
+
             }
 
             // If copying subdirectories, copy them and their contents to new location.
@@ -188,7 +288,7 @@ namespace consoleApp
         }
 
 
-        static string CalculateMD5(string filename)
+        private static string CalculateMD5(string filename)
         {
             using (var md5 = MD5.Create())
             {
