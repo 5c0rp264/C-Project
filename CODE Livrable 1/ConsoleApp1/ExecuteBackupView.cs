@@ -70,9 +70,9 @@ namespace consoleApp
                 {
                     Console.WriteLine("Full backup of reference for diff backup ["+ idBUW[i] + "] " + this.Controller.Model.BackupWorkList[idBUW[i]].Name + " :");
                     userInput = Console.ReadLine();
-                    while (userInput.Length >= 1)
+                    while (!(userInput.Length >= 1))
                     {
-                        Console.WriteLine("lease :");
+                        Console.WriteLine("Please :");
                         userInput = Console.ReadLine();
                     }
                     dirFullForDiff.Add(userInput);
