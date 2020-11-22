@@ -92,7 +92,7 @@ namespace consoleApp
             for (int i = 0; i < backupWorkIDList.Count; i++)
             {
                 BUWStateList[i].ISACtive = true;
-                //writeStateFile(BUWStateList);
+                writeStateFile(BUWStateList);
                 if (this.BackupWorkList[backupWorkIDList[i]].IsFull)
                 {
                     DirectoryCopy(this.BackupWorkList[backupWorkIDList[i]].Source, BUWStateList[i].Destination + BUWStateList[i].FolderName, i, BUWStateList);
@@ -103,9 +103,8 @@ namespace consoleApp
                     numOfDiff++;
                 }
                 BUWStateList[i].ISACtive = false;
-                //writeStateFile(BUWStateList);
+                writeStateFile(BUWStateList);
             }
-            writeStateFile(BUWStateList);
         }
 
 
@@ -237,8 +236,10 @@ namespace consoleApp
             foreach (FileInfo file in files)
             {
                 file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                BUWS[index].FilesTransfered.Add(file);
-                //this.writeStateFile(BUWS);
+                BUWS[index].FilesTransfered.Add(new classmyOwnFileInfo(file.Length, file.FullName));
+                //Console.Write(BUWS[index].FilesTransfered.Count / BUWS[index].TotalElligibleFile);
+                BUWS[index].Progress = ((float)BUWS[index].FilesTransfered.Count) / ((float)BUWS[index].TotalElligibleFile);
+                writeStateFile(BUWS);
 
             }
 
@@ -277,16 +278,18 @@ namespace consoleApp
                 if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
                     file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                    BUWS[index].FilesTransfered.Add(file);
-                    //this.writeStateFile(BUWS);
+                    BUWS[index].FilesTransfered.Add(new classmyOwnFileInfo(file.Length, file.FullName));
+                    BUWS[index].Progress = ((float)BUWS[index].FilesTransfered.Count) / ((float)BUWS[index].TotalElligibleFile);
+                    writeStateFile(BUWS);
                 }
                 else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
                     if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
                     {
                         file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                        BUWS[index].FilesTransfered.Add(file);
-                        //this.writeStateFile(BUWS);
+                        BUWS[index].FilesTransfered.Add(new classmyOwnFileInfo(file.Length, file.FullName));
+                        BUWS[index].Progress = ((float)BUWS[index].FilesTransfered.Count) / ((float)BUWS[index].TotalElligibleFile);
+                        writeStateFile(BUWS);
                     }
                 }
             }

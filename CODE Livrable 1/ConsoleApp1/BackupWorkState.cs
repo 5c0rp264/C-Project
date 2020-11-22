@@ -5,6 +5,16 @@ using System.IO;
 
 namespace consoleApp
 {
+    public class classmyOwnFileInfo {
+        public long fileSize;
+        public String fullName;
+
+        public classmyOwnFileInfo(long fileSize, string fullName)
+        {
+            this.fileSize = fileSize;
+            this.fullName = fullName;
+        }
+    }
     public class BackupWorkState
     {
         private String name;
@@ -14,7 +24,7 @@ namespace consoleApp
         private int totalElligibleFile;
         private Boolean isFull;
         private Boolean isActive;
-        private List<FileInfo> filesTransfered;
+        private List<classmyOwnFileInfo> filesTransfered;
         private float progress;
         private Stopwatch stopwatch;
 
@@ -37,15 +47,10 @@ namespace consoleApp
                 }
             }
         }
-        public List<FileInfo> FilesTransfered { get => filesTransfered;
-            set {
-                filesTransfered = value;
-                this.progress = FilesTransfered.Count / this.totalElligibleFile;
-            }
-        }
+        public List<classmyOwnFileInfo> FilesTransfered { get => filesTransfered; set => filesTransfered = value;}
+
         public Stopwatch Stopwatch { get => stopwatch; set => stopwatch = value; }
-
-
+        public float Progress { get => progress; set => progress = value; }
 
         public BackupWorkState(String Name, String Source, String Destination, String FolderName, int TotalElligibleFile, Boolean IsFull, Boolean IsActive)
         {
@@ -59,7 +64,7 @@ namespace consoleApp
                 this.totalElligibleFile = TotalElligibleFile;
                 this.isFull = IsFull;
                 this.isActive = ISACtive;
-                this.filesTransfered = new List<FileInfo>();
+                this.filesTransfered = new List<classmyOwnFileInfo>();
                 this.stopwatch = new Stopwatch();
                 stopwatch.Reset();
             }
