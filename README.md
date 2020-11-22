@@ -3,7 +3,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/5c0rp264/C-Project">
-    <img src="https://raw.githubusercontent.com/othneildrew/Best-README-Template/master/images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/5c0rp264/C-Project/blob/main/CODE%20Livrable%201/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">EasySave</h3>
