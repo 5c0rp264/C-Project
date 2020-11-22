@@ -29,33 +29,42 @@ namespace consoleApp
         public void Show()
         {
             bool isUserInputValid = false;
-            Console.WriteLine("[Id]     Name");
-
-            for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++)
+            if (this.Controller.Model.BackupWorkList.Count == 0)
             {
-                Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupWorkList[i].Name);
+                this.Controller.View = new HomeView();
+                Console.WriteLine("You don't have any backup work to delete...\nPress a key to continue");
+                Console.ReadLine();
             }
-            Console.WriteLine("Id of backup work you want to delete :");
-
-            while (isUserInputValid != true)
+            else
             {
-                userInput = Console.ReadLine();
-                isUserInputValid = CheckIfIDInputIsValid(userInput);
-            }
+                Console.WriteLine("[Id]     Name");
 
-            int idToDelete = int.Parse(userInput) - 1;
+                for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++)
+                {
+                    Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupWorkList[i].Name);
+                }
+                Console.WriteLine("Id of backup work you want to delete :");
 
-            try
-            {
-                this.Controller.Model.deleteBackupWork(idToDelete);
+                while (isUserInputValid != true)
+                {
+                    userInput = Console.ReadLine();
+                    isUserInputValid = CheckIfIDInputIsValid(userInput);
+                }
+
+                int idToDelete = int.Parse(userInput) - 1;
+
+                try
+                {
+                    this.Controller.Model.deleteBackupWork(idToDelete);
+                }
+                catch
+                {
+                    Console.WriteLine("Unable to delete this backup work.");
+                }
+                this.Controller.View = new HomeView();
+                Console.WriteLine("Press a key to continue");
+                Console.ReadLine();
             }
-            catch
-            {
-                Console.WriteLine("Unable to delete this backup work.");
-            }
-            this.Controller.View = new HomeView();
-            Console.WriteLine("Press a key to continue");
-            Console.ReadLine();
         }
 
         //Link the view to the controller
