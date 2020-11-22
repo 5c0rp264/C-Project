@@ -15,6 +15,7 @@ namespace consoleApp
         private Boolean isFull;
         private Boolean isActive;
         private List<FileInfo> filesTransfered;
+        private float progress;
         private Stopwatch stopwatch;
 
 
@@ -36,7 +37,14 @@ namespace consoleApp
                 }
             }
         }
-        public List<FileInfo> FilesTransfered { get => filesTransfered; set => filesTransfered = value; }
+        public List<FileInfo> FilesTransfered { get => filesTransfered;
+            set {
+                filesTransfered = value;
+                this.progress = FilesTransfered.Count / this.totalElligibleFile;
+            }
+        }
+        public Stopwatch Stopwatch { get => stopwatch; set => stopwatch = value; }
+
 
 
         public BackupWorkState(String Name, String Source, String Destination, String FolderName, int TotalElligibleFile, Boolean IsFull, Boolean IsActive)

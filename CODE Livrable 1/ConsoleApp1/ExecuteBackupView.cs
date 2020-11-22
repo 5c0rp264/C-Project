@@ -49,7 +49,7 @@ namespace consoleApp
                 isUserInputValid = CheckIfIDInputIsValid(userInput);
                 if (isUserInputValid) {
                     idBUW.Add(int.Parse(userInput) - 1);
-                    Console.WriteLine("Do you want to add other backup job [0]No [Yes] :");
+                    Console.WriteLine("Do you want to add other backup job [0]No 1[Yes] :");
                     userInput = Console.ReadLine();
                     while (userInput != "0" && userInput != "1")
                     {
@@ -91,6 +91,8 @@ namespace consoleApp
 
             Console.WriteLine("Done.");
             this.Controller.View = new HomeView();
+            Console.WriteLine("Press a key to continue");
+            Console.ReadLine();
         }
 
         //Link the view to the controller

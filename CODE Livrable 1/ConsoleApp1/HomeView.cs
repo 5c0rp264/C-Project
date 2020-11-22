@@ -50,7 +50,7 @@ namespace consoleApp
             Console.WriteLine("     ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝");
             Console.WriteLine("\n\nWhat would you like to start with ?");
             Console.WriteLine("");
-            Console.WriteLine("[0] Execute a backup work");
+            Console.WriteLine("[0] Execute backup works");
             Console.WriteLine("");
             Console.WriteLine("[1] Add a backup work");
             Console.WriteLine("[2] Edit a backup work");

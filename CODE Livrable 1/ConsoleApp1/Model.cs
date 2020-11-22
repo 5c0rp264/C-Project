@@ -78,28 +78,34 @@ namespace consoleApp
         public void executeBUJList(List<int> backupWorkIDList, List<String> fullBackupListForDiff)
         {
             int numOfDiff = 0;
-            List <BackupWorkState> BUWStateList= new List<BackupWorkState>();
+            List<BackupWorkState> BUWStateList = new List<BackupWorkState>();
             for (int i = 0; i < backupWorkIDList.Count; i++)
             {
-                BUWStateList.Add(new BackupWorkState(this.BackupWorkList[backupWorkIDList[i]].Name, this.BackupWorkList[backupWorkIDList[i]].Source, this.BackupWorkList[backupWorkIDList[i]].Destination, (this.BackupWorkList[backupWorkIDList[i]].IsFull ? "/Full" : "/Diff") + DateTime.Now.ToString("MM.dd.yyyy THH.mm"), (this.BackupWorkList[backupWorkIDList[i]].IsFull ? concernedFile(this.BackupWorkList[backupWorkIDList[i]].Source) : concernedFileDiff(this.BackupWorkList[backupWorkIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupWorkList[backupWorkIDList[i]].IsFull, false));
+                BUWStateList.Add(new BackupWorkState(this.BackupWorkList[backupWorkIDList[i]].Name, this.BackupWorkList[backupWorkIDList[i]].Source, this.BackupWorkList[backupWorkIDList[i]].Destination, (this.BackupWorkList[backupWorkIDList[i]].IsFull ? "/Full" : "/Diff") + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), (this.BackupWorkList[backupWorkIDList[i]].IsFull ? concernedFile(this.BackupWorkList[backupWorkIDList[i]].Source) : concernedFileDiff(this.BackupWorkList[backupWorkIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupWorkList[backupWorkIDList[i]].IsFull, false));
                 if (!this.BackupWorkList[backupWorkIDList[i]].IsFull)
                 {
                     numOfDiff++;
                 }
             }
+            writeStateFile(BUWStateList);
             numOfDiff = 0;
             for (int i = 0; i < backupWorkIDList.Count; i++)
             {
+                BUWStateList[i].ISACtive = true;
+                //writeStateFile(BUWStateList);
                 if (this.BackupWorkList[backupWorkIDList[i]].IsFull)
                 {
-                    DirectoryCopy(this.BackupWorkList[backupWorkIDList[i]].Source, this.BackupWorkList[backupWorkIDList[i]].Destination + "/Full " + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"));
+                    DirectoryCopy(this.BackupWorkList[backupWorkIDList[i]].Source, BUWStateList[i].Destination + BUWStateList[i].FolderName, i, BUWStateList);
                 }
                 else
                 {
-                    DirectoryDifferentialCopy(this.BackupWorkList[backupWorkIDList[i]].Source, this.BackupWorkList[backupWorkIDList[i]].Destination + "/Diff " + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), fullBackupListForDiff[numOfDiff]);
+                    DirectoryDifferentialCopy(this.BackupWorkList[backupWorkIDList[i]].Source, BUWStateList[i].Destination, fullBackupListForDiff[numOfDiff], i, BUWStateList);
                     numOfDiff++;
                 }
+                BUWStateList[i].ISACtive = false;
+                //writeStateFile(BUWStateList);
             }
+            writeStateFile(BUWStateList);
         }
 
 
@@ -127,13 +133,12 @@ namespace consoleApp
 
         // --------------------- Function to make life easier ---------------------------------
 
-        private void writeStateFile(BackupWork BUW, Boolean rewrite)
+        private void writeStateFile(List<BackupWorkState> BUWSList)
         {
             FileStream stream = File.Create(pathToStateFile);
             TextWriter tw = new StreamWriter(stream);
-            tw.WriteLine("[Timestamp:"+(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds +"] The backup job " + BUW.Name + "went active");
-            tw.WriteLine("Source directory : " + BUW.Source);
-            tw.WriteLine("Destination directory : " + BUW.Destination);
+            String stringjson = JsonConvert.SerializeObject(BUWSList);
+            tw.WriteLine(stringjson);
             tw.Close();
         }
 
@@ -210,7 +215,7 @@ namespace consoleApp
         }
 
 
-        private static void DirectoryCopy(string sourceDirName, string destDirName)
+        private void DirectoryCopy(string sourceDirName, string destDirName, int index, List<BackupWorkState> BUWS)
         {
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
@@ -232,6 +237,8 @@ namespace consoleApp
             foreach (FileInfo file in files)
             {
                 file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                BUWS[index].FilesTransfered.Add(file);
+                //this.writeStateFile(BUWS);
 
             }
 
@@ -239,11 +246,11 @@ namespace consoleApp
 
             foreach (DirectoryInfo subdir in dirs)
             {
-                DirectoryCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name));
+                DirectoryCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), index, BUWS);
             }
 
         }
-        private static void DirectoryDifferentialCopy(string sourceDirName, string destDirName, string comparisonDirName)
+        private void DirectoryDifferentialCopy(string sourceDirName, string destDirName, string comparisonDirName, int index, List<BackupWorkState> BUWS)
         {
             // Get the subdirectories for the specified directory.
             DirectoryInfo dirsrc = new DirectoryInfo(sourceDirName);
@@ -270,19 +277,23 @@ namespace consoleApp
                 if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
                     file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                    BUWS[index].FilesTransfered.Add(file);
+                    //this.writeStateFile(BUWS);
                 }
                 else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
                     if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
                     {
                         file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                        BUWS[index].FilesTransfered.Add(file);
+                        //this.writeStateFile(BUWS);
                     }
                 }
             }
 
             foreach (DirectoryInfo subdir in dirs)
             {
-                DirectoryDifferentialCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), Path.Combine(comparisonDirName, subdir.Name));
+                DirectoryDifferentialCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), Path.Combine(comparisonDirName, subdir.Name), index, BUWS);
             }
 
         }
