@@ -28,7 +28,7 @@
 ## Table of Contents
 
 * [About the Project](#about-the-project)
-  * [Software restrictions](#built-with)
+  * [Software restrictions](#software-restrictions)
    
 * [Version 1.0](#Version-1.0)
 * [Getting Started](#getting-started)
@@ -55,7 +55,7 @@ As any software of the ProSoft Suite, the software will be integrated into the p
 - Annual maintenance contract 5/7 8-17h (updates included): 12% purchase price (Annual contract tacitly renewed with revaluation based on the SYNTEC index) 
 
 During this project, we will have to ensure the development, the management of major and minor versions, but also the documentation (user and customer support).  
-To ensure that our work can be taken over by other teams, we must work within certain constraints such as the tools used (see [Software restrictions](#built-with)).  
+To ensure that our work can be taken over by other teams, we must work within certain constraints such as the tools used (see [Software restrictions](#(#software-restrictions))).  
 
 Release dates and versions :
 * Version 1.0 : 25/11/2020
@@ -124,7 +124,7 @@ The files (daily log and status) and any configuration files will be in XML or J
 <!-- GETTING STARTED -->
 ## Getting Started
 
-We are still writing this part
+To get a local copy up and running follow these simple example steps. But before anything else you should be sure to have Visual Studio 2019 in order to run the program.
 
 
 ### Prerequisites
@@ -138,11 +138,9 @@ git clone https://github.com/5c0rp264/C-Project
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-We are still writing this part
+Now that you have cloned this repository you can open the project in visual studio and run it as you wish. Because of the current version (1.0) you may need to delete the database json file. If you are using the first release version (branch v1.0) you can just use the .exe file. Then you can add / edit / delete any backup work via the main interface delivered by the view.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
-
-
 
 <!-- Management -->
 ## Project Management
