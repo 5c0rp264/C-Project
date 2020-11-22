@@ -27,9 +27,9 @@ namespace consoleApp
             }
             else
             {
-                throw new System.ArgumentException("Parameter cannot be empty","original");
+                throw new System.ArgumentException("Parameter cannot be empty", "original");
             }
-            
+
         }
 
 

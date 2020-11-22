@@ -174,7 +174,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 ## Contact
 
 Tanguy Lhinares - [Website](https://www.lhinares-technologies.com/) - tanguy.lhinares@viacesi.fr  
-Quentin Aoustin - [Resume](http://quentinaoustin.redirectme.net/ISN/CV.html/) - quentin.aoustin@viacesi.fr  
+Quentin Aoustin - [Resume](http://quentinaoustin.redirectme.net/ISN/CV.html) - quentin.aoustin@viacesi.fr  
 Vincent Jacques - [LinkedIn](https://www.linkedin.com/in/vincent-jacques-a173bb1a2/) - vincent.jacques@viacesi.fr  
 Jérémy Gabriel - jeremy.gabriel@viacesi.fr  
 Rémi Mounier - remi.mounier@viacesi.fr  

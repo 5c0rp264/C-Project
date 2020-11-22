@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace consoleApp
 {
@@ -56,7 +54,7 @@ namespace consoleApp
                 isUserInputValid = CheckIfIDInputIsValid(userInput);
             }
 
-            int idToEdit = int.Parse(userInput)-1;
+            int idToEdit = int.Parse(userInput) - 1;
 
             String name = this.Controller.Model.BackupWorkList[idToEdit].Name;
             String source = this.Controller.Model.BackupWorkList[idToEdit].Source;
@@ -66,7 +64,8 @@ namespace consoleApp
             Console.WriteLine("Name [" + this.Controller.Model.BackupWorkList[idToEdit].Name + "] :");
             userInput = Console.ReadLine();
 
-            if (userInput.Length >= 1){
+            if (userInput.Length >= 1)
+            {
                 name = userInput;
             }
             Console.WriteLine("source [" + this.Controller.Model.BackupWorkList[idToEdit].Source + "] :");
@@ -114,6 +113,8 @@ namespace consoleApp
                 Console.WriteLine("Unable to edit this backup work.");
             }
             this.Controller.View = new HomeView();
+            Console.WriteLine("Press a key to continue");
+            Console.ReadLine();
         }
 
         //Link the view to the controller

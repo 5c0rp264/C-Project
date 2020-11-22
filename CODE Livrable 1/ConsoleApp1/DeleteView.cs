@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace consoleApp
 {
@@ -51,10 +49,13 @@ namespace consoleApp
             {
                 this.Controller.Model.deleteBackupWork(idToDelete);
             }
-            catch {
+            catch
+            {
                 Console.WriteLine("Unable to delete this backup work.");
             }
             this.Controller.View = new HomeView();
+            Console.WriteLine("Press a key to continue");
+            Console.ReadLine();
         }
 
         //Link the view to the controller

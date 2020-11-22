@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
-using System.Text;
-using Newtonsoft.Json;
 
 
 //TODO: Add logs and state file.
@@ -25,7 +23,7 @@ namespace consoleApp
 
         public Model()
         {
-            
+
             if (!File.Exists(pathToJsonDB))
             {
                 BackupWorkList = new List<BackupWork>();
@@ -72,7 +70,7 @@ namespace consoleApp
                     tw.Close();
                     return true;
                 }
-                
+
             }
         }
 
@@ -141,9 +139,9 @@ namespace consoleApp
 
             foreach (DirectoryInfo subdir in dirs)
             {
-                DirectoryCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name));   
+                DirectoryCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name));
             }
-            
+
         }
         private static void DirectoryDifferentialCopy(string sourceDirName, string destDirName, string comparisonDirName)
         {
@@ -173,7 +171,8 @@ namespace consoleApp
                 {
                     file.CopyTo(Path.Combine(destDirName, file.Name), false);
                 }
-                else if (File.Exists(Path.Combine(comparisonDirName, file.Name))){
+                else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
+                {
                     if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
                     {
                         file.CopyTo(Path.Combine(destDirName, file.Name), false);

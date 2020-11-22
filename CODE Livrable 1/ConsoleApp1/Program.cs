@@ -6,10 +6,7 @@ namespace consoleApp
     {
         static void Main(string[] args)
         {
-            Console.Title = "EasySave from ProSoft";
             Controller controller = new Controller();
-            
-
         }
     }
 }

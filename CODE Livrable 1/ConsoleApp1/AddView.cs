@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace consoleApp
 {
@@ -82,8 +80,8 @@ namespace consoleApp
                 {
                     Console.WriteLine("Thanks to enter a valid value.");
                 }
-             }
-            
+            }
+
 
 
             try
@@ -106,6 +104,9 @@ namespace consoleApp
                 Console.WriteLine(e);
                 Console.WriteLine("\nUnable to generate this backup work.\n");
             }
+
+            Console.WriteLine("Press a key to continue");
+            Console.ReadLine();
         }
 
         //Link the view to the controller
@@ -137,7 +138,7 @@ namespace consoleApp
                 Console.WriteLine("\nInvalid response.Try again\n");
                 return false;
             }
-            
+
         }
     }
 }
