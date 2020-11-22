@@ -34,12 +34,11 @@
 <!-- ABOUT THE PROJECT -->
 ## Use Case Diagram
 
-<!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
-We are still writing this part
-
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/use_case.png" alt="Logo" style="width:90%;margin-left:5%;">
 
 ## Activity Diagram
 
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/activity.png" alt="Logo" style="width:90%;margin-left:5%;">
 
 ## Class Diagram
 
@@ -48,8 +47,8 @@ We are still writing this part
 
 ## Component Diagram
 
-<!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
-We are still writing this part
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/component.png" alt="Logo" style="width:90%;margin-left:5%;">
+
 
 ## Sequence Diagram
 
