@@ -48,7 +48,7 @@ namespace consoleApp
                 FileStream stream = File.Create(pathToJsonDB);
                 TextWriter tw = new StreamWriter(stream);
                 BackupWorkList.Add(backupWork);
-                String stringjson = JsonConvert.SerializeObject(BackupWorkList);
+                String stringjson = JsonConvert.SerializeObject(BackupWorkList, Formatting.Indented);
                 tw.WriteLine(stringjson);
                 tw.Close();
                 return true;
@@ -67,7 +67,7 @@ namespace consoleApp
                 else
                 {
                     BackupWorkList.Add(backupWork);
-                    String stringjson = JsonConvert.SerializeObject(BackupWorkList);
+                    String stringjson = JsonConvert.SerializeObject(BackupWorkList, Formatting.Indented);
                     tw.WriteLine(stringjson);
                     tw.Close();
                     return true;
@@ -137,7 +137,7 @@ namespace consoleApp
         {
             FileStream stream = File.Create(pathToStateFile);
             TextWriter tw = new StreamWriter(stream);
-            String stringjson = JsonConvert.SerializeObject(BUWSList);
+            String stringjson = JsonConvert.SerializeObject(BUWSList, Formatting.Indented);
             tw.WriteLine(stringjson);
             tw.Close();
         }
@@ -322,7 +322,7 @@ namespace consoleApp
         {
             FileStream stream = File.Create(pathToJsonDB);
             TextWriter tw = new StreamWriter(stream);
-            String stringjson = JsonConvert.SerializeObject(BackupWorkList);
+            String stringjson = JsonConvert.SerializeObject(BackupWorkList, Formatting.Indented);
             tw.WriteLine(stringjson);
             tw.Close();
         }
