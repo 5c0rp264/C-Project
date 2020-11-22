@@ -15,6 +15,11 @@ namespace consoleApp
 
         public Controller()
         {
+            Console.SetWindowSize(80,35);
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Title = "EasySave from ProSoft";
+
             //The model and the view can be instantiate in the controller, or in the main program(see graphicalApp)
             model = new Model();
             this.View = new HomeView();

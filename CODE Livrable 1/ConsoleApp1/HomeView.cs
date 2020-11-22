@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace consoleApp
 {
@@ -41,7 +41,14 @@ namespace consoleApp
 
             // Clear what is currently displayed in the console and print the menu
             Console.Clear();
-            Console.WriteLine("What would you like to start with ?");
+            Console.WriteLine("\n");
+            Console.WriteLine("     ███████╗ █████╗ ███████╗██╗   ██╗    ███████╗ █████╗ ██╗   ██╗███████╗");
+            Console.WriteLine("     ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝");
+            Console.WriteLine("     █████╗  ███████║███████╗ ╚████╔╝     ███████╗███████║██║   ██║█████╗");
+            Console.WriteLine("     ██╔══╝  ██╔══██║╚════██║  ╚██╔╝      ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝");
+            Console.WriteLine("     ███████╗██║  ██║███████║   ██║       ███████║██║  ██║ ╚████╔╝ ███████╗");
+            Console.WriteLine("     ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝");
+            Console.WriteLine("\n\nWhat would you like to start with ?");
             Console.WriteLine("");
             Console.WriteLine("[0] Execute a backup work");
             Console.WriteLine("");
