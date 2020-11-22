@@ -6,8 +6,6 @@
     <img src="https://github.com/5c0rp264/C-Project/blob/main/CODE%20Livrable%201/logo.png" alt="Logo" width="300" height="206">
   </a>
 
-  <h3 align="center">EasySave</h3>
-
   <p align="center">
     A backup software made for you by our team from ProSoft
     <br />
