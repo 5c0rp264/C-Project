@@ -13,15 +13,15 @@ namespace consoleApp
 {
     public class Model
     {
-        private List<BackupWork> backupWorkList;
+        private List<BackupJob> backupJobList;
 
         // Path to the json files that store the backup job list in the root folder
         private String pathToJsonDB = @"./db.json";
         private String pathToStateFile = @"./state.log";
-        public List<BackupWork> BackupWorkList
+        public List<BackupJob> BackupJobList
         {
-            get { return backupWorkList; }
-            set { backupWorkList = value; }
+            get { return backupJobList; }
+            set { backupJobList = value; }
         }
 
         public Model()
@@ -29,19 +29,19 @@ namespace consoleApp
             // Simple verification to check if the json file is already present or not
             if (!File.Exists(pathToJsonDB))
             {
-                BackupWorkList = new List<BackupWork>();
+                BackupJobList = new List<BackupJob>();
             }
             else
             {
                 string json = File.ReadAllText(pathToJsonDB);
                 //Console.WriteLine(json);
-                BackupWorkList = JsonConvert.DeserializeObject<List<BackupWork>>(json);
+                BackupJobList = JsonConvert.DeserializeObject<List<BackupJob>>(json);
 
             }
         }
 
 
-        public Boolean createBackupWork(BackupWork backupWork)
+        public Boolean createBackupJob(BackupJob backupJob)
         {
             //Console.WriteLine(File.Exists(pathToJsonDB) ? "File exists." : "File does not exist.");
             if (!File.Exists(pathToJsonDB))
@@ -49,8 +49,8 @@ namespace consoleApp
                 // We create a file and add the json string in and indexed way
                 FileStream stream = File.Create(pathToJsonDB);
                 TextWriter tw = new StreamWriter(stream);
-                BackupWorkList.Add(backupWork);
-                String stringjson = JsonConvert.SerializeObject(BackupWorkList, Formatting.Indented);
+                BackupJobList.Add(backupJob);
+                String stringjson = JsonConvert.SerializeObject(BackupJobList, Formatting.Indented);
                 tw.WriteLine(stringjson);
                 tw.Close();
                 return true;
@@ -60,10 +60,10 @@ namespace consoleApp
                 // The file already exists so we had another backup job
                 string json = File.ReadAllText(pathToJsonDB);
                 //Console.WriteLine(json);
-                BackupWorkList = JsonConvert.DeserializeObject<List<BackupWork>>(json);
+                BackupJobList = JsonConvert.DeserializeObject<List<BackupJob>>(json);
                 FileStream stream = File.Create(pathToJsonDB);
                 TextWriter tw = new StreamWriter(stream);
-                if (BackupWorkList.Count >= 5)
+                if (BackupJobList.Count >= 5)
                 {
                     // Only if the number is not already 5
                     tw.Close();
@@ -72,8 +72,8 @@ namespace consoleApp
                 else
                 {
                     // If we don't have 5 backup file we don't add it
-                    BackupWorkList.Add(backupWork);
-                    String stringjson = JsonConvert.SerializeObject(BackupWorkList, Formatting.Indented);
+                    BackupJobList.Add(backupJob);
+                    String stringjson = JsonConvert.SerializeObject(BackupJobList, Formatting.Indented);
                     tw.WriteLine(stringjson);
                     tw.Close();
                     return true;
@@ -82,63 +82,63 @@ namespace consoleApp
             }
         }
 
-        public void executeBUJList(List<int> backupWorkIDList, List<String> fullBackupListForDiff)
+        public void executeBUJList(List<int> backupJobIDList, List<String> fullBackupListForDiff)
         {
             // The user can select one or multiple backup job to execute in the same time
             int numOfDiff = 0;
-            List<BackupWorkState> BUWStateList = new List<BackupWorkState>();
-            for (int i = 0; i < backupWorkIDList.Count; i++)
+            List<BackupJobState> BUJStateList = new List<BackupJobState>();
+            for (int i = 0; i < backupJobIDList.Count; i++)
             {
                 // For each of them we will save them in our state file
-                BUWStateList.Add(new BackupWorkState(this.BackupWorkList[backupWorkIDList[i]].Name, this.BackupWorkList[backupWorkIDList[i]].Source, this.BackupWorkList[backupWorkIDList[i]].Destination, (this.BackupWorkList[backupWorkIDList[i]].IsFull ? "/Full" : "/Diff") + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), (this.BackupWorkList[backupWorkIDList[i]].IsFull ? concernedFile(this.BackupWorkList[backupWorkIDList[i]].Source).Count : concernedFileDiff(this.BackupWorkList[backupWorkIDList[i]].Source, fullBackupListForDiff[numOfDiff]).Count), (this.BackupWorkList[backupWorkIDList[i]].IsFull ? concernedFile(this.BackupWorkList[backupWorkIDList[i]].Source) : concernedFileDiff(this.BackupWorkList[backupWorkIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupWorkList[backupWorkIDList[i]].IsFull, false));
-                if (!this.BackupWorkList[backupWorkIDList[i]].IsFull)
+                BUJStateList.Add(new BackupJobState(this.BackupJobList[backupJobIDList[i]].Name, this.BackupJobList[backupJobIDList[i]].Source, this.BackupJobList[backupJobIDList[i]].Destination, (this.BackupJobList[backupJobIDList[i]].IsFull ? "/Full" : "/Diff") + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source).Count : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff]).Count), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source) : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupJobList[backupJobIDList[i]].IsFull, false));
+                if (!this.BackupJobList[backupJobIDList[i]].IsFull)
                 {
                     numOfDiff++;
                 }
             }
-            writeStateFile(BUWStateList);
+            writeStateFile(BUJStateList);
             numOfDiff = 0;
             // For each backup job the user wants to execute we will execute it based on it's type (full / differential)
-            for (int i = 0; i < backupWorkIDList.Count; i++)
+            for (int i = 0; i < backupJobIDList.Count; i++)
             {
-                BUWStateList[i].ISACtive = true;
+                BUJStateList[i].ISACtive = true;
                 // Update the state file
-                writeStateFile(BUWStateList);
-                if (this.BackupWorkList[backupWorkIDList[i]].IsFull)
+                writeStateFile(BUJStateList);
+                if (this.BackupJobList[backupJobIDList[i]].IsFull)
                 {
                     // Full copy
-                    DirectoryCopy(this.BackupWorkList[backupWorkIDList[i]].Source, BUWStateList[i].Destination + BUWStateList[i].FolderName, i, BUWStateList);
+                    DirectoryCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, i, BUJStateList);
                 }
                 else
                 {
                     // Differential copy
-                    DirectoryDifferentialCopy(this.BackupWorkList[backupWorkIDList[i]].Source, BUWStateList[i].Destination, fullBackupListForDiff[numOfDiff], i, BUWStateList);
+                    DirectoryDifferentialCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination, fullBackupListForDiff[numOfDiff], i, BUJStateList);
                     numOfDiff++;
                 }
                 // At the end the work at the index i is no more active
-                BUWStateList[i].ISACtive = false;
+                BUJStateList[i].ISACtive = false;
                 // We reupdate it one last time
-                writeStateFile(BUWStateList);
+                writeStateFile(BUJStateList);
             }
         }
 
 
-        public void editBackupWork(int idToEdit, String name, String source, String destination, Boolean isFull)
+        public void editBackupJob(int idToEdit, String name, String source, String destination, Boolean isFull)
         {
             // When the user edits a work he can change or let the ancient name of each criteria, in any way we update them here
-            this.BackupWorkList[idToEdit].Name = name;
-            this.BackupWorkList[idToEdit].Source = source;
-            this.BackupWorkList[idToEdit].Destination = destination;
-            this.BackupWorkList[idToEdit].IsFull = isFull;
-            saveBUW();
+            this.BackupJobList[idToEdit].Name = name;
+            this.BackupJobList[idToEdit].Source = source;
+            this.BackupJobList[idToEdit].Destination = destination;
+            this.BackupJobList[idToEdit].IsFull = isFull;
+            saveBUJ();
         }
 
 
-        public void deleteBackupWork(int idToEdit)
+        public void deleteBackupJob(int idToEdit)
         {
             // Really easy method to delete a backup job
-            this.BackupWorkList.RemoveAt(idToEdit);
-            saveBUW();
+            this.BackupJobList.RemoveAt(idToEdit);
+            saveBUJ();
         }
 
 
@@ -149,12 +149,12 @@ namespace consoleApp
 
         // --------------------- Method to make life easier ---------------------------------
 
-        private void writeStateFile(List<BackupWorkState> BUWSList)
+        private void writeStateFile(List<BackupJobState> BUJSList)
         {
             // This will just open and write with the indentation appropriated in the state file
             FileStream stream = File.Create(pathToStateFile);
             TextWriter tw = new StreamWriter(stream);
-            String stringjson = JsonConvert.SerializeObject(BUWSList, Formatting.Indented);
+            String stringjson = JsonConvert.SerializeObject(BUJSList, Formatting.Indented);
             tw.WriteLine(stringjson);
             tw.Close();
         }
@@ -235,7 +235,7 @@ namespace consoleApp
         }
 
 
-        private void DirectoryCopy(string sourceDirName, string destDirName, int index, List<BackupWorkState> BUWS)
+        private void DirectoryCopy(string sourceDirName, string destDirName, int index, List<BackupJobState> BUJS)
         {
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
@@ -257,11 +257,11 @@ namespace consoleApp
             foreach (FileInfo file in files)
             {
                 file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                BUWS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
-                //Console.Write(BUWS[index].FilesTransfered.Count / BUWS[index].TotalElligibleFile);
-                BUWS[index].Progress = ((float)BUWS[index].FilesTransfered.Count) / ((float)BUWS[index].TotalElligibleFile);
-                BUWS[index].SizeOfRemainingFiles = BUWS[index].TotalSizeOfElligbleFiles - BUWS[index].FilesTransfered.Sum(item => item.fileSize);
-                writeStateFile(BUWS);
+                BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
+                //Console.Write(BUJS[index].FilesTransfered.Count / BUJS[index].TotalElligibleFile);
+                BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
+                BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
+                writeStateFile(BUJS);
 
             }
 
@@ -269,11 +269,11 @@ namespace consoleApp
 
             foreach (DirectoryInfo subdir in dirs)
             {
-                DirectoryCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), index, BUWS);
+                DirectoryCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), index, BUJS);
             }
 
         }
-        private void DirectoryDifferentialCopy(string sourceDirName, string destDirName, string comparisonDirName, int index, List<BackupWorkState> BUWS)
+        private void DirectoryDifferentialCopy(string sourceDirName, string destDirName, string comparisonDirName, int index, List<BackupJobState> BUJS)
         {
             // Get the subdirectories for the specified directory.
             DirectoryInfo dirsrc = new DirectoryInfo(sourceDirName);
@@ -300,27 +300,27 @@ namespace consoleApp
                 if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
                     file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                    BUWS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
-                    BUWS[index].Progress = ((float)BUWS[index].FilesTransfered.Count) / ((float)BUWS[index].TotalElligibleFile);
-                    BUWS[index].SizeOfRemainingFiles = BUWS[index].TotalSizeOfElligbleFiles - BUWS[index].FilesTransfered.Sum(item => item.fileSize);
-                    writeStateFile(BUWS);
+                    BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
+                    BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
+                    BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
+                    writeStateFile(BUJS);
                 }
                 else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
                     if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
                     {
                         file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                        BUWS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
-                        BUWS[index].Progress = ((float)BUWS[index].FilesTransfered.Count) / ((float)BUWS[index].TotalElligibleFile);
-                        BUWS[index].SizeOfRemainingFiles = BUWS[index].TotalSizeOfElligbleFiles - BUWS[index].FilesTransfered.Sum(item => item.fileSize);
-                        writeStateFile(BUWS);
+                        BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
+                        BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
+                        BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
+                        writeStateFile(BUJS);
                     }
                 }
             }
 
             foreach (DirectoryInfo subdir in dirs)
             {
-                DirectoryDifferentialCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), Path.Combine(comparisonDirName, subdir.Name), index, BUWS);
+                DirectoryDifferentialCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), Path.Combine(comparisonDirName, subdir.Name), index, BUJS);
             }
 
         }
@@ -339,11 +339,11 @@ namespace consoleApp
         }
         
         // Our backup job are in the db.json file so we put it in this file
-        private void saveBUW()
+        private void saveBUJ()
         {
             FileStream stream = File.Create(pathToJsonDB);
             TextWriter tw = new StreamWriter(stream);
-            String stringjson = JsonConvert.SerializeObject(BackupWorkList, Formatting.Indented);
+            String stringjson = JsonConvert.SerializeObject(BackupJobList, Formatting.Indented);
             tw.WriteLine(stringjson);
             tw.Close();
         }

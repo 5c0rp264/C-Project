@@ -31,7 +31,7 @@ namespace consoleApp
         public void Show()
         {
             // If there is no backup job we just return to the homepage
-            if (this.Controller.Model.BackupWorkList.Count == 0)
+            if (this.Controller.Model.BackupJobList.Count == 0)
             {
                 this.Controller.View = new HomeView();
                 Console.WriteLine("You don't have any backup job to execute...\nPress a key to continue");
@@ -42,14 +42,14 @@ namespace consoleApp
                 // If there is any then the user selects which one to execute
                 Console.WriteLine("[Id]     Name");
 
-                for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++)
+                for (int i = 0; i < this.Controller.Model.BackupJobList.Count; i++)
                 {
-                    Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupWorkList[i].Name);
+                    Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupJobList[i].Name);
                 }
                 Console.WriteLine("\nId of backup job you want to execute :");
 
 
-                List<int> idBUW = new List<int>();
+                List<int> idBUJ = new List<int>();
                 bool isUserInputValid = false;
                 while (isUserInputValid != true)
                 {
@@ -58,7 +58,7 @@ namespace consoleApp
                     if (isUserInputValid)
                     {
                         // He has the ability to add a backup job to execute at the same time
-                        idBUW.Add(int.Parse(userInput) - 1);
+                        idBUJ.Add(int.Parse(userInput) - 1);
                         Console.WriteLine("Do you want to add other backup job [0]No 1[Yes] :");
                         userInput = Console.ReadLine();
                         while (userInput != "0" && userInput != "1")
@@ -74,12 +74,12 @@ namespace consoleApp
                     }
                 }
                 List<String> dirFullForDiff = new List<String>();
-                for (int i = 0; i < idBUW.Count; i++)
+                for (int i = 0; i < idBUJ.Count; i++)
                 {
-                    if (!this.Controller.Model.BackupWorkList[idBUW[i]].IsFull)
+                    if (!this.Controller.Model.BackupJobList[idBUJ[i]].IsFull)
                     {
                         // If there is a differential backup we ask on which full the users wants to base it's differential backup
-                        Console.WriteLine("Full backup of reference for diff backup [" + idBUW[i] + "] " + this.Controller.Model.BackupWorkList[idBUW[i]].Name + " :");
+                        Console.WriteLine("Full backup of reference for diff backup [" + idBUJ[i] + "] " + this.Controller.Model.BackupJobList[idBUJ[i]].Name + " :");
                         userInput = Console.ReadLine();
                         while (!(userInput.Length >= 1))
                         {
@@ -96,7 +96,7 @@ namespace consoleApp
                 try
                 {
                     // Start the backup
-                    this.Controller.Model.executeBUJList(idBUW, dirFullForDiff);
+                    this.Controller.Model.executeBUJList(idBUJ, dirFullForDiff);
                 }
                 catch (Exception e)
                 {
@@ -126,7 +126,7 @@ namespace consoleApp
             try
             {
                 bool stringIsValid = false;
-                if (int.Parse(userInput) > 0 && int.Parse(userInput) <= this.Controller.Model.BackupWorkList.Count)
+                if (int.Parse(userInput) > 0 && int.Parse(userInput) <= this.Controller.Model.BackupJobList.Count)
                 {
                     stringIsValid = true;
                 }

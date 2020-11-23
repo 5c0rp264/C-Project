@@ -2,7 +2,7 @@
 
 namespace consoleApp
 {
-    public class BackupWork
+    public class BackupJob
     {
         private String name;
         private String source;
@@ -15,7 +15,7 @@ namespace consoleApp
         public string Destination { get => destination; set => destination = value; }
         public Boolean IsFull { get => isFull; set => isFull = value; }
 
-        public BackupWork(String Name, String Source, String Destination, Boolean IsFull)
+        public BackupJob(String Name, String Source, String Destination, Boolean IsFull)
         {
             //TODO:adding check if folder is accessible
             if (Name.Length >= 1 && Source.Length >= 1 && Destination.Length >= 1)

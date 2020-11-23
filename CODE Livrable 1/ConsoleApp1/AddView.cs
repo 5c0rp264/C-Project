@@ -29,7 +29,7 @@ namespace consoleApp
 
         public void Show()
         {
-            if (this.Controller.Model.BackupWorkList.Count >= 5)
+            if (this.Controller.Model.BackupJobList.Count >= 5)
             {
                 // If there are already 5 backup job we prevent from adding one by redirecting the the homepage
                 this.Controller.View = new HomeView();
@@ -91,11 +91,11 @@ namespace consoleApp
                 }
 
 
-                // We save the baclup work (or tell the user that we couldn't)
+                // We save the backup job (or tell the user that we couldn't)
                 try
                 {
-                    BackupWork backupWork = new BackupWork(name, source, destination, isAFullBackup);
-                    if (this.controller.Model.createBackupWork(backupWork))
+                    BackupJob backupJob = new BackupJob(name, source, destination, isAFullBackup);
+                    if (this.controller.Model.createBackupJob(backupJob))
                     {
                         Console.WriteLine("backup job added with success.\n");
                     }

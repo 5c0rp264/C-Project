@@ -18,7 +18,7 @@ namespace consoleApp
             this.fullName = fullName;
         }
     }
-    public class BackupWorkState
+    public class BackupJobState
     {
         // Each data corresponds to what we informations we want about the backup job for the state file
         private String name;
@@ -65,7 +65,7 @@ namespace consoleApp
         public long SizeOfRemainingFiles { get => sizeOfRemainingFiles; set => sizeOfRemainingFiles = value; }
 
         // This will set each attribute
-        public BackupWorkState(String Name, String Source, String Destination, String FolderName, int TotalElligibleFile, List<myOwnFileInfo> ElligibleFiles, Boolean IsFull, Boolean IsActive)
+        public BackupJobState(String Name, String Source, String Destination, String FolderName, int TotalElligibleFile, List<myOwnFileInfo> ElligibleFiles, Boolean IsFull, Boolean IsActive)
         {
             //TODO:adding check if folder is accessible
             if (Name.Length >= 1 && Source.Length >= 1 && Destination.Length >= 1)
