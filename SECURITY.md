@@ -13,8 +13,7 @@ currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+If you have any issue please go to the corresponding section (see in the readme.md file) and respect the issue template in our .github folder.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Thanks for contributing to EasySave !
+
