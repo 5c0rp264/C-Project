@@ -102,8 +102,8 @@ namespace consoleApp
                 }catch (Exception e)
                 {
                     writeLogFile(" /!\\/!\\/!\\ Error for the backup job [" + backupJobIDList[i] + "] " + this.BackupJobList[backupJobIDList[i]].Name);
-                    writeLogFile(" /!\\/!\\/!\\ Source : \\\\?\\" + this.BackupJobList[i].Source.Replace(":","$"));
-                    writeLogFile(" /!\\/!\\/!\\ Destination : \\\\?\\" + this.BackupJobList[i].Destination.Replace(":", "$"));
+                    writeLogFile(" /!\\/!\\/!\\ Source : \\\\?\\" + this.BackupJobList[backupJobIDList[i]].Source.Replace(":","$"));
+                    writeLogFile(" /!\\/!\\/!\\ Destination : \\\\?\\" + this.BackupJobList[backupJobIDList[i]].Destination.Replace(":", "$"));
                     writeLogFile(" /!\\/!\\/!\\ Size : unavailable for failed jobs");
                     writeLogFile(" /!\\/!\\/!\\ Transfer time : -1ms");
 
@@ -122,9 +122,9 @@ namespace consoleApp
                 BUJStateList[i].ISACtive = true;
                 // Update the state file
                 writeStateFile(BUJStateList);
-                writeLogFile("Starting the backup job [" + backupJobIDList[i] + "] " + this.BackupJobList[backupJobIDList[i]].Name);
-                writeLogFile("Source : \\\\?\\" + this.BackupJobList[i].Source.Replace(":", "$"));
-                writeLogFile("Destination : \\\\?\\" + this.BackupJobList[i].Destination.Replace(":", "$"));
+                writeLogFile("Starting the backup job [" + backupJobIDList[i] + "] " + BUJStateList[i].Name);
+                writeLogFile("Source : \\?\\" + BUJStateList[i].Source.Replace(":", "$"));
+                writeLogFile("Destination : \\\\?\\" + BUJStateList[i].Destination.Replace(":", "$"));
                 writeLogFile("Source directory size : " + CalculateFolderSize(BUJStateList[i].Source));
                 writeLogFile("Destination directory size : " + BUJStateList[i].TotalSizeOfElligbleFiles);
                 if (this.BackupJobList[backupJobIDList[i]].IsFull)
