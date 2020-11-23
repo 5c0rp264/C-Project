@@ -13,12 +13,14 @@ namespace consoleApp
 
         public myOwnFileInfo(long fileSize, string fullName)
         {
+            // Set details on a file
             this.fileSize = fileSize;
             this.fullName = fullName;
         }
     }
     public class BackupWorkState
     {
+        // Each data corresponds to what we informations we want about the backup work for the state file
         private String name;
         private String source;
         private String destination;
@@ -34,6 +36,7 @@ namespace consoleApp
         private Stopwatch stopwatch;
 
 
+        // Getters and setters
         public String Name { get => name; set => name = value; }
         public String Source { get => source; set => source = value; }
         public String Destination { get => destination; set => destination = value; }
@@ -41,6 +44,7 @@ namespace consoleApp
         public int TotalElligibleFile { get => totalElligibleFile; set => totalElligibleFile = value; }
         public List<myOwnFileInfo> ElligibleFiles { get => elligibleFiles; set => elligibleFiles = value; }
         public Boolean IsFull { get => isFull; set => isFull = value; }
+        // Timer
         public Boolean ISACtive { get => isActive;
             set {
                 isActive = value;
@@ -60,6 +64,7 @@ namespace consoleApp
         public long TotalSizeOfElligbleFiles { get => totalSizeOfElligbleFiles; set => totalSizeOfElligbleFiles = value; }
         public long SizeOfRemainingFiles { get => sizeOfRemainingFiles; set => sizeOfRemainingFiles = value; }
 
+        // This will set each attribute
         public BackupWorkState(String Name, String Source, String Destination, String FolderName, int TotalElligibleFile, List<myOwnFileInfo> ElligibleFiles, Boolean IsFull, Boolean IsActive)
         {
             //TODO:adding check if folder is accessible

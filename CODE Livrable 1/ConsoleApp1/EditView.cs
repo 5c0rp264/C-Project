@@ -38,6 +38,7 @@ namespace consoleApp
         public void Show()
         {
             bool isUserInputValid = false;
+            // A simple check if the user really can use this method or not (if he has no backup work to edit we redirect him to he home page)
             if (this.Controller.Model.BackupWorkList.Count == 0)
             {
                 this.Controller.View = new HomeView();
@@ -46,6 +47,7 @@ namespace consoleApp
             }
             else
             {
+                // If he has any backup work we ask him which one he wants to edit
                 Console.WriteLine("[Id]     Name");
 
                 for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++)
@@ -58,6 +60,7 @@ namespace consoleApp
 
                 while (isUserInputValid != true)
                 {
+                    // Wait for a valid input
                     userInput = Console.ReadLine();
                     isUserInputValid = CheckIfIDInputIsValid(userInput);
                 }
@@ -69,6 +72,7 @@ namespace consoleApp
                 String destination = this.Controller.Model.BackupWorkList[idToEdit].Destination;
                 Boolean isFull = this.Controller.Model.BackupWorkList[idToEdit].IsFull;
 
+                // From line 75 to 118 we just want him to edit a backup work criteria by criteria with good inputs
                 Console.WriteLine("Name [" + this.Controller.Model.BackupWorkList[idToEdit].Name + "] :");
                 userInput = Console.ReadLine();
 
@@ -120,6 +124,7 @@ namespace consoleApp
                 {
                     Console.WriteLine("Unable to edit this backup work.");
                 }
+                // Return to the home view
                 this.Controller.View = new HomeView();
                 Console.WriteLine("Press a key to continue");
                 Console.ReadLine();
@@ -132,7 +137,7 @@ namespace consoleApp
             Controller = cont;
         }
 
-
+        // Certify that the user input is valid
         private bool CheckIfIDInputIsValid(string userInput)
         {
             try

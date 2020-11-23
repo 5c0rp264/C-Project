@@ -29,15 +29,16 @@ namespace consoleApp
 
         public void Show()
         {
-            //TODO: do while instead of while
             if (this.Controller.Model.BackupWorkList.Count >= 5)
             {
+                // If there are already 5 backup work we prevent from adding one by redirecting the the homepage
                 this.Controller.View = new HomeView();
                 Console.WriteLine("It seems that you already have the maximum amount of backup work authorized...\nPress a key to continue");
                 Console.ReadLine();
             }
             else
             {
+                // Else we ask for details about the new backup work
                 bool isUserInputValid = false;
                 Console.WriteLine("Name of backup work to create :");
                 while (isUserInputValid != true)
@@ -90,12 +91,10 @@ namespace consoleApp
                 }
 
 
-
+                // We save the baclup work (or tell the user that we couldn't)
                 try
                 {
                     BackupWork backupWork = new BackupWork(name, source, destination, isAFullBackup);
-                    //Console.WriteLine(backupWork);
-                    //Console.WriteLine(this.controller);
                     if (this.controller.Model.createBackupWork(backupWork))
                     {
                         Console.WriteLine("Backup work added with success.\n");

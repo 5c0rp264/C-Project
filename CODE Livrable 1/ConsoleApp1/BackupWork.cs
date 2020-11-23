@@ -9,7 +9,7 @@ namespace consoleApp
         private String destination;
         private Boolean isFull;
 
-
+        // Getters and setter for each attribute of the backup work
         public string Name { get => name; set => name = value; }
         public string Source { get => source; set => source = value; }
         public string Destination { get => destination; set => destination = value; }

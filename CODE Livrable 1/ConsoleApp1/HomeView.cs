@@ -101,7 +101,6 @@ namespace consoleApp
                         default:
                             break;
                     }
-                    controller.UpdateToNextView();
                 }
                 else
                 {

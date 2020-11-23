@@ -30,6 +30,7 @@ namespace consoleApp
 
         public void Show()
         {
+            // If there is no backup work we just return to the homepage
             if (this.Controller.Model.BackupWorkList.Count == 0)
             {
                 this.Controller.View = new HomeView();
@@ -38,6 +39,7 @@ namespace consoleApp
             }
             else
             {
+                // If there is any then the user selects which one to execute
                 Console.WriteLine("[Id]     Name");
 
                 for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++)
@@ -55,6 +57,7 @@ namespace consoleApp
                     isUserInputValid = CheckIfIDInputIsValid(userInput);
                     if (isUserInputValid)
                     {
+                        // He has the ability to add a backup work to execute at the same time
                         idBUW.Add(int.Parse(userInput) - 1);
                         Console.WriteLine("Do you want to add other backup job [0]No 1[Yes] :");
                         userInput = Console.ReadLine();
@@ -75,6 +78,7 @@ namespace consoleApp
                 {
                     if (!this.Controller.Model.BackupWorkList[idBUW[i]].IsFull)
                     {
+                        // If there is a differential backup we ask on which full the users wants to base it's differential backup
                         Console.WriteLine("Full backup of reference for diff backup [" + idBUW[i] + "] " + this.Controller.Model.BackupWorkList[idBUW[i]].Name + " :");
                         userInput = Console.ReadLine();
                         while (!(userInput.Length >= 1))
@@ -86,19 +90,23 @@ namespace consoleApp
                     }
                 }
 
-
+                // In the meantime we add an animation of loading (in another thread so it doesn't stop the backup) 
                 var spinner = new Spinner();
                 spinner.Start();
                 try
                 {
+                    // Start the backup
                     this.Controller.Model.executeBUJList(idBUW, dirFullForDiff);
                 }
                 catch (Exception e)
                 {
+                    // Return an error message if anything is going wrong
                     Console.WriteLine(e.Message);
                 }
+                // Stop the spinner because it ended
                 spinner.Stop();
-
+                
+                // We tell the user that everything has been done and we redirect him to he home page
                 Console.WriteLine("\nDone.");
                 this.Controller.View = new HomeView();
                 Console.WriteLine("Press a key to continue");
@@ -112,7 +120,7 @@ namespace consoleApp
             Controller = cont;
         }
 
-
+        // As always we verify that the input is coherent with what we want
         private bool CheckIfIDInputIsValid(string userInput)
         {
             try

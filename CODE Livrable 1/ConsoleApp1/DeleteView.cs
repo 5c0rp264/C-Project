@@ -28,6 +28,7 @@ namespace consoleApp
 
         public void Show()
         {
+            // If there is no backup work => Redirect the user to home page
             bool isUserInputValid = false;
             if (this.Controller.Model.BackupWorkList.Count == 0)
             {
@@ -37,6 +38,7 @@ namespace consoleApp
             }
             else
             {
+                // If there is at least one then he has to choose which one he wants to edit
                 Console.WriteLine("[Id]     Name");
 
                 for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++)
@@ -73,7 +75,7 @@ namespace consoleApp
             controller = cont;
         }
 
-
+        // As in edit mode we just certify that anything entered is valid thanks to this method
         private bool CheckIfIDInputIsValid(string userInput)
         {
             try
