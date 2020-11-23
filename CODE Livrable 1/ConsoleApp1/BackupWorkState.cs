@@ -20,7 +20,7 @@ namespace consoleApp
     }
     public class BackupWorkState
     {
-        // Each data corresponds to what we informations we want about the backup work for the state file
+        // Each data corresponds to what we informations we want about the backup job for the state file
         private String name;
         private String source;
         private String destination;

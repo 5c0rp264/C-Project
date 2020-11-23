@@ -31,16 +31,16 @@ namespace consoleApp
         {
             if (this.Controller.Model.BackupWorkList.Count >= 5)
             {
-                // If there are already 5 backup work we prevent from adding one by redirecting the the homepage
+                // If there are already 5 backup job we prevent from adding one by redirecting the the homepage
                 this.Controller.View = new HomeView();
-                Console.WriteLine("It seems that you already have the maximum amount of backup work authorized...\nPress a key to continue");
+                Console.WriteLine("It seems that you already have the maximum amount of backup job authorized...\nPress a key to continue");
                 Console.ReadLine();
             }
             else
             {
-                // Else we ask for details about the new backup work
+                // Else we ask for details about the new backup job
                 bool isUserInputValid = false;
-                Console.WriteLine("Name of backup work to create :");
+                Console.WriteLine("Name of backup job to create :");
                 while (isUserInputValid != true)
                 {
                     userInput = Console.ReadLine();
@@ -49,7 +49,7 @@ namespace consoleApp
                 String name = userInput;
 
                 isUserInputValid = false;
-                Console.WriteLine("Source of backup work to create :");
+                Console.WriteLine("Source of backup job to create :");
                 while (isUserInputValid != true)
                 {
                     userInput = Console.ReadLine();
@@ -58,7 +58,7 @@ namespace consoleApp
                 String source = userInput;
 
                 isUserInputValid = false;
-                Console.WriteLine("Destination of backup work to create :");
+                Console.WriteLine("Destination of backup job to create :");
                 while (isUserInputValid != true)
                 {
                     userInput = Console.ReadLine();
@@ -97,18 +97,18 @@ namespace consoleApp
                     BackupWork backupWork = new BackupWork(name, source, destination, isAFullBackup);
                     if (this.controller.Model.createBackupWork(backupWork))
                     {
-                        Console.WriteLine("Backup work added with success.\n");
+                        Console.WriteLine("backup job added with success.\n");
                     }
                     else
                     {
-                        Console.WriteLine("Unable to create, make sure you don't have already 5 backup works.\n");
+                        Console.WriteLine("Unable to create, make sure you don't have already 5 backup jobs.\n");
                     }
                     this.Controller.View = new HomeView();
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    Console.WriteLine("\nUnable to generate this backup work.\n");
+                    Console.WriteLine("\nUnable to generate this backup job.\n");
                 }
 
                 Console.WriteLine("Press a key to continue");

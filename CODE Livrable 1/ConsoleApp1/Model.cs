@@ -15,7 +15,7 @@ namespace consoleApp
     {
         private List<BackupWork> backupWorkList;
 
-        // Path to the json files that store the backup work list in the root folder
+        // Path to the json files that store the backup job list in the root folder
         private String pathToJsonDB = @"./db.json";
         private String pathToStateFile = @"./state.log";
         public List<BackupWork> BackupWorkList
@@ -57,7 +57,7 @@ namespace consoleApp
             }
             else
             {
-                // The file already exists so we had another backup work
+                // The file already exists so we had another backup job
                 string json = File.ReadAllText(pathToJsonDB);
                 //Console.WriteLine(json);
                 BackupWorkList = JsonConvert.DeserializeObject<List<BackupWork>>(json);
@@ -84,7 +84,7 @@ namespace consoleApp
 
         public void executeBUJList(List<int> backupWorkIDList, List<String> fullBackupListForDiff)
         {
-            // The user can select one or multiple backup work to execute in the same time
+            // The user can select one or multiple backup job to execute in the same time
             int numOfDiff = 0;
             List<BackupWorkState> BUWStateList = new List<BackupWorkState>();
             for (int i = 0; i < backupWorkIDList.Count; i++)
@@ -98,7 +98,7 @@ namespace consoleApp
             }
             writeStateFile(BUWStateList);
             numOfDiff = 0;
-            // For each backup work the user wants to execute we will execute it based on it's type (full / differential)
+            // For each backup job the user wants to execute we will execute it based on it's type (full / differential)
             for (int i = 0; i < backupWorkIDList.Count; i++)
             {
                 BUWStateList[i].ISACtive = true;
@@ -136,7 +136,7 @@ namespace consoleApp
 
         public void deleteBackupWork(int idToEdit)
         {
-            // Really easy method to delete a backup work
+            // Really easy method to delete a backup job
             this.BackupWorkList.RemoveAt(idToEdit);
             saveBUW();
         }
@@ -338,7 +338,7 @@ namespace consoleApp
             }
         }
         
-        // Our backup work are in the db.json file so we put it in this file
+        // Our backup job are in the db.json file so we put it in this file
         private void saveBUW()
         {
             FileStream stream = File.Create(pathToJsonDB);

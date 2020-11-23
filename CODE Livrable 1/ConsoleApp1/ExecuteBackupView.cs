@@ -30,11 +30,11 @@ namespace consoleApp
 
         public void Show()
         {
-            // If there is no backup work we just return to the homepage
+            // If there is no backup job we just return to the homepage
             if (this.Controller.Model.BackupWorkList.Count == 0)
             {
                 this.Controller.View = new HomeView();
-                Console.WriteLine("You don't have any backup work to execute...\nPress a key to continue");
+                Console.WriteLine("You don't have any backup job to execute...\nPress a key to continue");
                 Console.ReadLine();
             }
             else
@@ -46,7 +46,7 @@ namespace consoleApp
                 {
                     Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupWorkList[i].Name);
                 }
-                Console.WriteLine("\nId of backup work you want to execute :");
+                Console.WriteLine("\nId of backup job you want to execute :");
 
 
                 List<int> idBUW = new List<int>();
@@ -57,7 +57,7 @@ namespace consoleApp
                     isUserInputValid = CheckIfIDInputIsValid(userInput);
                     if (isUserInputValid)
                     {
-                        // He has the ability to add a backup work to execute at the same time
+                        // He has the ability to add a backup job to execute at the same time
                         idBUW.Add(int.Parse(userInput) - 1);
                         Console.WriteLine("Do you want to add other backup job [0]No 1[Yes] :");
                         userInput = Console.ReadLine();
@@ -69,7 +69,7 @@ namespace consoleApp
                         if (userInput == "1")
                         {
                             isUserInputValid = false;
-                            Console.WriteLine("\nId of backup work you want to execute :");
+                            Console.WriteLine("\nId of backup job you want to execute :");
                         }
                     }
                 }

@@ -38,23 +38,23 @@ namespace consoleApp
         public void Show()
         {
             bool isUserInputValid = false;
-            // A simple check if the user really can use this method or not (if he has no backup work to edit we redirect him to he home page)
+            // A simple check if the user really can use this method or not (if he has no backup job to edit we redirect him to he home page)
             if (this.Controller.Model.BackupWorkList.Count == 0)
             {
                 this.Controller.View = new HomeView();
-                Console.WriteLine("You don't have any backup work to edit...\nPress a key to continue");
+                Console.WriteLine("You don't have any backup job to edit...\nPress a key to continue");
                 Console.ReadLine();
             }
             else
             {
-                // If he has any backup work we ask him which one he wants to edit
+                // If he has any backup job we ask him which one he wants to edit
                 Console.WriteLine("[Id]     Name");
 
                 for (int i = 0; i < this.Controller.Model.BackupWorkList.Count; i++)
                 {
                     Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupWorkList[i].Name);
                 }
-                Console.WriteLine("Id of backup work you want to edit :");
+                Console.WriteLine("Id of backup job you want to edit :");
 
 
 
@@ -72,7 +72,7 @@ namespace consoleApp
                 String destination = this.Controller.Model.BackupWorkList[idToEdit].Destination;
                 Boolean isFull = this.Controller.Model.BackupWorkList[idToEdit].IsFull;
 
-                // From line 75 to 118 we just want him to edit a backup work criteria by criteria with good inputs
+                // From line 75 to 118 we just want him to edit a backup job criteria by criteria with good inputs
                 Console.WriteLine("Name [" + this.Controller.Model.BackupWorkList[idToEdit].Name + "] :");
                 userInput = Console.ReadLine();
 
@@ -122,7 +122,7 @@ namespace consoleApp
                 }
                 catch
                 {
-                    Console.WriteLine("Unable to edit this backup work.");
+                    Console.WriteLine("Unable to edit this backup job.");
                 }
                 // Return to the home view
                 this.Controller.View = new HomeView();

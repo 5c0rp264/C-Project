@@ -28,12 +28,12 @@ namespace consoleApp
 
         public void Show()
         {
-            // If there is no backup work => Redirect the user to home page
+            // If there is no backup job => Redirect the user to home page
             bool isUserInputValid = false;
             if (this.Controller.Model.BackupWorkList.Count == 0)
             {
                 this.Controller.View = new HomeView();
-                Console.WriteLine("You don't have any backup work to delete...\nPress a key to continue");
+                Console.WriteLine("You don't have any backup job to delete...\nPress a key to continue");
                 Console.ReadLine();
             }
             else
@@ -45,7 +45,7 @@ namespace consoleApp
                 {
                     Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupWorkList[i].Name);
                 }
-                Console.WriteLine("Id of backup work you want to delete :");
+                Console.WriteLine("Id of backup job you want to delete :");
 
                 while (isUserInputValid != true)
                 {
@@ -61,7 +61,7 @@ namespace consoleApp
                 }
                 catch
                 {
-                    Console.WriteLine("Unable to delete this backup work.");
+                    Console.WriteLine("Unable to delete this backup job.");
                 }
                 this.Controller.View = new HomeView();
                 Console.WriteLine("Press a key to continue");
