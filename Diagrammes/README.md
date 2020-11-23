@@ -43,7 +43,14 @@
 ## Class Diagram
 
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
-We are still writing this part
+Due to the huge size of the class diagram we will separate it in 3 parts based on our main design pattern : Model / View / Controller.  
+To see it in a more concise way you can download and open the corresponding file on Visual Paradigm.
+
+* Model
+
+* Vue
+
+* Controller
 
 ## Component Diagram
 
