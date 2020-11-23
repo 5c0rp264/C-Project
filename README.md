@@ -127,12 +127,12 @@ To get a local copy up and running follow these simple example steps. But before
 
 ### Prerequisites
 
-We are still writing this part
+Once you will have set up your computer You will have to clone this project.
 * Git
 ```sh
 git clone https://github.com/5c0rp264/C-Project
 ```
-
+Then refer to the usage section and you will be ready to go !
 <!-- USAGE EXAMPLES -->
 ## Usage
 
