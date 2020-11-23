@@ -48,9 +48,20 @@ To see it in a more concise way you can download and open the corresponding file
 
 * Model
 
-* Vue
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/model.png" alt="Model" style="width:90%;margin-left:5%;">
+
+* View
+
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/view.png" alt="View" style="width:90%;margin-left:5%;">
 
 * Controller
+
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/controller.png" alt="Controller" style="width:90%;margin-left:5%;">
+
+* Links between each part
+
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/relations-mvc.png" alt="Links between MVC parts" style="width:90%;margin-left:5%;">
+
 
 ## Component Diagram
 
