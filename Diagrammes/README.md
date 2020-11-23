@@ -70,5 +70,21 @@ To see it in a more concise way you can download and open the corresponding file
 
 ## Sequence Diagram
 
-<!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
-We are still writing this part
+We made 4 sequence diagram to create a distinction between each action.
+
+* Add a backup job
+
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/sequence_create.png" alt="Sequence diagram to create a backup job" style="width:90%;margin-left:5%;">
+
+* Edit a backup job
+
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/sequence_edit.png" alt="Sequence diagram to edit a backup job" style="width:90%;margin-left:5%;">
+
+* Execute a backup job
+
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/sequence_execute.png" alt="Sequence diagram to create a execute job" style="width:90%;margin-left:5%;">
+
+* Delete a backup job
+
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/sequence_delete.png" alt="Sequence diagram to create a delete job" style="width:90%;margin-left:5%;">
+
