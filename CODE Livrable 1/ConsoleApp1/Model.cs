@@ -202,9 +202,9 @@ namespace consoleApp
             }
             else
             {
+                string json = File.ReadAllText(pathToLogFile);
                 using (StreamWriter sw = File.AppendText(pathToLogFile))
                 {
-                    string json = File.ReadAllText(pathToLogFile);
                     loglist = JsonConvert.DeserializeObject<List<Log>>(json);
                     loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
                     sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
