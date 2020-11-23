@@ -188,13 +188,15 @@ namespace consoleApp
         private void writeLogFile(String toBeWritten)
         {
             // This will just open and write with the indentation appropriated in the state file
+            List<Log> loglist = new List<Log>();
             if (!File.Exists(pathToLogFile))
             {
                 // Create a file to write to.
                 FileStream stream = File.Create(pathToLogFile);
                 using (StreamWriter sw = new StreamWriter(stream))
                 {
-                    sw.WriteLine("[Timestamp : " + (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds + "]  "+toBeWritten);
+                    loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
+                    sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
                     sw.Close();
                 }
             }
@@ -202,7 +204,10 @@ namespace consoleApp
             {
                 using (StreamWriter sw = File.AppendText(pathToLogFile))
                 {
-                    sw.WriteLine("[Timestamp : " + (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds + "] " + toBeWritten);
+                    string json = File.ReadAllText(pathToLogFile);
+                    loglist = JsonConvert.DeserializeObject<List<Log>>(json);
+                    loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
+                    sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
                     sw.Close();
                 }
             }
