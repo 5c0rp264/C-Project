@@ -1,7 +1,8 @@
 # Documentation
-  <a href="https://github.com/5c0rp264/C-Project">
+  <center><a href="https://github.com/5c0rp264/C-Project">
     <img src="https://www.lhinares-technologies.com/media/imgs/project_list/projects/easysave.png" alt="Our Logo" width="574" height="105">
-  </a>
+  </a></center>  
+  
 Once you have installed our program with the help of our Getting Started solution you will have multiple choices. 
 
 Start the application
