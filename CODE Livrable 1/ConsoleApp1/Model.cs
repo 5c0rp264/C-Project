@@ -18,6 +18,8 @@ namespace consoleApp
         // Path to the json files that store the backup job list in the root folder
         private String pathToJsonDB = @"./db.json";
         private String pathToStateFile = @"./state.log";
+        private String pathToLogFile = @"./logs/" + DateTime.Now.ToString("MM.dd.yyyy") + ".log";
+
         public List<BackupJob> BackupJobList
         {
             get { return backupJobList; }
@@ -26,6 +28,10 @@ namespace consoleApp
 
         public Model()
         {
+            //Creating log dir if doesn't exist
+            Directory.CreateDirectory(@"./logs/");
+
+
             // Simple verification to check if the json file is already present or not
             if (!File.Exists(pathToJsonDB))
             {
@@ -90,7 +96,19 @@ namespace consoleApp
             for (int i = 0; i < backupJobIDList.Count; i++)
             {
                 // For each of them we will save them in our state file
-                BUJStateList.Add(new BackupJobState(this.BackupJobList[backupJobIDList[i]].Name, this.BackupJobList[backupJobIDList[i]].Source, this.BackupJobList[backupJobIDList[i]].Destination, (this.BackupJobList[backupJobIDList[i]].IsFull ? "/Full" : "/Diff") + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source).Count : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff]).Count), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source) : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupJobList[backupJobIDList[i]].IsFull, false));
+                try
+                {
+                    BUJStateList.Add(new BackupJobState(this.BackupJobList[backupJobIDList[i]].Name, this.BackupJobList[backupJobIDList[i]].Source, this.BackupJobList[backupJobIDList[i]].Destination, (this.BackupJobList[backupJobIDList[i]].IsFull ? "/Full" : "/Diff") + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source).Count : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff]).Count), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source) : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupJobList[backupJobIDList[i]].IsFull, false));
+                }catch (Exception e)
+                {
+                    writeLogFile(" /!\\/!\\/!\\ Error for the backup job [" + backupJobIDList[i] + "] " + this.BackupJobList[backupJobIDList[i]].Name);
+                    writeLogFile(" /!\\/!\\/!\\ Source : \\\\?\\" + this.BackupJobList[i].Source.Replace(":","$"));
+                    writeLogFile(" /!\\/!\\/!\\ Destination : \\\\?\\" + this.BackupJobList[i].Destination.Replace(":", "$"));
+                    writeLogFile(" /!\\/!\\/!\\ Size : unavailable for failed jobs");
+                    writeLogFile(" /!\\/!\\/!\\ Transfer time : -1ms");
+
+                    throw e;
+                }
                 if (!this.BackupJobList[backupJobIDList[i]].IsFull)
                 {
                     numOfDiff++;
@@ -104,6 +122,11 @@ namespace consoleApp
                 BUJStateList[i].ISACtive = true;
                 // Update the state file
                 writeStateFile(BUJStateList);
+                writeLogFile("Starting the backup job [" + backupJobIDList[i] + "] " + this.BackupJobList[backupJobIDList[i]].Name);
+                writeLogFile("Source : \\\\?\\" + this.BackupJobList[i].Source.Replace(":", "$"));
+                writeLogFile("Destination : \\\\?\\" + this.BackupJobList[i].Destination.Replace(":", "$"));
+                writeLogFile("Source directory size : " + CalculateFolderSize(BUJStateList[i].Source));
+                writeLogFile("Destination directory size : " + BUJStateList[i].TotalSizeOfElligbleFiles);
                 if (this.BackupJobList[backupJobIDList[i]].IsFull)
                 {
                     // Full copy
@@ -119,6 +142,8 @@ namespace consoleApp
                 BUJStateList[i].ISACtive = false;
                 // We reupdate it one last time
                 writeStateFile(BUJStateList);
+                writeLogFile("Transfer time : " + BUJStateList[i].Stopwatch.Elapsed);
+
             }
         }
 
@@ -158,6 +183,33 @@ namespace consoleApp
             tw.WriteLine(stringjson);
             tw.Close();
         }
+
+
+        private void writeLogFile(String toBeWritten)
+        {
+            // This will just open and write with the indentation appropriated in the state file
+            if (!File.Exists(pathToLogFile))
+            {
+                // Create a file to write to.
+                FileStream stream = File.Create(pathToLogFile);
+                using (StreamWriter sw = new StreamWriter(stream))
+                {
+                    sw.WriteLine("[Timestamp : " + (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds + "]  "+toBeWritten);
+                    sw.Close();
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = File.AppendText(pathToLogFile))
+                {
+                    sw.WriteLine("[Timestamp : " + (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds + "] " + toBeWritten);
+                    sw.Close();
+                }
+            }
+
+        }
+
+
 
         private static List<myOwnFileInfo> concernedFile(string sourceDirName)
         {
@@ -337,7 +389,45 @@ namespace consoleApp
                 }
             }
         }
-        
+
+        //This allow us to write folder size in log file
+        protected static float CalculateFolderSize(string folder)
+        {
+            float folderSize = 0.0f;
+            try
+            {
+                //Checks if the path is valid or not
+                if (!Directory.Exists(folder))
+                    return folderSize;
+                else
+                {
+                    try
+                    {
+                        foreach (string file in Directory.GetFiles(folder))
+                        {
+                            if (File.Exists(file))
+                            {
+                                FileInfo finfo = new FileInfo(file);
+                                folderSize += finfo.Length;
+                            }
+                        }
+
+                        foreach (string dir in Directory.GetDirectories(folder))
+                            folderSize += CalculateFolderSize(dir);
+                    }
+                    catch (NotSupportedException e)
+                    {
+                        Console.WriteLine("Unable to calculate folder size: {0}", e.Message);
+                    }
+                }
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Console.WriteLine("Unable to calculate folder size: {0}", e.Message);
+            }
+            return folderSize;
+        }
+
         // Our backup job are in the db.json file so we put it in this file
         private void saveBUJ()
         {
@@ -347,6 +437,7 @@ namespace consoleApp
             tw.WriteLine(stringjson);
             tw.Close();
         }
+
 
     }
 }
