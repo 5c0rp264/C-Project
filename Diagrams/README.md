@@ -34,11 +34,11 @@
 <!-- ABOUT THE PROJECT -->
 ## Use Case Diagram
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/use_case.png" alt="Logo" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/use_case.png" alt="Logo" style="width:90%;margin-left:5%;">
 
 ## Activity Diagram
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/activity.png" alt="Logo" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/activity.png" alt="Logo" style="width:90%;margin-left:5%;">
 
 ## Class Diagram
 
@@ -48,24 +48,24 @@ To see it in a more concise way you can download and open the corresponding file
 
 * Model
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/model.png" alt="Model" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/model.png" alt="Model" style="width:90%;margin-left:5%;">
 
 * View
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/view.png" alt="View" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/view.png" alt="View" style="width:90%;margin-left:5%;">
 
 * Controller
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/controller.png" alt="Controller" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/controller.png" alt="Controller" style="width:90%;margin-left:5%;">
 
 * Links between each part
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/relations-mvc.png" alt="Links between MVC parts" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/relations-mvc.png" alt="Links between MVC parts" style="width:90%;margin-left:5%;">
 
 
 ## Component Diagram
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/component.png" alt="Logo" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/component.png" alt="Logo" style="width:90%;margin-left:5%;">
 
 
 ## Sequence Diagram
@@ -74,17 +74,17 @@ We made 4 sequence diagram to create a distinction between each action.
 
 * Add a backup job
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/sequence_create.png" alt="Sequence diagram to create a backup job" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/sequence_create.png" alt="Sequence diagram to create a backup job" style="width:90%;margin-left:5%;">
 
 * Edit a backup job
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/sequence_edit.png" alt="Sequence diagram to edit a backup job" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/sequence_edit.png" alt="Sequence diagram to edit a backup job" style="width:90%;margin-left:5%;">
 
 * Execute a backup job
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/sequence_execute.png" alt="Sequence diagram to create a execute job" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/sequence_execute.png" alt="Sequence diagram to create a execute job" style="width:90%;margin-left:5%;">
 
 * Delete a backup job
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrammes/sequence_delete.png" alt="Sequence diagram to create a delete job" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/sequence_delete.png" alt="Sequence diagram to create a delete job" style="width:90%;margin-left:5%;">
 
