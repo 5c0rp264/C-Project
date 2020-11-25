@@ -338,7 +338,7 @@ namespace consoleApp
             DirectoryInfo dircomp = new DirectoryInfo(comparisonDirName);
 
 
-            if (!dirsrc.Exists || !dircomp.Exists)
+            if (!dirsrc.Exists)
             {
                 throw new DirectoryNotFoundException(
                     "Source or full backup directory does not exist or could not be found: "
