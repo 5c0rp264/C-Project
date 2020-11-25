@@ -135,7 +135,7 @@ namespace consoleApp
                 else
                 {
                     // Differential copy
-                    DirectoryDifferentialCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination, fullBackupListForDiff[numOfDiff], i, BUJStateList);
+                    DirectoryDifferentialCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, fullBackupListForDiff[numOfDiff], i, BUJStateList);
                     numOfDiff++;
                 }
                 // At the end the work at the index i is no more active
@@ -257,7 +257,7 @@ namespace consoleApp
             DirectoryInfo dircomp = new DirectoryInfo(comparisonDirName);
 
 
-            if (!dirsrc.Exists || !dircomp.Exists)
+            if (!dirsrc.Exists)
             {
                 throw new DirectoryNotFoundException(
                     "Source or full backup directory does not exist or could not be found: "
