@@ -69,21 +69,12 @@ namespace consoleApp
                 BackupJobList = JsonConvert.DeserializeObject<List<BackupJob>>(json);
                 FileStream stream = File.Create(pathToJsonDB);
                 TextWriter tw = new StreamWriter(stream);
-                if (BackupJobList.Count >= 5)
-                {
-                    // Only if the number is not already 5
-                    tw.Close();
-                    return false;
-                }
-                else
-                {
-                    // If we don't have 5 backup file we don't add it
-                    BackupJobList.Add(backupJob);
-                    String stringjson = JsonConvert.SerializeObject(BackupJobList, Formatting.Indented);
-                    tw.WriteLine(stringjson);
-                    tw.Close();
-                    return true;
-                }
+                // We add the job
+                BackupJobList.Add(backupJob);
+                String stringjson = JsonConvert.SerializeObject(BackupJobList, Formatting.Indented);
+                tw.WriteLine(stringjson);
+                tw.Close();
+                return true;
 
             }
         }

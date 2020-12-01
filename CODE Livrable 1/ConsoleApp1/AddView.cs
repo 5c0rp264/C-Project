@@ -29,16 +29,6 @@ namespace consoleApp
 
         public void Show()
         {
-            if (this.Controller.Model.BackupJobList.Count >= 5)
-            {
-                // If there are already 5 backup job we prevent from adding one by redirecting the the homepage
-                this.Controller.View = new HomeView();
-                Console.WriteLine("It seems that you already have the maximum amount of backup job authorized...\nPress a key to continue");
-                Console.ReadLine();
-            }
-            else
-            {
-                // Else we ask for details about the new backup job
                 bool isUserInputValid = false;
                 Console.WriteLine("Name of backup job to create :");
                 while (isUserInputValid != true)
@@ -101,7 +91,7 @@ namespace consoleApp
                     }
                     else
                     {
-                        Console.WriteLine("Unable to create, make sure you don't have already 5 backup jobs.\n");
+                        Console.WriteLine("An error occured, try again later\n");
                     }
                     this.Controller.View = new HomeView();
                 }
@@ -113,7 +103,6 @@ namespace consoleApp
 
                 Console.WriteLine("Press a key to continue");
                 Console.ReadLine();
-            }
         }
 
         //Link the view to the controller
