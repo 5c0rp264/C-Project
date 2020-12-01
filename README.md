@@ -124,28 +124,28 @@ EasySave 1.0 has been distributed to many customers. 
 
 Following a customer survey, the management decided to create a version 2.0 with the following improvements:  
 
-1) Graphical Interface 
+* Graphical Interface 
 
 Leaving the console mode. The application must now be developed in WPF under .Net Core. 
 
- 2) Unlimited number of jobs 
+ * Unlimited number of jobs 
 
 The number of backup jobs is now unlimited.  
 
- 3) Encryption via CryptoSoft software 
+ * Encryption via CryptoSoft software 
 
 The software will have to be able to encrypt the files using CryptoSoft software (made during prosit 5).  Only the files with extensions defined by the user in the general settings should be encrypted. 
 
- 4) Evolution of the Daily Log file 
+ * Evolution of the Daily Log file 
 
 The daily log file must contain additional information: Time needed to encrypt the file (in ms)   
 
-* 0: no encryption  
-* >0 : encryption time (in ms)  
-* <0 : error code  
+  * 0: no encryption  
+  * \>0 : encryption time (in ms)  
+  * <0 : error code  
  
 
-5) Business software 
+* Business software 
 
 If the presence of business software is detected, the software must prohibit the launch of a backup job. In the case of sequential jobs, the software must complete the current job and stop before launching the next job. The user will be able to define the business software in the general settings of the software. (Note: the calculator application can substitute the business software during demonstrations).  
 
@@ -154,7 +154,6 @@ If the presence of business software is detected, the software must prohibit the
 
 You will find below the version comparison table  
 
-Translated with www.DeepL.com/Translator (free version)
 
 <!-- GETTING STARTED -->
 ## Getting Started
