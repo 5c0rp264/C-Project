@@ -154,15 +154,15 @@ If the presence of business software is detected, the software must prohibit the
 
 You will find below the version comparison table  
 
-| Function                                     | 1.0                | 2.0                                     |
-| -------                                      | ------------------ |                                         |
-| Graphic interface                            | Console            | WPF                                     |
-| Backup jobs                                  | 5 only             | Unlimited                               |
-| Log file                                     |        Yes         | Yes + details about the encryption time |
-| State file                                   | Yes                | Yes                                     |
-| Backup job type                              | Sequential / alone | Sequential / alone                      |
-| Stop if business software is detected        | No                 | Yes                                     |
-| Use of the encryption software "CryptoSoft " | No                 | Yes                                     |
+| Fonction                                                       | 1.0                    | 2.0                                                            |
+|----------------------------------------------------------------|------------------------|----------------------------------------------------------------|
+| Interface Graphique                                            | Console                | WPF                                                            |
+| Travaux de sauvegarde                                          | Limité à 5             | Illimité                                                       |
+| Fichier Log journalier (XML ou JSON)                           | OUI                    | OUI    (Information supplémentaire sur le temps de cryptage)   |
+| Fichier Etat (XML ou JSON)                                     | Oui                    | Oui                                                            |
+| Type de fonctionnement Sauvegarde                              | Mono ou séquentielle   | Mono ou Séquentielle                                           |
+| Arrêt si détection du logiciel métier                          | Non                    | oui                                                            |
+| Utilisation du logiciel de cryptage externe «CryptoSoft »      | Non                    | Oui                                                            |
 
 <!-- GETTING STARTED -->
 ## Getting Started
