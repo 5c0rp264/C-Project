@@ -154,8 +154,8 @@ If the presence of business software is detected, the software must prohibit the
 
 You will find below the version comparison table  
 
-| Function | 1.0 | 2.0            |
-| ------- | ------------------ |
+| Function                                     | 1.0                | 2.0                                     |
+| -------                                      | ------------------ |                                         |
 | Graphic interface                            | Console            | WPF                                     |
 | Backup jobs                                  | 5 only             | Unlimited                               |
 | Log file                                     |        Yes         | Yes + details about the encryption time |
