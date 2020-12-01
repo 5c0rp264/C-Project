@@ -140,9 +140,9 @@ The software will have to be able to encrypt the files using CryptoSoft software
 
 The daily log file must contain additional information: Time needed to encrypt the file (in ms)   
 
-  * 0: no encryption  
-  * \>0 : encryption time (in ms)  
-  * <0 : error code  
+  - 0: no encryption  
+  - \>0 : encryption time (in ms)  
+  - <0 : error code  
  
 
 * Business software 
