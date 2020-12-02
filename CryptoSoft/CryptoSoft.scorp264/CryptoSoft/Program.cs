@@ -15,7 +15,7 @@ namespace CryptoSoft
 			try {
 				string from = System.IO.File.ReadAllText(args[1]);
 				string to = System.IO.File.ReadAllText(args[2]);
-				System.IO.File.WriteAllText(to, encryptDecrypt(from));
+				encryptDecrypt(from, to);
 				sw.Stop();
 				Environment.Exit((int)sw.ElapsedMilliseconds);
 			}
@@ -27,30 +27,46 @@ namespace CryptoSoft
 			
 		}
 
-
-		private static string encryptDecrypt(string input)
+        private static void EncryptDecrypt(string sourcepath, string targetpath)
 		{
 			string pathToKey = @"./key.txt";
 			if ( !File.Exists(pathToKey) )
             {
 				System.IO.File.WriteAllText(pathToKey, GetUniqueKey(264));
 			}
-			char[] key = System.IO.File.ReadAllText(pathToKey).ToCharArray();
-			char[] output = new char[input.Length];
+			byte[] key = Encoding.ASCII.GetBytes(System.IO.File.ReadAllText(pathToKey));
 
-			for (int i = 0; i < input.Length; i++)
+			byte[] buffer = new byte[4096];
+
+			FileStream fsSource;
+			FileStream fsTarget;
+
+			using (fsSource = new FileStream(sourcepath, FileMode.Open, FileAccess.Read))
 			{
-				output[i] = (char)(input[i] ^ key[i % key.Length]);
+				//open writting stream
+				using (fsTarget = new FileStream(targetpath, FileMode.OpenOrCreate, FileAccess.Write))
+				{
+					int bytesRead = 0;
+
+					//read each byte and call the xor method before write them 
+					while ((bytesRead = fsSource.Read(buffer, 0, buffer.Length)) > 0)
+					{
+						fsTarget.Write(xorMeThisPlz(buffer, key), 0, bytesRead);
+					}
+					//clear buffer and write data in the file
+					fsTarget.Flush();
+					buffer = null;
+				}
 			}
 
-			return new string(output);
+			//return new string(output);
 		}
 
 
-		internal static readonly char[] chars =
+		static readonly char[] chars =
 			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".ToCharArray();
 
-		public static string GetUniqueKey(int size)
+		private static string GetUniqueKey(int size)
 		{
 			byte[] data = new byte[4 * size];
 			using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
@@ -67,6 +83,25 @@ namespace CryptoSoft
 			}
 
 			return result.ToString();
+		}
+
+
+		private static byte[] xorMeThisPlz(byte[] data, byte[] key)
+		{
+			/*char[] cryptedData = new char[input.Length];
+			for (int i = 0; i < input.Length; i++)
+			{
+				output[i] = (char)(input[i] ^ key[i % key.Length]);
+			}*/
+
+			byte[] cryptedData = new byte[data.Length];
+
+			for (int i = 0; i < data.Length; i++)
+			{
+				cryptedData[i] = (byte)(data[i] ^ key[i % key.Length]);
+			}
+
+			return cryptedData;
 		}
 
 	}
