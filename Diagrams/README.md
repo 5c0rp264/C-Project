@@ -3,7 +3,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/5c0rp264/C-Project">
-    <img src="https://github.com/5c0rp264/C-Project/blob/main/CODE%20Livrable%201/logo.png" alt="Logo" width="300" height="206">
+    <img src="https://github.com/5c0rp264/C-Project/blob/main/EasySave/logo.png" alt="Logo" width="300" height="206">
   </a>
 
   <p align="center">
