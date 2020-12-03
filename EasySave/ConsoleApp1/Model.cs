@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -306,13 +307,30 @@ namespace consoleApp
             FileInfo[] files = dir.GetFiles();
             foreach (FileInfo file in files)
             {
-                file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                Boolean didCryptIt = false;
+                foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
+                {
+                    if (ext == file.Extension)
+                    {
+                        string fullPath = @"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe";
+                        ProcessStartInfo psi = new ProcessStartInfo();
+                        psi.FileName = Path.GetFileName(fullPath);
+                        psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
+                        psi.Arguments = Path.Combine(sourceDirName, file.Name)+ " " + Path.Combine(destDirName, file.Name);
+                        Process.Start(psi);
+                        didCryptIt = true;
+                    }
+
+                }
+                if (!didCryptIt)
+                {
+                    file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                }
                 BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                 //Console.Write(BUJS[index].FilesTransfered.Count / BUJS[index].TotalElligibleFile);
                 BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                 BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                 writeStateFile(BUJS);
-
             }
 
             // If copying subdirectories, copy them and their contents to new location.
@@ -349,7 +367,25 @@ namespace consoleApp
             {
                 if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
-                    file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                    Boolean didCryptIt = false;
+                    foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
+                    {
+                        if (ext == file.Extension)
+                        {
+                            string fullPath = @"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe";
+                            ProcessStartInfo psi = new ProcessStartInfo();
+                            psi.FileName = Path.GetFileName(fullPath);
+                            psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
+                            psi.Arguments = Path.Combine(sourceDirName, file.Name) + " " + Path.Combine(destDirName, file.Name);
+                            Process.Start(psi);
+                            didCryptIt = true;
+                        }
+
+                    }
+                    if (!didCryptIt)
+                    {
+                        file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                    }
                     BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                     BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                     BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
@@ -359,7 +395,25 @@ namespace consoleApp
                 {
                     if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
                     {
-                        file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                        Boolean didCryptIt = false;
+                        foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
+                        {
+                            if (ext == file.Extension)
+                            {
+                                string fullPath = @"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe";
+                                ProcessStartInfo psi = new ProcessStartInfo();
+                                psi.FileName = Path.GetFileName(fullPath);
+                                psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
+                                psi.Arguments = Path.Combine(sourceDirName, file.Name) + " " + Path.Combine(destDirName, file.Name);
+                                Process.Start(psi);
+                                didCryptIt = true;
+                            }
+
+                        }
+                        if (!didCryptIt)
+                        {
+                            file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                        }
                         BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                         BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                         BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
