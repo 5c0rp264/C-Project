@@ -17,7 +17,7 @@ namespace CryptoSoft
 				string to = args[2];
 				/*string from = "/Users/quentinaoustin/Public/test/crypted.txt";
 				string to = "/Users/quentinaoustin/Public/test/uncrypted.txt";
-				EncryptDecrypt(from, to);*:
+				EncryptDecrypt(from, to);*/
 				sw.Stop();
 				Environment.Exit((int)sw.ElapsedMilliseconds);
 			}
