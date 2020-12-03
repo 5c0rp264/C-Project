@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace consoleApp
 {
@@ -81,10 +83,15 @@ namespace consoleApp
                 }
 
 
-                // We save the backup job (or tell the user that we couldn't)
-                try
+            Console.WriteLine("Extensions that will be encrypted (comma separated, no input for no encryption):");
+            userInput = Console.ReadLine();
+            List<string> extToCrypt = parseUserInputAsList(userInput);
+
+
+            // We save the backup job (or tell the user that we couldn't)
+            try
                 {
-                    BackupJob backupJob = new BackupJob(name, source, destination, isAFullBackup);
+                    BackupJob backupJob = new BackupJob(name, source, destination, isAFullBackup, extToCrypt);
                     if (this.controller.Model.createBackupJob(backupJob))
                     {
                         Console.WriteLine("backup job added with success.\n");
@@ -135,6 +142,15 @@ namespace consoleApp
                 return false;
             }
 
+        }
+
+
+
+        private List<string> parseUserInputAsList(string userInput)
+        {
+            //List <string> listParsed = new List<string>();
+            List<string> listParsed = new List<string>(Regex.Replace(userInput, @"\s+", "").Split(","));
+            return listParsed;
         }
     }
 }

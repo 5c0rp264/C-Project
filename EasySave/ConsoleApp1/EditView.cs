@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace consoleApp
 {
@@ -116,9 +118,17 @@ namespace consoleApp
                         Console.WriteLine("Thanks to enter a valid value.");
                     }
                 }
+
+                List<string> extToCrypt = this.Controller.Model.BackupJobList[idToEdit].ToBeEncryptedFileExtensions;
+                Console.WriteLine("Extensions that will be encrypted (comma separated, no input for no encryption) [" + string.Join(", ", this.Controller.Model.BackupJobList[idToEdit].ToBeEncryptedFileExtensions) +"]:");
+                userInput = Console.ReadLine();
+                if (userInput.Length > 1)
+                {
+                    extToCrypt = parseUserInputAsList(userInput);
+                }
                 try
                 {
-                    this.Controller.Model.editBackupJob(idToEdit, name, source, destination, isFull);
+                    this.Controller.Model.editBackupJob(idToEdit, name, source, destination, isFull, extToCrypt);
                 }
                 catch
                 {
@@ -161,5 +171,15 @@ namespace consoleApp
             }
 
         }
+
+
+        private List<string> parseUserInputAsList(string userInput)
+        {
+            //List <string> listParsed = new List<string>();
+            List<string> listParsed = new List<string>(Regex.Replace(userInput, @"\s+", "").Split(","));
+            return listParsed;
+        }
+
+
     }
 }
