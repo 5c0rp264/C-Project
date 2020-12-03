@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
 
 
 //TODO: Add logs and state file.
@@ -14,6 +15,13 @@ namespace consoleApp
 {
     public class Model
     {
+
+        //process watching to stop execution if openned :
+        string processNameToWatch = "calc";
+        private Thread watchThread;
+        private static EventWaitHandle waitHandle = new ManualResetEvent(initialState: true);
+
+
         private List<BackupJob> backupJobList;
 
         // Path to the json files that store the backup job list in the root folder
@@ -82,6 +90,7 @@ namespace consoleApp
 
         public void executeBUJList(List<int> backupJobIDList, List<String> fullBackupListForDiff)
         {
+            startWatchingProcess();
             // The user can select one or multiple backup job to execute in the same time
             int numOfDiff = 0;
             List<BackupJobState> BUJStateList = new List<BackupJobState>();
@@ -138,6 +147,7 @@ namespace consoleApp
                 writeLogFile("Transfer time : " + BUJStateList[i].Stopwatch.Elapsed);
 
             }
+            stopWatchingProcess();
         }
 
 
@@ -230,6 +240,7 @@ namespace consoleApp
             foreach (FileInfo file in files)
             {
                 totalCount.Add(new myOwnFileInfo(file.Length, file.FullName));
+                _ = waitHandle.WaitOne();
             }
 
             // If copying subdirectories, copy them and their contents to new location.
@@ -237,6 +248,7 @@ namespace consoleApp
             foreach (DirectoryInfo subdir in dirs)
             {
                 totalCount.AddRange(concernedFile(subdir.FullName));
+                _ = waitHandle.WaitOne();
             }
             return totalCount;
         }
@@ -276,11 +288,13 @@ namespace consoleApp
                         totalCount.Add(new myOwnFileInfo(file.Length, file.FullName));
                     }
                 }
+                _ = waitHandle.WaitOne();
             }
 
             foreach (DirectoryInfo subdir in dirs)
             {
                 totalCount.AddRange(concernedFileDiff(subdir.FullName, Path.Combine(comparisonDirName, subdir.Name)));
+                _ = waitHandle.WaitOne();
             }
             return totalCount;
 
@@ -334,6 +348,7 @@ namespace consoleApp
                 BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                 BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                 writeStateFile(BUJS);
+                _ = waitHandle.WaitOne();
             }
 
             // If copying subdirectories, copy them and their contents to new location.
@@ -341,6 +356,7 @@ namespace consoleApp
             foreach (DirectoryInfo subdir in dirs)
             {
                 DirectoryCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), index, BUJS);
+                _ = waitHandle.WaitOne();
             }
 
         }
@@ -394,6 +410,7 @@ namespace consoleApp
                     BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                     BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                     writeStateFile(BUJS);
+                    _ = waitHandle.WaitOne();
                 }
                 else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
@@ -423,6 +440,7 @@ namespace consoleApp
                         BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                         BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                         writeStateFile(BUJS);
+                        _ = waitHandle.WaitOne();
                     }
                 }
             }
@@ -430,6 +448,7 @@ namespace consoleApp
             foreach (DirectoryInfo subdir in dirs)
             {
                 DirectoryDifferentialCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), Path.Combine(comparisonDirName, subdir.Name), index, BUJS);
+                _ = waitHandle.WaitOne();
             }
 
         }
@@ -493,6 +512,39 @@ namespace consoleApp
             String stringjson = JsonConvert.SerializeObject(BackupJobList, Formatting.Indented);
             tw.WriteLine(stringjson);
             tw.Close();
+        }
+
+
+        private void startWatchingProcess()
+        {
+            watchThread = new Thread(() =>
+            {
+                while (true)
+                {
+                    Process[] processes = Process.GetProcessesByName(processNameToWatch);
+                    if (processes.Length >= 1)
+                    {
+                        waitHandle.Reset();
+                    }
+                    else
+                    {
+                        waitHandle.Set();
+                    }
+                    // Don't dedicate a thread to this like I'm doing here
+                    // setup a timer or something similiar
+                    Thread.Sleep(250);
+                }
+            });
+            watchThread.IsBackground = true;
+            watchThread.Start();
+
+            Console.WriteLine("Polling processes and waiting for notepad process exit events");
+            Console.ReadLine();
+        }
+
+        private void stopWatchingProcess()
+        {
+            watchThread.Abort();
         }
 
 
