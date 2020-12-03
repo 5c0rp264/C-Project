@@ -93,6 +93,7 @@ namespace consoleApp
                     BUJStateList.Add(new BackupJobState(this.BackupJobList[backupJobIDList[i]].Name, this.BackupJobList[backupJobIDList[i]].Source, this.BackupJobList[backupJobIDList[i]].Destination, (this.BackupJobList[backupJobIDList[i]].IsFull ? "/Full" : "/Diff") + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source).Count : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff]).Count), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source) : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupJobList[backupJobIDList[i]].IsFull, false, this.BackupJobList[backupJobIDList[i]].ToBeEncryptedFileExtensions));
                 }catch (Exception e)
                 {
+                    //Console.WriteLine("BUG")
                     writeLogFile(" /!\\/!\\/!\\ Error for the backup job [" + backupJobIDList[i] + "] " + this.BackupJobList[backupJobIDList[i]].Name);
                     writeLogFile(" /!\\/!\\/!\\ Source : \\\\?\\" + this.BackupJobList[backupJobIDList[i]].Source.Replace(":","$"));
                     writeLogFile(" /!\\/!\\/!\\ Destination : \\\\?\\" + this.BackupJobList[backupJobIDList[i]].Destination.Replace(":", "$"));
@@ -312,13 +313,15 @@ namespace consoleApp
                 {
                     if (ext == file.Extension)
                     {
-                        string fullPath = @"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe";
-                        ProcessStartInfo psi = new ProcessStartInfo();
-                        psi.FileName = Path.GetFileName(fullPath);
-                        psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
-                        psi.Arguments = Path.Combine(sourceDirName, file.Name)+ " " + Path.Combine(destDirName, file.Name);
-                        Process.Start(psi);
+                        ProcessStartInfo psi = new ProcessStartInfo(@"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe");
+                        psi.WindowStyle = ProcessWindowStyle.Normal;
+                        psi.RedirectStandardOutput = true;
+                        psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
+                        Process proc = Process.Start(psi);
+                        proc.WaitForExit();
+                        writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
                         didCryptIt = true;
+                        //Console.WriteLine(Path.Combine(destDirName, file.Name));
                     }
 
                 }
@@ -372,12 +375,13 @@ namespace consoleApp
                     {
                         if (ext == file.Extension)
                         {
-                            string fullPath = @"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe";
-                            ProcessStartInfo psi = new ProcessStartInfo();
-                            psi.FileName = Path.GetFileName(fullPath);
-                            psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
-                            psi.Arguments = Path.Combine(sourceDirName, file.Name) + " " + Path.Combine(destDirName, file.Name);
-                            Process.Start(psi);
+                            ProcessStartInfo psi = new ProcessStartInfo(@"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe");
+                            psi.WindowStyle = ProcessWindowStyle.Normal;
+                            psi.RedirectStandardOutput = true;
+                            psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
+                            Process proc = Process.Start(psi);
+                            proc.WaitForExit();
+                            writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
                             didCryptIt = true;
                         }
 
@@ -400,12 +404,13 @@ namespace consoleApp
                         {
                             if (ext == file.Extension)
                             {
-                                string fullPath = @"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe";
-                                ProcessStartInfo psi = new ProcessStartInfo();
-                                psi.FileName = Path.GetFileName(fullPath);
-                                psi.WorkingDirectory = Path.GetDirectoryName(fullPath);
-                                psi.Arguments = Path.Combine(sourceDirName, file.Name) + " " + Path.Combine(destDirName, file.Name);
-                                Process.Start(psi);
+                                ProcessStartInfo psi = new ProcessStartInfo(@"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe");
+                                psi.WindowStyle = ProcessWindowStyle.Normal;
+                                psi.RedirectStandardOutput = true;
+                                psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
+                                Process proc = Process.Start(psi);
+                                proc.WaitForExit();
+                                writeLogFile("Encryption time for "+ Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
                                 didCryptIt = true;
                             }
 
