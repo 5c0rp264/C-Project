@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
 
 
 //TODO: Add logs and state file.
@@ -13,6 +15,13 @@ namespace consoleApp
 {
     public class Model
     {
+
+        //process watching to stop execution if openned :
+        string processNameToWatch = "calc";
+        private Thread watchThread;
+        private static EventWaitHandle waitHandle = new ManualResetEvent(initialState: true);
+
+
         private List<BackupJob> backupJobList;
 
         // Path to the json files that store the backup job list in the root folder
@@ -81,6 +90,7 @@ namespace consoleApp
 
         public void executeBUJList(List<int> backupJobIDList, List<String> fullBackupListForDiff)
         {
+            startWatchingProcess();
             // The user can select one or multiple backup job to execute in the same time
             int numOfDiff = 0;
             List<BackupJobState> BUJStateList = new List<BackupJobState>();
@@ -89,9 +99,10 @@ namespace consoleApp
                 // For each of them we will save them in our state file
                 try
                 {
-                    BUJStateList.Add(new BackupJobState(this.BackupJobList[backupJobIDList[i]].Name, this.BackupJobList[backupJobIDList[i]].Source, this.BackupJobList[backupJobIDList[i]].Destination, (this.BackupJobList[backupJobIDList[i]].IsFull ? "/Full" : "/Diff") + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source).Count : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff]).Count), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source) : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupJobList[backupJobIDList[i]].IsFull, false));
+                    BUJStateList.Add(new BackupJobState(this.BackupJobList[backupJobIDList[i]].Name, this.BackupJobList[backupJobIDList[i]].Source, this.BackupJobList[backupJobIDList[i]].Destination, (this.BackupJobList[backupJobIDList[i]].IsFull ? "/Full" : "/Diff") + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source).Count : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff]).Count), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source) : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupJobList[backupJobIDList[i]].IsFull, false, this.BackupJobList[backupJobIDList[i]].ToBeEncryptedFileExtensions));
                 }catch (Exception e)
                 {
+                    //Console.WriteLine("BUG")
                     writeLogFile(" /!\\/!\\/!\\ Error for the backup job [" + backupJobIDList[i] + "] " + this.BackupJobList[backupJobIDList[i]].Name);
                     writeLogFile(" /!\\/!\\/!\\ Source : \\\\?\\" + this.BackupJobList[backupJobIDList[i]].Source.Replace(":","$"));
                     writeLogFile(" /!\\/!\\/!\\ Destination : \\\\?\\" + this.BackupJobList[backupJobIDList[i]].Destination.Replace(":", "$"));
@@ -136,16 +147,18 @@ namespace consoleApp
                 writeLogFile("Transfer time : " + BUJStateList[i].Stopwatch.Elapsed);
 
             }
+            stopWatchingProcess();
         }
 
 
-        public void editBackupJob(int idToEdit, String name, String source, String destination, Boolean isFull)
+        public void editBackupJob(int idToEdit, String name, String source, String destination, Boolean isFull, List<string> extToCrypt)
         {
             // When the user edits a work he can change or let the ancient name of each criteria, in any way we update them here
             this.BackupJobList[idToEdit].Name = name;
             this.BackupJobList[idToEdit].Source = source;
             this.BackupJobList[idToEdit].Destination = destination;
             this.BackupJobList[idToEdit].IsFull = isFull;
+            this.BackupJobList[idToEdit].ToBeEncryptedFileExtensions = extToCrypt;
             saveBUJ();
         }
 
@@ -227,6 +240,7 @@ namespace consoleApp
             foreach (FileInfo file in files)
             {
                 totalCount.Add(new myOwnFileInfo(file.Length, file.FullName));
+                _ = waitHandle.WaitOne();
             }
 
             // If copying subdirectories, copy them and their contents to new location.
@@ -234,6 +248,7 @@ namespace consoleApp
             foreach (DirectoryInfo subdir in dirs)
             {
                 totalCount.AddRange(concernedFile(subdir.FullName));
+                _ = waitHandle.WaitOne();
             }
             return totalCount;
         }
@@ -273,11 +288,13 @@ namespace consoleApp
                         totalCount.Add(new myOwnFileInfo(file.Length, file.FullName));
                     }
                 }
+                _ = waitHandle.WaitOne();
             }
 
             foreach (DirectoryInfo subdir in dirs)
             {
                 totalCount.AddRange(concernedFileDiff(subdir.FullName, Path.Combine(comparisonDirName, subdir.Name)));
+                _ = waitHandle.WaitOne();
             }
             return totalCount;
 
@@ -305,13 +322,33 @@ namespace consoleApp
             FileInfo[] files = dir.GetFiles();
             foreach (FileInfo file in files)
             {
-                file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                Boolean didCryptIt = false;
+                foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
+                {
+                    if (ext == file.Extension)
+                    {
+                        ProcessStartInfo psi = new ProcessStartInfo(@"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe");
+                        psi.WindowStyle = ProcessWindowStyle.Normal;
+                        psi.RedirectStandardOutput = true;
+                        psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
+                        Process proc = Process.Start(psi);
+                        proc.WaitForExit();
+                        writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
+                        didCryptIt = true;
+                        //Console.WriteLine(Path.Combine(destDirName, file.Name));
+                    }
+
+                }
+                if (!didCryptIt)
+                {
+                    file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                }
                 BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                 //Console.Write(BUJS[index].FilesTransfered.Count / BUJS[index].TotalElligibleFile);
                 BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                 BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                 writeStateFile(BUJS);
-
+                _ = waitHandle.WaitOne();
             }
 
             // If copying subdirectories, copy them and their contents to new location.
@@ -319,6 +356,7 @@ namespace consoleApp
             foreach (DirectoryInfo subdir in dirs)
             {
                 DirectoryCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), index, BUJS);
+                _ = waitHandle.WaitOne();
             }
 
         }
@@ -348,21 +386,61 @@ namespace consoleApp
             {
                 if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
-                    file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                    Boolean didCryptIt = false;
+                    foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
+                    {
+                        if (ext == file.Extension)
+                        {
+                            ProcessStartInfo psi = new ProcessStartInfo(@"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe");
+                            psi.WindowStyle = ProcessWindowStyle.Normal;
+                            psi.RedirectStandardOutput = true;
+                            psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
+                            Process proc = Process.Start(psi);
+                            proc.WaitForExit();
+                            writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
+                            didCryptIt = true;
+                        }
+
+                    }
+                    if (!didCryptIt)
+                    {
+                        file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                    }
                     BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                     BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                     BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                     writeStateFile(BUJS);
+                    _ = waitHandle.WaitOne();
                 }
                 else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
                     if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
                     {
-                        file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                        Boolean didCryptIt = false;
+                        foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
+                        {
+                            if (ext == file.Extension)
+                            {
+                                ProcessStartInfo psi = new ProcessStartInfo(@"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe");
+                                psi.WindowStyle = ProcessWindowStyle.Normal;
+                                psi.RedirectStandardOutput = true;
+                                psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
+                                Process proc = Process.Start(psi);
+                                proc.WaitForExit();
+                                writeLogFile("Encryption time for "+ Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
+                                didCryptIt = true;
+                            }
+
+                        }
+                        if (!didCryptIt)
+                        {
+                            file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                        }
                         BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                         BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                         BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                         writeStateFile(BUJS);
+                        _ = waitHandle.WaitOne();
                     }
                 }
             }
@@ -370,6 +448,7 @@ namespace consoleApp
             foreach (DirectoryInfo subdir in dirs)
             {
                 DirectoryDifferentialCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), Path.Combine(comparisonDirName, subdir.Name), index, BUJS);
+                _ = waitHandle.WaitOne();
             }
 
         }
@@ -433,6 +512,39 @@ namespace consoleApp
             String stringjson = JsonConvert.SerializeObject(BackupJobList, Formatting.Indented);
             tw.WriteLine(stringjson);
             tw.Close();
+        }
+
+
+        private void startWatchingProcess()
+        {
+            watchThread = new Thread(() =>
+            {
+                while (true)
+                {
+                    Process[] processes = Process.GetProcessesByName(processNameToWatch);
+                    if (processes.Length >= 1)
+                    {
+                        waitHandle.Reset();
+                    }
+                    else
+                    {
+                        waitHandle.Set();
+                    }
+                    // Don't dedicate a thread to this like I'm doing here
+                    // setup a timer or something similiar
+                    Thread.Sleep(250);
+                }
+            });
+            watchThread.IsBackground = true;
+            watchThread.Start();
+
+            Console.WriteLine("Polling processes and waiting for notepad process exit events");
+            Console.ReadLine();
+        }
+
+        private void stopWatchingProcess()
+        {
+            watchThread.Abort();
         }
 
 

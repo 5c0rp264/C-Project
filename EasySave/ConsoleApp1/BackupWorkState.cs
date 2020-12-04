@@ -29,6 +29,7 @@ namespace consoleApp
         private List<myOwnFileInfo> elligibleFiles;
         private long totalSizeOfElligbleFiles;
         private Boolean isFull;
+        private List<String> toBeEncryptedFileExtensions;
         private Boolean isActive;
         private List<myOwnFileInfo> filesTransfered;
         private long sizeOfRemainingFiles;
@@ -63,9 +64,10 @@ namespace consoleApp
         public float Progress { get => progress; set => progress = value; }
         public long TotalSizeOfElligbleFiles { get => totalSizeOfElligbleFiles; set => totalSizeOfElligbleFiles = value; }
         public long SizeOfRemainingFiles { get => sizeOfRemainingFiles; set => sizeOfRemainingFiles = value; }
+        public List<string> ToBeEncryptedFileExtensions { get => toBeEncryptedFileExtensions; set => toBeEncryptedFileExtensions = value; }
 
         // This will set each attribute
-        public BackupJobState(String Name, String Source, String Destination, String FolderName, int TotalElligibleFile, List<myOwnFileInfo> ElligibleFiles, Boolean IsFull, Boolean IsActive)
+        public BackupJobState(String Name, String Source, String Destination, String FolderName, int TotalElligibleFile, List<myOwnFileInfo> ElligibleFiles, Boolean IsFull, Boolean IsActive, List<string> ToBeEncryptedFileExtensions)
         {
             //TODO:adding check if folder is accessible
             if (Name.Length >= 1 && Source.Length >= 1 && Destination.Length >= 1)
@@ -78,6 +80,7 @@ namespace consoleApp
                 this.totalElligibleFile = TotalElligibleFile;
                 this.totalSizeOfElligbleFiles = this.elligibleFiles.Sum(items => items.fileSize);
                 this.isFull = IsFull;
+                this.toBeEncryptedFileExtensions = ToBeEncryptedFileExtensions;
                 this.isActive = ISACtive;
                 this.filesTransfered = new List<myOwnFileInfo>();
                 this.stopwatch = new Stopwatch();

@@ -3,7 +3,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/5c0rp264/C-Project">
-    <img src="https://github.com/5c0rp264/C-Project/blob/main/CODE%20Livrable%201/logo.png" alt="Logo" width="300" height="206">
+    <img src="https://github.com/5c0rp264/C-Project/blob/main/EasySave/logo.png" alt="Logo" width="300" height="206">
   </a>
 
   <p align="center">
@@ -14,7 +14,7 @@
     <br />
     <a href="https://github.com/5c0rp264/C-Project/tree/main/Diagrammes">UML Diagrams</a>
     ·
-    <a href="https://github.com/5c0rp264/C-Project/tree/main/CODE%20Livrable%201">Console Program</a>
+    <a href="https://github.com/5c0rp264/C-Project/tree/main/EasySave">Console Program</a>
     ·
     <a href="https://github.com/5c0rp264/C-Project/issues">Request Feature</a>
   </p>

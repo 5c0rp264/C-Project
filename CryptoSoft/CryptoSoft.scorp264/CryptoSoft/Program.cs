@@ -13,14 +13,23 @@ namespace CryptoSoft
 			Stopwatch sw = new Stopwatch();
 			sw.Start();
 			try {
-				string from = System.IO.File.ReadAllText(args[1]);
-				string to = System.IO.File.ReadAllText(args[2]);
-				encryptDecrypt(from, to);
+				string from = args[0];
+				string to = args[1];
+				/*foreach (string Arg in args)
+                {
+					Console.WriteLine(Arg);
+                }*/
+				/*string from = "/Users/quentinaoustin/Public/test/crypted.txt";
+				string to = "/Users/quentinaoustin/Public/test/uncrypted.txt";*/
+				EncryptDecrypt(from, to);
 				sw.Stop();
+				Console.WriteLine((int)sw.ElapsedMilliseconds);
 				Environment.Exit((int)sw.ElapsedMilliseconds);
 			}
 			catch (Exception e)
             {
+				sw.Stop();
+				Console.WriteLine((int)sw.ElapsedMilliseconds);
 				Console.WriteLine(e);
 				Environment.Exit(-1);
             }
