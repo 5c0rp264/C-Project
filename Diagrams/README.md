@@ -34,11 +34,11 @@
 <!-- ABOUT THE PROJECT -->
 ## Use Case Diagram
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/use_case.png" alt="Logo" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/Use case.png" alt="Logo" style="width:90%;margin-left:5%;">
 
 ## Activity Diagram
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/activity.png" alt="Logo" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/Activity diagram.png" alt="Logo" style="width:90%;margin-left:5%;">
 
 ## Class Diagram
 
@@ -52,7 +52,7 @@ To see it in a more concise way you can download and open the corresponding file
 
 * View
 
-<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/view.png" alt="View" style="width:90%;margin-left:5%;">
+<img src="https://github.com/5c0rp264/C-Project/blob/main/Diagrams/form.png" alt="View" style="width:90%;margin-left:5%;">
 
 * Controller
 
