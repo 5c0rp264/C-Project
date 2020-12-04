@@ -91,8 +91,7 @@ namespace consoleApp
                 }
 
                 // In the meantime we add an animation of loading (in another thread so it doesn't stop the backup) 
-                var spinner = new Spinner();
-                spinner.Start();
+                Spinner.Start();
                 try
                 {
                     // Start the backup
@@ -104,7 +103,7 @@ namespace consoleApp
                     Console.WriteLine(e.Message);
                 }
                 // Stop the spinner because it ended
-                spinner.Stop();
+                Spinner.Stop();
                 
                 // We tell the user that everything has been done and we redirect him to he home page
                 Console.WriteLine("\nDone.");

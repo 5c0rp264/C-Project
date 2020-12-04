@@ -17,9 +17,10 @@ namespace consoleApp
     {
 
         //process watching to stop execution if openned :
-        string processNameToWatch = "calc";
+        string processNameToWatch = "Calculator";
         private Thread watchThread;
         private static EventWaitHandle waitHandle = new ManualResetEvent(initialState: true);
+        private bool wasPaused = false;
 
 
         private List<BackupJob> backupJobList;
@@ -522,24 +523,30 @@ namespace consoleApp
                 while (true)
                 {
                     Process[] processes = Process.GetProcessesByName(processNameToWatch);
-                    if (processes.Length >= 1)
+                    //Console.WriteLine(processes.Length);
+                    if (processes.Length >= 1 && !wasPaused)
                     {
                         waitHandle.Reset();
+                        Spinner.Stop();
+                        Spinner.Dispose();
+                        this.wasPaused = true;
                     }
-                    else
+                    else if (processes.Length == 0 && wasPaused)
                     {
+                        Spinner.Start();
                         waitHandle.Set();
+                        this.wasPaused = false;
                     }
-                    // Don't dedicate a thread to this like I'm doing here
-                    // setup a timer or something similiar
                     Thread.Sleep(250);
                 }
-            });
-            watchThread.IsBackground = true;
+            })
+            {
+                IsBackground = true
+            };
             watchThread.Start();
 
-            Console.WriteLine("Polling processes and waiting for notepad process exit events");
-            Console.ReadLine();
+            //Console.WriteLine("Polling processes and waiting for process");
+            //Console.ReadLine();
         }
 
         private void stopWatchingProcess()

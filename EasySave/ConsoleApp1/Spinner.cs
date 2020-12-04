@@ -1,44 +1,44 @@
 ﻿using System;
 using System.Threading;
-public class Spinner
+public static class Spinner
     {
        // Sequence = regex of character used for this animation
         private const string Sequence = @"/-\|";
 
         // To make it turn
-        private int counter = 0;
+        private static int counter = 0;
 
         // The user need to see the animation so there is a delay each time our character turns
-        private readonly int delay;
+        private static readonly int delay = 100;
 
        // Boolean to know if we can start / stop it
-        private bool active;
+        private static bool active;
 
         // Asynchronous work
-        private readonly Thread thread;
+        private static Thread thread;
 
-        public Spinner(int delay = 100)
+        static Spinner()
         {
-            this.delay = delay;
             thread = new Thread(Spin);
         }
 
         // Start the spinner by updating the boolean and calling start
-        public void Start()
+        public static void Start()
         {
             active = true;
+            thread = new Thread(Spin);
             if (!thread.IsAlive)
                 thread.Start();
         }
 
         // Stopping the spinner by removing the character
-        public void Stop()
+        public static void Stop()
         {
             active = false;
             Draw(' ');
         }
 
-        private void Spin()
+        private static void Spin()
         {
         // While the spinneer is activated, turn it and beetween each rotation wait 100ms (the delay)
             while (active)
@@ -48,20 +48,20 @@ public class Spinner
             }
         }
 
-        private void Draw(char c)
+        private static void Draw(char c)
         {
             // Show the spinner and rewrite it thanks to the \r
             Console.Write("\r"+c);
         }
 
-        private void Turn()
+        private static void Turn()
         {
             // This will just rotate the spinner based on our sequence characters ( \ | / ...)
             Draw(Sequence[++counter % Sequence.Length]);
         }
         
         // Remove the spinner
-        public void Dispose()
+        public static void Dispose()
         {
             Stop();
         }
