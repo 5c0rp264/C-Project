@@ -190,6 +190,7 @@ namespace EasySave_graphical
             this.strip_state.Name = "strip_state";
             this.strip_state.Size = new System.Drawing.Size(160, 60);
             this.strip_state.Text = "State";
+            this.strip_state.Click += new System.EventHandler(this.strip_state_Click);
             // 
             // strip_log
             // 
@@ -200,6 +201,7 @@ namespace EasySave_graphical
             this.strip_log.Name = "strip_log";
             this.strip_log.Size = new System.Drawing.Size(160, 60);
             this.strip_log.Text = "Log";
+            this.strip_log.Click += new System.EventHandler(this.strip_log_Click);
             // 
             // TabControl
             // 

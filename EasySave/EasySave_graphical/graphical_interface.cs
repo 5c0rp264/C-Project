@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -80,6 +81,7 @@ namespace EasySave_graphical
 
         private Boolean addIsValid = true;
         private String errorMessage_add = "";
+        private String errorTitle_add = "";
         private void button1_Click(object sender, EventArgs e)
         {
             addIsValid = true;
@@ -150,14 +152,17 @@ namespace EasySave_graphical
                 if (language == "spanish")
                 {
                     errorMessage_add = "Un trabajo de copia necesita una destinación";
+                    errorTitle_add = "Error durante la edición";
                 }
                 else if (language == "french")
                 {
                     errorMessage_add = "Le dossier de destination est manquant";
+                    errorTitle_add = "Erreur lors de l'édition";
                 }
                 else
                 {
                     errorMessage_add = "The destination folder is not set";
+                    errorTitle_add = "Error while editing";
                 }
             }
 
@@ -167,19 +172,29 @@ namespace EasySave_graphical
                 BackupJob backupJob = new BackupJob(add_name.Text, add_sourceFolder, add_destinationFolder, (backupType == "full"),parseUserInputAsList(add_extension.Text));
                 if (this.controller.Model.createBackupJob(backupJob))
                 {
-                    Console.WriteLine("backup job added with success.\n");
-                    //TODO: Translate here
-                    MessageBox.Show("Added with success", "Added", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (language == "spanish")
+                    {
+                        MessageBox.Show("Añadido con éxito", "Añadido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else if (language == "french")
+                    {
+                        MessageBox.Show("Ajouté avec succès", "Ajout", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Added with success", "Added", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    
                     reloadListView();
                 }
                 else
                 {
-                    MessageBox.Show(errorMessage_add, "Error while editing", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(errorMessage_add, errorTitle_add, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show(errorMessage_add, "Error while editing", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(errorMessage_add, errorTitle_add, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -297,8 +312,24 @@ namespace EasySave_graphical
             {
                 // Edit the backup
                 this.controller.Model.editBackupJob(this.edit_backup_list.SelectedIndex, edit_name.Text, edit_sourceFolderValue, edit_destinationFolderValue, (edit_backupType == "full"),parseUserInputAsList(edit_extension.Text));
-                MessageBox.Show("Good");
-                //TODO : translate
+                if (language == "spanish")
+                {
+                     MessageBox.Show("Todo fue bien", "información",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Information);
+                }
+                else if (language == "french")
+                {
+                     MessageBox.Show("Tout s'est bien passé", "Information",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Information);
+                }
+                else
+                {
+                     MessageBox.Show("Everything went well", "Information",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Information);
+                }
             }
             else
             {
@@ -369,9 +400,20 @@ namespace EasySave_graphical
                     {
                     // Call the model to delete the backup
                     this.controller.Model.deleteBackupJob(delete_backup_list.SelectedIndex);
-                    MessageBox.Show("Deleted : " + delete_backup_list.SelectedItem);
+                    if (language == "english")
+                    {
+                        MessageBox.Show("Deleted : " + delete_backup_list.SelectedItem);
+                    }
+                    else if (language == "french")
+                    {
+                        MessageBox.Show("Supprimé : " + delete_backup_list.SelectedItem);
+                    }
+                    else if (language == "spanish")
+                    {
+                        MessageBox.Show("Borrado : " + delete_backup_list.SelectedItem);
+                    }
+
                     reloadListView();
-                    //TODO: translate this up here my frrrriend.
                      }
                 }
                 else
@@ -402,8 +444,20 @@ namespace EasySave_graphical
                     {
                         using (var fbd = new FolderBrowserDialog())
                         {
-                            MessageBox.Show("Please enter full diff of ref for " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            //TODO Translate here
+                            if (language == "spanish")
+                            {
+                                MessageBox.Show("Por favor, introduzca una copia de seguridad de referencia completa : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            }
+                            else if (language == "french")
+                            {
+                                MessageBox.Show("Merci d'entrer une sauvegarde complète de référence : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            }
+                            else
+                            {
+                                MessageBox.Show("Please enter a full backup of reference : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
                             DialogResult result = fbd.ShowDialog();
                             if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                             {
@@ -413,8 +467,20 @@ namespace EasySave_graphical
                             {
                                 while (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                                 {
-                                    MessageBox.Show("No Joke. " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                    //TODO Translate here
+                                    if (language == "spanish")
+                                    {
+                                        MessageBox.Show("Por favor : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "entrada inválida", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                    }
+                                    else if (language == "french")
+                                    {
+                                        MessageBox.Show("S'il vous plaît : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Entrée invalide", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Please :  " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
                                     result = fbd.ShowDialog();
                                 }
                             }
@@ -676,6 +742,16 @@ namespace EasySave_graphical
         private void menuStrip2_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
+        }
+
+        private void strip_state_Click(object sender, EventArgs e)
+        {
+            this.controller.Model.openStateFile();
+        }
+
+        private void strip_log_Click(object sender, EventArgs e)
+        {
+            this.controller.Model.openLogFile();
         }
     }
 }

@@ -8,9 +8,6 @@ using System.Security.Cryptography;
 using System.Threading;
 
 
-//TODO: Add logs and state file.
-
-
 namespace EasySave_graphical
 {
     public class Model
@@ -328,9 +325,8 @@ namespace EasySave_graphical
                 {
                     if (ext == file.Extension)
                     {
-                        ProcessStartInfo psi = new ProcessStartInfo(@"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe");
-                        psi.WindowStyle = ProcessWindowStyle.Normal;
-                        psi.RedirectStandardOutput = true;
+                        ProcessStartInfo psi = new ProcessStartInfo("CryptoSoft.exe");
+                        psi.WorkingDirectory = "../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/";
                         psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
                         Process proc = Process.Start(psi);
                         proc.WaitForExit();
@@ -392,9 +388,8 @@ namespace EasySave_graphical
                     {
                         if (ext == file.Extension)
                         {
-                            ProcessStartInfo psi = new ProcessStartInfo(@"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe");
-                            psi.WindowStyle = ProcessWindowStyle.Normal;
-                            psi.RedirectStandardOutput = true;
+                            ProcessStartInfo psi = new ProcessStartInfo("CryptoSoft.exe");
+                            psi.WorkingDirectory = "../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/";
                             psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
                             Process proc = Process.Start(psi);
                             proc.WaitForExit();
@@ -422,16 +417,14 @@ namespace EasySave_graphical
                         {
                             if (ext == file.Extension)
                             {
-                                ProcessStartInfo psi = new ProcessStartInfo(@"../../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/CryptoSoft.exe");
-                                psi.WindowStyle = ProcessWindowStyle.Normal;
-                                psi.RedirectStandardOutput = true;
+                                ProcessStartInfo psi = new ProcessStartInfo("CryptoSoft.exe");
+                                psi.WorkingDirectory = "../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/";
                                 psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
                                 Process proc = Process.Start(psi);
                                 proc.WaitForExit();
-                                writeLogFile("Encryption time for "+ Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
+                                writeLogFile("Encryption time for "+ Path.Combine(destDirName, file.Name) + " was : " + proc.ExitCode + "ms");
                                 didCryptIt = true;
                             }
-
                         }
                         if (!didCryptIt)
                         {
@@ -556,6 +549,50 @@ namespace EasySave_graphical
             watchThread.Abort();
         }
 
+        public void openLogFile()
+        {
+            //TODO: check if available
 
+            ProcessStartInfo newLogFile = new ProcessStartInfo(DateTime.Now.ToString("MM.dd.yyyy")+".log");
+            newLogFile.WorkingDirectory = "logs";
+
+            if (!IsFileLocked("logs/"+DateTime.Now.ToString("MM.dd.yyyy") + ".log"))
+            {
+                Process.Start(newLogFile);
+            }
+            else
+            {
+                Console.WriteLine("In use"); //TODO: tell the user that file is already in use
+            }
+        }
+
+        public void openStateFile()
+        {
+            if (!IsFileLocked("state.log"))
+            {
+                Process.Start("state.log");
+            }
+            else
+            {
+                //TODO: tell the user that file is already in use
+            }
+        }
+
+        private bool IsFileLocked(string filename)
+        {
+            bool Locked = false;
+            try
+            {
+                FileStream fs =
+                    File.Open(filename, FileMode.OpenOrCreate,
+                    FileAccess.ReadWrite, FileShare.None);
+                fs.Close();
+            }
+            catch (IOException ex)
+            {
+                Locked = true;
+            }
+            return Locked;
+        }
     }
 }
