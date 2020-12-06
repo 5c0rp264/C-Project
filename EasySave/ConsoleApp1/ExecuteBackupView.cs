@@ -34,20 +34,39 @@ namespace consoleApp
             if (this.Controller.Model.BackupJobList.Count == 0)
             {
                 this.Controller.View = new HomeView();
-                Console.WriteLine("You don't have any backup job to execute...\nPress a key to continue");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("You don't have any backup job to execute...\nPress a key to continue");
+                }
+                else
+                {
+                    Console.WriteLine("Vous n'avez pas de travail de sauvegarde à exécuter...\nAppuyer sur une touche pour continuer");
+                }
                 Console.ReadLine();
             }
             else
             {
                 // If there is any then the user selects which one to execute
-                Console.WriteLine("[Id]     Name");
-
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("[Id]     Name");
+                }
+                else
+                {
+                    Console.WriteLine("[Id]     Nom");
+                }
                 for (int i = 0; i < this.Controller.Model.BackupJobList.Count; i++)
                 {
                     Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupJobList[i].Name);
                 }
-                Console.WriteLine("\nId of backup job you want to execute :");
-
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("\nId of backup job you want to execute :");
+                }
+                else
+                {
+                    Console.WriteLine("\nId du travail de sauvegarde à exécuter :");
+                }
 
                 List<int> idBUJ = new List<int>();
                 bool isUserInputValid = false;
@@ -59,17 +78,38 @@ namespace consoleApp
                     {
                         // He has the ability to add a backup job to execute at the same time
                         idBUJ.Add(int.Parse(userInput) - 1);
-                        Console.WriteLine("Do you want to add other backup job [0]No 1[Yes] :");
+                        if (Model.consoleLanguage == "english")
+                        {
+                            Console.WriteLine("Do you want to add other backup job [0] No [1] Yes :");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Souhaitez-vous ajouter un autre travail de sauvegarde [0] Non [1] Oui :");
+                        }
                         userInput = Console.ReadLine();
                         while (userInput != "0" && userInput != "1")
                         {
-                            Console.WriteLine("Reminder [0]No [Yes] :");
+                            if (Model.consoleLanguage == "english")
+                            {
+                                Console.WriteLine("Reminder [0] No [1] Yes : :");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Rappel [0] Non [1] Oui : :");
+                            }
                             userInput = Console.ReadLine();
                         }
                         if (userInput == "1")
                         {
                             isUserInputValid = false;
-                            Console.WriteLine("\nId of backup job you want to execute :");
+                            if (Model.consoleLanguage == "english")
+                            {
+                                Console.WriteLine("\nId of backup job you want to execute :");
+                            }
+                            else
+                            {
+                                Console.WriteLine("\nId du travail de sauvegarde à exécuter :");
+                            }
                         }
                     }
                 }
@@ -79,11 +119,25 @@ namespace consoleApp
                     if (!this.Controller.Model.BackupJobList[idBUJ[i]].IsFull)
                     {
                         // If there is a differential backup we ask on which full the users wants to base it's differential backup
-                        Console.WriteLine("Full backup of reference for diff backup [" + idBUJ[i] + "] " + this.Controller.Model.BackupJobList[idBUJ[i]].Name + " :");
+                        if (Model.consoleLanguage == "english")
+                        {
+                            Console.WriteLine("Full backup of reference for diff backup [" + idBUJ[i] + "] " + this.Controller.Model.BackupJobList[idBUJ[i]].Name + " :");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Sauvegarde complète de référence pour la différentielle [" + idBUJ[i] + "] " + this.Controller.Model.BackupJobList[idBUJ[i]].Name + " :");
+                        }
                         userInput = Console.ReadLine();
                         while (!(userInput.Length >= 1))
                         {
-                            Console.WriteLine("Please :");
+                            if (Model.consoleLanguage == "english")
+                            {
+                                Console.WriteLine("Please :");
+                            }
+                            else
+                            {
+                                Console.WriteLine("S'il vous plaît :");
+                            }
                             userInput = Console.ReadLine();
                         }
                         dirFullForDiff.Add(userInput);
@@ -104,11 +158,20 @@ namespace consoleApp
                 }
                 // Stop the spinner because it ended
                 Spinner.Stop();
-                
+
                 // We tell the user that everything has been done and we redirect him to he home page
-                Console.WriteLine("\nDone.");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("\nDone.");
+                    Console.WriteLine("Press a key to continue");
+                }
+                else
+                {
+                    Console.WriteLine("\nTerminer.");
+                    Console.WriteLine("Appuyer sur une touche pour continuer");
+                }
                 this.Controller.View = new HomeView();
-                Console.WriteLine("Press a key to continue");
+                
                 Console.ReadLine();
             }
         }
@@ -131,7 +194,14 @@ namespace consoleApp
                 }
                 else
                 {
-                    Console.WriteLine("\nInvalid response.Try again\n");
+                    if (Model.consoleLanguage == "english")
+                    {
+                        Console.WriteLine("\nInvalid response.Try again\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nRéponse invalide. Veuillez réessayer\n");
+                    }
                 }
 
                 return stringIsValid;

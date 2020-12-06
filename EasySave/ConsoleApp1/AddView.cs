@@ -32,7 +32,15 @@ namespace consoleApp
         public void Show()
         {
                 bool isUserInputValid = false;
-                Console.WriteLine("Name of backup job to create :");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("Name of backup job to create :");
+                }
+                else
+                {
+                    Console.WriteLine("Nom du travail de sauvegarde à créer :");
+                }
+
                 while (isUserInputValid != true)
                 {
                     userInput = Console.ReadLine();
@@ -41,7 +49,15 @@ namespace consoleApp
                 String name = userInput;
 
                 isUserInputValid = false;
-                Console.WriteLine("Source of backup job to create :");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("Source of backup job to create :");
+                }
+                else
+                {
+                    Console.WriteLine("Source du travail de sauvegarde à créer :");
+                }
+
                 while (isUserInputValid != true)
                 {
                     userInput = Console.ReadLine();
@@ -50,8 +66,16 @@ namespace consoleApp
                 String source = userInput;
 
                 isUserInputValid = false;
-                Console.WriteLine("Destination of backup job to create :");
-                while (isUserInputValid != true)
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("Destination of backup job to create :");
+                }
+                else
+                {
+                    Console.WriteLine("Destination du travail de sauvegarde à créer :");
+                }
+
+            while (isUserInputValid != true)
                 {
                     userInput = Console.ReadLine();
                     isUserInputValid = CheckIfUserInputIsValid(userInput);
@@ -59,7 +83,15 @@ namespace consoleApp
                 String destination = userInput;
 
                 isUserInputValid = false;
-                Console.WriteLine("What type of backup do you want :\n[0] Differential\n[1]Full");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("What type of backup do you want :\n[0] Differential\n[1] Full");
+                }
+                else
+                {
+                    Console.WriteLine("Quel type de travail de sauvegarde souhaitez-vous :\n[0] Différentielle\n[1] Complète");
+                }
+
                 Boolean isAFullBackup = false;
                 while (isUserInputValid != true)
                 {
@@ -78,12 +110,27 @@ namespace consoleApp
                     }
                     else
                     {
-                        Console.WriteLine("Thanks to enter a valid value.");
+                    if (Model.consoleLanguage == "english")
+                    {
+                        Console.WriteLine("Thanks to enter a valid value");
                     }
+                    else
+                    {
+                        Console.WriteLine("Merci d'entrer une valeur valide");
+                    }
+                }
                 }
 
 
-            Console.WriteLine("Extensions that will be encrypted (comma separated, no input for no encryption):");
+            
+            if (Model.consoleLanguage == "english")
+            {
+                Console.WriteLine("Extensions that will be encrypted (comma separated, no input for no encryption):");
+            }
+            else
+            {
+                Console.WriteLine("Extensions à crypter (séparées d'une virgule, laissez vide pour ne pas crypter):");
+            }
             userInput = Console.ReadLine();
             List<string> extToCrypt = parseUserInputAsList(userInput);
 
@@ -94,22 +141,55 @@ namespace consoleApp
                     BackupJob backupJob = new BackupJob(name, source, destination, isAFullBackup, extToCrypt);
                     if (this.controller.Model.createBackupJob(backupJob))
                     {
+                        
+                    if (Model.consoleLanguage == "english")
+                    {
                         Console.WriteLine("backup job added with success.\n");
                     }
                     else
                     {
+                        Console.WriteLine("Travail de sauvegarde ajouté avec succès\n");
+                    }
+                }
+                    else
+                    {
+                    if (Model.consoleLanguage == "english")
+                    {
                         Console.WriteLine("An error occured, try again later\n");
                     }
+                    else
+                    {
+                        Console.WriteLine("Une erreur est survenue, veuillez réessayer\n");
+                    }
+
+                    }
                     this.Controller.View = new HomeView();
+
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
+                if (Model.consoleLanguage == "english")
+                {
                     Console.WriteLine("\nUnable to generate this backup job.\n");
+                    Console.WriteLine("Press a key to continue");
+                }
+                else
+                {
+                    Console.WriteLine("\nImpossible de générer ce travail de sauvegarde.\n");
+                    Console.WriteLine("Appuyer sur une touche pour continuer");
                 }
 
-                Console.WriteLine("Press a key to continue");
+                }
                 Console.ReadLine();
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("Press a key to continue");
+                }
+                else
+                {
+                    Console.WriteLine("Appuyer sur une touche pour continuer");
+                }
         }
 
         //Link the view to the controller
@@ -131,14 +211,28 @@ namespace consoleApp
                 }
                 else
                 {
-                    Console.WriteLine("\nInvalid response.Try again\n");
+                    if (Model.consoleLanguage == "english")
+                    {
+                        Console.WriteLine("\nInvalid response.Try again\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nRéponse invalide. Veuillez réessayer\n");
+                    }
                 }
 
                 return stringIsValid;
             }
             catch (Exception)
             {
-                Console.WriteLine("\nInvalid response.Try again\n");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("\nInvalid response.Try again\n");
+                }
+                else
+                {
+                    Console.WriteLine("\nRéponse invalide. Veuillez réessayer\n");
+                }
                 return false;
             }
 

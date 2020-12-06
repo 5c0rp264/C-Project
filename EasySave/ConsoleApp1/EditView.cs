@@ -44,7 +44,14 @@ namespace consoleApp
             if (this.Controller.Model.BackupJobList.Count == 0)
             {
                 this.Controller.View = new HomeView();
-                Console.WriteLine("You don't have any backup job to edit...\nPress a key to continue");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("You don't have any backup job to edit...\nPress a key to continue");
+                }
+                else
+                {
+                    Console.WriteLine("Vous n'avez pas de travail de sauvegarde à éditer...\nAppuyer sur une touche pour continuer");
+                }
                 Console.ReadLine();
             }
             else
@@ -56,8 +63,15 @@ namespace consoleApp
                 {
                     Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupJobList[i].Name);
                 }
-                Console.WriteLine("Id of backup job you want to edit :");
-
+                
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("Id of backup job you want to edit :");
+                }
+                else
+                {
+                    Console.WriteLine("Id du travail de sauvegarde à éditer :");
+                }
 
 
                 while (isUserInputValid != true)
@@ -75,14 +89,22 @@ namespace consoleApp
                 Boolean isFull = this.Controller.Model.BackupJobList[idToEdit].IsFull;
 
                 // From line 75 to 118 we just want him to edit a backup job criteria by criteria with good inputs
-                Console.WriteLine("Name [" + this.Controller.Model.BackupJobList[idToEdit].Name + "] :");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("Name [" + this.Controller.Model.BackupJobList[idToEdit].Name + "] :");
+                }
+                else
+                {
+                    Console.WriteLine("Nom [" + this.Controller.Model.BackupJobList[idToEdit].Name + "] :");
+                }
+                
                 userInput = Console.ReadLine();
 
                 if (userInput.Length >= 1)
                 {
                     name = userInput;
                 }
-                Console.WriteLine("source [" + this.Controller.Model.BackupJobList[idToEdit].Source + "] :");
+                Console.WriteLine("Source [" + this.Controller.Model.BackupJobList[idToEdit].Source + "] :");
                 userInput = Console.ReadLine();
 
                 if (userInput.Length >= 1)
@@ -96,7 +118,16 @@ namespace consoleApp
                 {
                     destination = userInput;
                 }
-                Console.WriteLine("Do you want [0]Diff or [1]Full [" + (this.Controller.Model.BackupJobList[idToEdit].IsFull ? "1" : "0") + "] :");
+
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("Do you want [0]Diff or [1]Full [" + (this.Controller.Model.BackupJobList[idToEdit].IsFull ? "1" : "0") + "] :");
+                }
+                else
+                {
+                    Console.WriteLine("Quel type voulez-vous [0] Différentielle or [1] Complète [" + (this.Controller.Model.BackupJobList[idToEdit].IsFull ? "1" : "0") + "] :");
+                }
+                
                 isUserInputValid = false;
                 while (isUserInputValid != true)
                 {
@@ -115,12 +146,26 @@ namespace consoleApp
                     }
                     else
                     {
-                        Console.WriteLine("Thanks to enter a valid value.");
+                        if (Model.consoleLanguage == "english")
+                        {
+                            Console.WriteLine("Thanks to enter a valid value.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Merci d'entrer une valeur valide.");
+                        }
                     }
                 }
 
                 List<string> extToCrypt = this.Controller.Model.BackupJobList[idToEdit].ToBeEncryptedFileExtensions;
-                Console.WriteLine("Extensions that will be encrypted (comma separated, no input for no encryption) [" + string.Join(", ", this.Controller.Model.BackupJobList[idToEdit].ToBeEncryptedFileExtensions) +"]:");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("Extensions that will be encrypted (comma separated, no input for no encryption) [" + string.Join(", ", this.Controller.Model.BackupJobList[idToEdit].ToBeEncryptedFileExtensions) + "]:");
+                }
+                else
+                {
+                    Console.WriteLine("Extensions à crypter (séparées d'une virgule, laissez vide pour ne pas crypter) [" + string.Join(", ", this.Controller.Model.BackupJobList[idToEdit].ToBeEncryptedFileExtensions) + "]:");
+                }
                 userInput = Console.ReadLine();
                 if (userInput.Length > 1)
                 {
@@ -132,11 +177,29 @@ namespace consoleApp
                 }
                 catch
                 {
-                    Console.WriteLine("Unable to edit this backup job.");
+                    if (Model.consoleLanguage == "english")
+                    {
+                        Console.WriteLine("Unable to edit this backup job.");
+                        Console.WriteLine("Press a key to continue");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Impossible d'éditer ce travail de sauvegarde.");
+                        Console.WriteLine("Appuyer sur une touche pour continuer");
+                    }
+
+                    
                 }
                 // Return to the home view
                 this.Controller.View = new HomeView();
-                Console.WriteLine("Press a key to continue");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("Press a key to continue");
+                }
+                else
+                {
+                    Console.WriteLine("Appuyer sur une touche pour continuer");
+                }
                 Console.ReadLine();
             }
         }
@@ -159,14 +222,28 @@ namespace consoleApp
                 }
                 else
                 {
-                    Console.WriteLine("\nInvalid response.Try again\n");
+                    if (Model.consoleLanguage == "english")
+                    {
+                        Console.WriteLine("\nInvalid response.Try again\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nRéponse invalide. Veuillez réessayer\n");
+                    }
                 }
 
                 return stringIsValid;
             }
             catch (Exception)
             {
-                Console.WriteLine("\nInvalid response.Try again\n");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("\nInvalid response.Try again\n");
+                }
+                else
+                {
+                    Console.WriteLine("\nRéponse invalide. Veuillez réessayer\n");
+                }
                 return false;
             }
 

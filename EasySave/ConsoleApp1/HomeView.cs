@@ -39,25 +39,53 @@ namespace consoleApp
         {
             bool isUserInputValid = false;
 
-            // Clear what is currently displayed in the console and print the menu
-            Console.Clear();
-            Console.WriteLine("\n");
-            Console.WriteLine("     ███████╗ █████╗ ███████╗██╗   ██╗    ███████╗ █████╗ ██╗   ██╗███████╗");
-            Console.WriteLine("     ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝");
-            Console.WriteLine("     █████╗  ███████║███████╗ ╚████╔╝     ███████╗███████║██║   ██║█████╗");
-            Console.WriteLine("     ██╔══╝  ██╔══██║╚════██║  ╚██╔╝      ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝");
-            Console.WriteLine("     ███████╗██║  ██║███████║   ██║       ███████║██║  ██║ ╚████╔╝ ███████╗");
-            Console.WriteLine("     ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝");
-            Console.WriteLine("\n\nWhat would you like to start with ?");
-            Console.WriteLine("");
-            Console.WriteLine("[0] Execute backup jobs");
-            Console.WriteLine("");
-            Console.WriteLine("[1] Add a backup job");
-            Console.WriteLine("[2] Edit a backup job");
-            Console.WriteLine("[3] Delete a backup job");
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("Your choice :");
+            if (Model.consoleLanguage == "english")
+            {
+                // Clear what is currently displayed in the console and print the menu
+                Console.Clear();
+                Console.WriteLine("\n");
+                Console.WriteLine("     ███████╗ █████╗ ███████╗██╗   ██╗    ███████╗ █████╗ ██╗   ██╗███████╗");
+                Console.WriteLine("     ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝");
+                Console.WriteLine("     █████╗  ███████║███████╗ ╚████╔╝     ███████╗███████║██║   ██║█████╗");
+                Console.WriteLine("     ██╔══╝  ██╔══██║╚════██║  ╚██╔╝      ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝");
+                Console.WriteLine("     ███████╗██║  ██║███████║   ██║       ███████║██║  ██║ ╚████╔╝ ███████╗");
+                Console.WriteLine("     ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝");
+                Console.WriteLine("\n\nWhat would you like to start with ?");
+                Console.WriteLine("");
+                Console.WriteLine("[0] Execute backup jobs");
+                Console.WriteLine("");
+                Console.WriteLine("[1] Add a backup job");
+                Console.WriteLine("[2] Edit a backup job");
+                Console.WriteLine("[3] Delete a backup job");
+                Console.WriteLine("[4] Change Language");
+                Console.WriteLine("");
+                Console.WriteLine("");
+                Console.WriteLine("Your choice :");
+            }
+            else
+            {
+                // Clear what is currently displayed in the console and print the menu
+                Console.Clear();
+                Console.WriteLine("\n");
+                Console.WriteLine("     ███████╗ █████╗ ███████╗██╗   ██╗    ███████╗ █████╗ ██╗   ██╗███████╗");
+                Console.WriteLine("     ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝    ██╔════╝██╔══██╗██║   ██║██╔════╝");
+                Console.WriteLine("     █████╗  ███████║███████╗ ╚████╔╝     ███████╗███████║██║   ██║█████╗");
+                Console.WriteLine("     ██╔══╝  ██╔══██║╚════██║  ╚██╔╝      ╚════██║██╔══██║╚██╗ ██╔╝██╔══╝");
+                Console.WriteLine("     ███████╗██║  ██║███████║   ██║       ███████║██║  ██║ ╚████╔╝ ███████╗");
+                Console.WriteLine("     ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝");
+                Console.WriteLine("\n\nPar quoi souhaitez-vous commencer ?");
+                Console.WriteLine("");
+                Console.WriteLine("[0] Exécuter un travail de sauvegarde");
+                Console.WriteLine("");
+                Console.WriteLine("[1] Ajouter un travail de sauvegarde");
+                Console.WriteLine("[2] Éditer un travail de sauvegarde");
+                Console.WriteLine("[3] Supprimer un travail de sauvegarde");
+                Console.WriteLine("[4] Changer de langue");
+                Console.WriteLine("");
+                Console.WriteLine("");
+                Console.WriteLine("Votre choix :");
+            }
+
 
 
 
@@ -81,7 +109,7 @@ namespace consoleApp
             try
             {
                 bool stringIsValid = false;
-                if (int.Parse(userInput) <= 3 && int.Parse(userInput) >= 0)
+                if (int.Parse(userInput) <= 4 && int.Parse(userInput) >= 0)
                 {
                     stringIsValid = true;
                     switch (int.Parse(userInput))
@@ -98,21 +126,37 @@ namespace consoleApp
                         case 3:
                             controller.View = new DeleteView();
                             break;
+                        case 4:
+                            controller.View = new LanguageView();
+                            break;
                         default:
                             break;
                     }
                 }
                 else
                 {
-                    Console.WriteLine("\nInvalid response.Try again\n");
+                    if (Model.consoleLanguage == "english")
+                    {
+                        Console.WriteLine("\nInvalid response.Try again\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nRéponse invalide. Veuillez réessayer\n");
+                    }
                 }
 
                 return stringIsValid;
             }
             catch (Exception)
             {
-
-                Console.WriteLine("\nInvalid response.Try again\n");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("\nInvalid response.Try again\n");
+                }
+                else
+                {
+                    Console.WriteLine("\nRéponse invalide. Veuillez réessayer\n");
+                }
 
                 return false;
             }

@@ -36,6 +36,8 @@ namespace consoleApp
             set { backupJobList = value; }
         }
 
+        public static string consoleLanguage = "english";
+
         public Model()
         {
             //Creating log dir if doesn't exist
@@ -494,13 +496,27 @@ namespace consoleApp
                     }
                     catch (NotSupportedException e)
                     {
-                        Console.WriteLine("Unable to calculate folder size: {0}", e.Message);
+                        if (Model.consoleLanguage == "english")
+                        {
+                            Console.WriteLine("Unable to calculate folder size: {0}", e.Message);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Impossible de calculer la taille du fichier: {0}", e.Message);
+                        }
                     }
                 }
             }
             catch (UnauthorizedAccessException e)
             {
-                Console.WriteLine("Unable to calculate folder size: {0}", e.Message);
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("Unable to calculate folder size: {0}", e.Message);
+                }
+                else
+                {
+                    Console.WriteLine("Impossible de calculer la taille du fichier: {0}", e.Message);
+                }
             }
             return folderSize;
         }

@@ -33,19 +33,41 @@ namespace consoleApp
             if (this.Controller.Model.BackupJobList.Count == 0)
             {
                 this.Controller.View = new HomeView();
-                Console.WriteLine("You don't have any backup job to delete...\nPress a key to continue");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("You don't have any backup job to delete...\nPress a key to continue");
+                }
+                else
+                {
+                    Console.WriteLine("Vous n'avez pas de travail de sauvegarde à supprimer...\nAppuyer sur une touche pour continuer");
+                }
                 Console.ReadLine();
             }
             else
             {
                 // If there is at least one then he has to choose which one he wants to edit
-                Console.WriteLine("[Id]     Name");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("[Id]     Name");
+                }
+                else
+                {
+                    Console.WriteLine("[Id]     Nom");
+                }
 
                 for (int i = 0; i < this.Controller.Model.BackupJobList.Count; i++)
                 {
                     Console.WriteLine("[" + (i + 1) + "]     " + this.Controller.Model.BackupJobList[i].Name);
                 }
-                Console.WriteLine("Id of backup job you want to delete :");
+                
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("ID of backup job you want to delete :");
+                }
+                else
+                {
+                    Console.WriteLine("ID du travail de sauvegarde à supprimer :");
+                }
 
                 while (isUserInputValid != true)
                 {
@@ -61,10 +83,24 @@ namespace consoleApp
                 }
                 catch
                 {
-                    Console.WriteLine("Unable to delete this backup job.");
+                    if (Model.consoleLanguage == "english")
+                    {
+                        Console.WriteLine("Press a key to continue");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Appuyer sur une touche pour continuer");
+                    }
                 }
                 this.Controller.View = new HomeView();
-                Console.WriteLine("Press a key to continue");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("Press a key to continue");
+                }
+                else
+                {
+                    Console.WriteLine("Appuyer sur une touche pour continuer");
+                }
                 Console.ReadLine();
             }
         }
@@ -87,14 +123,28 @@ namespace consoleApp
                 }
                 else
                 {
-                    Console.WriteLine("\nInvalid response.Try again\n");
+                    if (Model.consoleLanguage == "english")
+                    {
+                        Console.WriteLine("\nInvalid response.Try again\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nRéponse invalide. Veuillez réessayer\n");
+                    }
                 }
 
                 return stringIsValid;
             }
             catch (Exception)
             {
-                Console.WriteLine("\nInvalid response.Try again\n");
+                if (Model.consoleLanguage == "english")
+                {
+                    Console.WriteLine("\nInvalid response.Try again\n");
+                }
+                else
+                {
+                    Console.WriteLine("\nRéponse invalide. Veuillez réessayer\n");
+                }
                 return false;
             }
 
