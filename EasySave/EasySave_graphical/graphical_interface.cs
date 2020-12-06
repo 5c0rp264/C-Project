@@ -197,11 +197,13 @@ namespace EasySave_graphical
             edit_destinationFolder.Enabled = true;
             this.edit_sourceFolder.Text = this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].Source;
 
+            edit_full.Checked = true;
             edit_full.Enabled = this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].IsFull;
-            edit_differential.Enabled = !this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].IsFull;
+            edit_differential.Enabled = true;
+            edit_differential.Checked = !this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].IsFull;
 
             edit_extension.ReadOnly = false;
-            edit_extension.Text = string.Join(",",this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].ToBeEncryptedFileExtensions);
+            edit_extension.Text = string.Join(", ",this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].ToBeEncryptedFileExtensions);
             edit_label.Enabled = true;
         }
 
@@ -605,9 +607,9 @@ namespace EasySave_graphical
             this.execute_backup_list.Items.Clear();
             for (int i = 0; i < this.controller.Model.BackupJobList.Count; i++ )
             {
-                this.edit_backup_list.Items.Add("["+i+"]" + this.controller.Model.BackupJobList[i].Name);
-                this.delete_backup_list.Items.Add("[" + i + "]" + this.controller.Model.BackupJobList[i].Name);
-                this.execute_backup_list.Items.Add("[" + i + "]" + this.controller.Model.BackupJobList[i].Name);
+                this.edit_backup_list.Items.Add("["+i+"] " + this.controller.Model.BackupJobList[i].Name);
+                this.delete_backup_list.Items.Add("[" + i + "] " + this.controller.Model.BackupJobList[i].Name);
+                this.execute_backup_list.Items.Add("[" + i + "] " + this.controller.Model.BackupJobList[i].Name);
             }
             /*this.edit_backup_list.Refresh();
             this.delete_backup_list.Refresh();
