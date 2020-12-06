@@ -339,6 +339,7 @@ namespace EasySave_graphical
                 if (!didCryptIt)
                 {
                     file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                    writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( super useful log since there is no encryption )");
                 }
                 BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                 //Console.Write(BUJS[index].FilesTransfered.Count / BUJS[index].TotalElligibleFile);
@@ -401,6 +402,7 @@ namespace EasySave_graphical
                     if (!didCryptIt)
                     {
                         file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                        writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( super useful log since there is no encryption )");
                     }
                     BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                     BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
@@ -429,6 +431,7 @@ namespace EasySave_graphical
                         if (!didCryptIt)
                         {
                             file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                            writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( super useful log since there is no encryption )");
                         }
                         BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                         BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
