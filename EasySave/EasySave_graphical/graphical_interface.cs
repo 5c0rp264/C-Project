@@ -169,7 +169,7 @@ namespace EasySave_graphical
                 {
                     Console.WriteLine("backup job added with success.\n");
                     //TODO: Translate here
-                    MessageBox.Show("Added with siccess", "Added", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Added with success", "Added", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     reloadListView();
                 }
                 else
@@ -190,12 +190,15 @@ namespace EasySave_graphical
         private void edit_backup_list_SelectedIndexChanged(object sender, EventArgs e)
         {
             // When the user has chosen a backup we put every information we have in the form
-            edit_name.Text = edit_backup_list.SelectedItem.ToString();
+            edit_name.Text = this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].Name;
             edit_name.ReadOnly = false;
 
             edit_sourceFolder.Enabled = true;
             edit_destinationFolder.Enabled = true;
+            edit_sourceFolderValue = this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].Source;
+            edit_destinationFolderValue = this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].Destination;
             this.edit_sourceFolder.Text = this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].Source;
+            this.edit_destinationFolder.Text = this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].Destination;
 
             edit_full.Checked = true;
             edit_full.Enabled = this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].IsFull;
