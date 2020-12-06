@@ -24,7 +24,7 @@ namespace GraphicalApp_1
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("test réussi");
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -38,6 +38,11 @@ namespace GraphicalApp_1
         }
 
         private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
         }
