@@ -20,6 +20,7 @@ namespace EasySave_graphical
             graphical_interface view = new graphical_interface();
             Controller controller = new Controller(model, view);
             view.SetController(controller);
+            view.reloadListView();
             Application.Run(view);
 
         }
