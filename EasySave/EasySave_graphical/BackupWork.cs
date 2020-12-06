@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace consoleApp
+namespace EasySave_graphical
 {
     public class BackupJob
     {

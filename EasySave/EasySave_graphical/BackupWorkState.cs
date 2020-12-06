@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 
 
-namespace consoleApp
+namespace EasySave_graphical
 {
     public class myOwnFileInfo {
         public long fileSize;

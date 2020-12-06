@@ -1,5 +1,5 @@
 ﻿using System;
-namespace consoleApp
+namespace EasySave_graphical
 {
     public class Log
     {
