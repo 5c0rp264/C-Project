@@ -430,13 +430,10 @@ namespace EasySave_graphical
         // Execute ---------------------------------------------------------------------------------------------------------------------------------------------------
         private void execute_play_Click(object sender, EventArgs e)
         {
-            // This is an array containing every backup the user want's to select.
-            
-            if (execute_backup_list.SelectedItems.Count > 0)
+            if (execute_backup_list.SelectedItems.Count > 0) // This is an array containing every backup the user want's to select.
             {
                 List<int> slectedBUJ = new List<int>();
                 List<String> dirFullForDiff = new List<string>();
-
                 foreach (var i in execute_backup_list.SelectedItems)
                 {
                     slectedBUJ.Add(execute_backup_list.Items.IndexOf(i));// Add selected indexes to the List<int>
@@ -493,7 +490,19 @@ namespace EasySave_graphical
             {
                 execute_warning.Visible = true;
             }
+        }
 
+        //TODO: LOAD AND UNLOAD THIS ANIMATION
+        private void loadingAnimation(bool needsToBeVisible)
+        {
+            if (needsToBeVisible)
+            {
+                loading.Visible = true;
+            }
+            else
+            {
+                loading.Visible = false;
+            }
         }
 
         private void execute_backup_list_SelectedIndexChanged(object sender, EventArgs e)
@@ -505,6 +514,7 @@ namespace EasySave_graphical
 
         private void stripe_execute_Click(object sender, EventArgs e)
         {
+            loading.Visible = false;
             TabControl.SelectedIndex = 4;
             resetStripColor();
             strip_execute.BackColor = ColorTranslator.FromHtml("#CCCAC8");

@@ -75,6 +75,7 @@ namespace EasySave_graphical
             this.delete_label = new System.Windows.Forms.Label();
             this.delete_backup_list = new System.Windows.Forms.ListBox();
             this.executeTab = new System.Windows.Forms.TabPage();
+            this.loading = new System.Windows.Forms.PictureBox();
             this.execute_warning = new System.Windows.Forms.Label();
             this.execute_stop = new System.Windows.Forms.Button();
             this.execute_play = new System.Windows.Forms.Button();
@@ -90,6 +91,7 @@ namespace EasySave_graphical
             this.EditTab.SuspendLayout();
             this.DeleteTab.SuspendLayout();
             this.executeTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loading)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -227,9 +229,9 @@ namespace EasySave_graphical
             this.homeTab.Controls.Add(this.english);
             this.homeTab.Controls.Add(this.language_container);
             this.homeTab.Controls.Add(this.logoBox);
-            this.homeTab.Location = new System.Drawing.Point(4, 5);
+            this.homeTab.Location = new System.Drawing.Point(4, 14);
             this.homeTab.Name = "homeTab";
-            this.homeTab.Size = new System.Drawing.Size(600, 406);
+            this.homeTab.Size = new System.Drawing.Size(600, 397);
             this.homeTab.TabIndex = 4;
             this.homeTab.Text = "Home";
             this.homeTab.UseVisualStyleBackColor = true;
@@ -281,7 +283,7 @@ namespace EasySave_graphical
             this.language_container.HideSelection = false;
             this.language_container.Location = new System.Drawing.Point(0, 226);
             this.language_container.Name = "language_container";
-            this.language_container.Size = new System.Drawing.Size(600, 180);
+            this.language_container.Size = new System.Drawing.Size(600, 171);
             this.language_container.TabIndex = 17;
             this.language_container.UseCompatibleStateImageBehavior = false;
             // 
@@ -308,10 +310,10 @@ namespace EasySave_graphical
             this.Addtab.Controls.Add(this.add_source);
             this.Addtab.Controls.Add(this.add_extension);
             this.Addtab.Controls.Add(this.add_name);
-            this.Addtab.Location = new System.Drawing.Point(4, 5);
+            this.Addtab.Location = new System.Drawing.Point(4, 14);
             this.Addtab.Name = "Addtab";
             this.Addtab.Padding = new System.Windows.Forms.Padding(3);
-            this.Addtab.Size = new System.Drawing.Size(600, 406);
+            this.Addtab.Size = new System.Drawing.Size(600, 397);
             this.Addtab.TabIndex = 0;
             this.Addtab.Text = "Add";
             this.Addtab.UseVisualStyleBackColor = true;
@@ -427,10 +429,10 @@ namespace EasySave_graphical
             this.EditTab.Controls.Add(this.edit_sourceFolder);
             this.EditTab.Controls.Add(this.edit_extension);
             this.EditTab.Controls.Add(this.edit_name);
-            this.EditTab.Location = new System.Drawing.Point(4, 5);
+            this.EditTab.Location = new System.Drawing.Point(4, 14);
             this.EditTab.Name = "EditTab";
             this.EditTab.Padding = new System.Windows.Forms.Padding(3);
-            this.EditTab.Size = new System.Drawing.Size(600, 406);
+            this.EditTab.Size = new System.Drawing.Size(600, 397);
             this.EditTab.TabIndex = 1;
             this.EditTab.Text = "Edit";
             this.EditTab.UseVisualStyleBackColor = true;
@@ -599,9 +601,9 @@ namespace EasySave_graphical
             this.DeleteTab.Controls.Add(this.delete_validation);
             this.DeleteTab.Controls.Add(this.delete_label);
             this.DeleteTab.Controls.Add(this.delete_backup_list);
-            this.DeleteTab.Location = new System.Drawing.Point(4, 5);
+            this.DeleteTab.Location = new System.Drawing.Point(4, 14);
             this.DeleteTab.Name = "DeleteTab";
-            this.DeleteTab.Size = new System.Drawing.Size(600, 406);
+            this.DeleteTab.Size = new System.Drawing.Size(600, 397);
             this.DeleteTab.TabIndex = 2;
             this.DeleteTab.Text = "Delete";
             this.DeleteTab.UseVisualStyleBackColor = true;
@@ -653,6 +655,7 @@ namespace EasySave_graphical
             // 
             // executeTab
             // 
+            this.executeTab.Controls.Add(this.loading);
             this.executeTab.Controls.Add(this.execute_warning);
             this.executeTab.Controls.Add(this.execute_stop);
             this.executeTab.Controls.Add(this.execute_play);
@@ -665,6 +668,17 @@ namespace EasySave_graphical
             this.executeTab.TabIndex = 3;
             this.executeTab.Text = "Execute";
             this.executeTab.UseVisualStyleBackColor = true;
+            // 
+            // loading
+            // 
+            this.loading.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.loading.Image = ((System.Drawing.Image)(resources.GetObject("loading.Image")));
+            this.loading.Location = new System.Drawing.Point(471, 110);
+            this.loading.Name = "loading";
+            this.loading.Size = new System.Drawing.Size(64, 64);
+            this.loading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.loading.TabIndex = 10;
+            this.loading.TabStop = false;
             // 
             // execute_warning
             // 
@@ -762,6 +776,7 @@ namespace EasySave_graphical
             this.DeleteTab.PerformLayout();
             this.executeTab.ResumeLayout(false);
             this.executeTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loading)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -819,6 +834,7 @@ namespace EasySave_graphical
         private System.Windows.Forms.TextBox edit_name;
         private System.Windows.Forms.Label execute_warning;
         private System.Windows.Forms.Label delete_warning;
+        private System.Windows.Forms.PictureBox loading;
     }
 }
 

@@ -89,6 +89,7 @@ namespace EasySave_graphical
         public void executeBUJList(List<int> backupJobIDList, List<String> fullBackupListForDiff)
         {
             startWatchingProcess();
+            
             // The user can select one or multiple backup job to execute in the same time
             int numOfDiff = 0;
             List<BackupJobState> BUJStateList = new List<BackupJobState>();
@@ -145,6 +146,7 @@ namespace EasySave_graphical
                 writeLogFile("Transfer time : " + BUJStateList[i].Stopwatch.Elapsed);
 
             }
+            
             stopWatchingProcess();
         }
 
@@ -524,8 +526,6 @@ namespace EasySave_graphical
                     {
                         waitHandle.Reset();
                         Console.WriteLine("paused");
-                        //Spinner.Stop();
-                        //Spinner.Dispose();
                         this.wasPaused = true;
                     }
                     else if (processes.Length == 0 && wasPaused)

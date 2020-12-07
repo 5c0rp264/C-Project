@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -8,8 +9,15 @@ namespace CryptoSoft
 {
     class Program
     {
-        static void Main(string[] args)
+		[DllImport("User32.dll", CallingConvention = CallingConvention.StdCall, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		private static extern bool ShowWindow([In] IntPtr hWnd, [In] int nCmdShow);
+
+		static void Main(string[] args)
         {
+			IntPtr handle = Process.GetCurrentProcess().MainWindowHandle;
+			ShowWindow(handle, 6);
+
 			Stopwatch sw = new Stopwatch();
 			sw.Start();
 			try {
