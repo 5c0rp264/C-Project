@@ -435,7 +435,18 @@ namespace EasySave_graphical
             //Console.WriteLine(processes.Length);
             if (processes.Length >= 1)
             {
-                MessageBox.Show("TODO: translate unable to do this shit", "oh shiiiit", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (language == "english")
+                {
+                    MessageBox.Show("A business process is running, we can't start the backup job", "Business Software", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (language == "french")
+                {
+                    MessageBox.Show("Un logiciel métier est en cours d'utilisation, nous ne pouvons pas démarrer de travail de sauvegarde", "Logiciel métier", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (language == "spanish")
+                {
+                    MessageBox.Show("Un software empresarial está en uso, no podemos iniciar la copia de seguridad.", "Software para empresas", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             else if (processes.Length == 0)
             {
@@ -592,6 +603,8 @@ namespace EasySave_graphical
             execute_play.Text = "Exécuter";
             execute_warning.Text = "Vous devez sélectionner au moins un travail";
             delete_warning.Text = "Vous devez sélectionner un travail";
+            execute_pause.Text = "Pause";
+            execute_stop.Text = "Stop";
         }
 
         private void spanish_CheckedChanged(object sender, EventArgs e)
@@ -636,6 +649,8 @@ namespace EasySave_graphical
             execute_play.Text = "Ejecutar";
             execute_warning.Text = "Necesitas seleccionar al menos un trabajo";
             delete_warning.Text = "Necesitas seleccionar un trabajo";
+            execute_pause.Text = "Pausar";
+            execute_stop.Text = "Parar";
         }
 
         private void english_CheckedChanged(object sender, EventArgs e)
@@ -680,6 +695,8 @@ namespace EasySave_graphical
             execute_play.Text = "Execute";
             execute_warning.Text = "You need to select at least one job";
             delete_warning.Text = "You need to select a job";
+            execute_pause.Text = "Break";
+            execute_stop.Text = "Stop";
         }
 
         // Other : 
