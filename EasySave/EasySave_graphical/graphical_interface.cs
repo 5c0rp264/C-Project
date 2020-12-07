@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -430,69 +431,79 @@ namespace EasySave_graphical
         // Execute ---------------------------------------------------------------------------------------------------------------------------------------------------
         private void execute_play_Click(object sender, EventArgs e)
         {
-            if (execute_backup_list.SelectedItems.Count > 0) // This is an array containing every backup the user want's to select.
+            Process[] processes = Process.GetProcessesByName(this.controller.Model.processNameToWatch);
+            //Console.WriteLine(processes.Length);
+            if (processes.Length >= 1)
             {
-                List<int> slectedBUJ = new List<int>();
-                List<String> dirFullForDiff = new List<string>();
-                foreach (var i in execute_backup_list.SelectedItems)
+                MessageBox.Show("TODO: translate unable to do this shit", "oh shiiiit", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (processes.Length == 0)
+            {
+                if (execute_backup_list.SelectedItems.Count > 0) // This is an array containing every backup the user want's to select.
                 {
-                    slectedBUJ.Add(execute_backup_list.Items.IndexOf(i));// Add selected indexes to the List<int>
-                    if (!this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count-1]].IsFull)
+                    List<int> slectedBUJ = new List<int>();
+                    List<String> dirFullForDiff = new List<string>();
+                    foreach (var i in execute_backup_list.SelectedItems)
                     {
-                        using (var fbd = new FolderBrowserDialog())
+                        slectedBUJ.Add(execute_backup_list.Items.IndexOf(i));// Add selected indexes to the List<int>
+                        if (!this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].IsFull)
                         {
-                            if (language == "spanish")
+                            using (var fbd = new FolderBrowserDialog())
                             {
-                                MessageBox.Show("Por favor, introduzca una copia de seguridad de referencia completa : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                            }
-                            else if (language == "french")
-                            {
-                                MessageBox.Show("Merci d'entrer une sauvegarde complète de référence : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                            }
-                            else
-                            {
-                                MessageBox.Show("Please enter a full backup of reference : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
-                            DialogResult result = fbd.ShowDialog();
-                            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
-                            {
-                                dirFullForDiff.Add(fbd.SelectedPath);
-                            }
-                            else
-                            {
-                                while (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                                if (language == "spanish")
                                 {
-                                    if (language == "spanish")
-                                    {
-                                        MessageBox.Show("Por favor : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "entrada inválida", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    MessageBox.Show("Por favor, introduzca una copia de seguridad de referencia completa : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                    }
-                                    else if (language == "french")
-                                    {
-                                        MessageBox.Show("S'il vous plaît : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Entrée invalide", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                }
+                                else if (language == "french")
+                                {
+                                    MessageBox.Show("Merci d'entrer une sauvegarde complète de référence : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                    }
-                                    else
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Please enter a full backup of reference : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                }
+                                DialogResult result = fbd.ShowDialog();
+                                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                                {
+                                    dirFullForDiff.Add(fbd.SelectedPath);
+                                }
+                                else
+                                {
+                                    while (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                                     {
-                                        MessageBox.Show("Please :  " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                        if (language == "spanish")
+                                        {
+                                            MessageBox.Show("Por favor : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "entrada inválida", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                        }
+                                        else if (language == "french")
+                                        {
+                                            MessageBox.Show("S'il vous plaît : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Entrée invalide", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Please :  " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                        }
+                                        result = fbd.ShowDialog();
                                     }
-                                    result = fbd.ShowDialog();
                                 }
                             }
                         }
                     }
+                    this.controller.Model.executeBUJList(slectedBUJ, dirFullForDiff);
                 }
-                this.controller.Model.executeBUJList(slectedBUJ, dirFullForDiff);
+                else
+                {
+                    execute_warning.Visible = true;
+                }
             }
-            else
-            {
-                execute_warning.Visible = true;
-            }
+            
         }
 
-        //TODO: LOAD AND UNLOAD THIS ANIMATION
+
         public void loadingAnimation(bool needsToBeVisible)
         {
             if (needsToBeVisible)

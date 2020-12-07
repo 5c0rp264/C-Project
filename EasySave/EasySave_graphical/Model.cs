@@ -14,7 +14,7 @@ namespace EasySave_graphical
     {
 
         //process watching to stop execution if openned :
-        string processNameToWatch = "Calculator";
+        public string processNameToWatch = "Calculator";
         private Thread watchThread;
         private static EventWaitHandle waitHandle = new ManualResetEvent(initialState: true);
         private bool wasPaused = false;
