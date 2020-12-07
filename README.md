@@ -29,6 +29,7 @@
   * [Software restrictions](#software-restrictions)
    
 * [Version 1.0](#Version-1.0)
+* [Version 2.0](#Version-2.0)
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
