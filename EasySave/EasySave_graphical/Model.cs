@@ -18,6 +18,7 @@ namespace EasySave_graphical
         private Thread watchThread;
         private static EventWaitHandle waitHandle = new ManualResetEvent(initialState: true);
         private bool wasPaused = false;
+        private Controller controller;
 
 
         private List<BackupJob> backupJobList;
@@ -31,6 +32,11 @@ namespace EasySave_graphical
         {
             get { return backupJobList; }
             set { backupJobList = value; }
+        }
+
+        public void setController (Controller controlelr)
+        {
+            this.controller = controlelr;
         }
 
         public Model()
@@ -89,6 +95,7 @@ namespace EasySave_graphical
         public void executeBUJList(List<int> backupJobIDList, List<String> fullBackupListForDiff)
         {
             startWatchingProcess();
+            this.controller.View.loadingAnimation(true);
             
             // The user can select one or multiple backup job to execute in the same time
             int numOfDiff = 0;
@@ -146,7 +153,7 @@ namespace EasySave_graphical
                 writeLogFile("Transfer time : " + BUJStateList[i].Stopwatch.Elapsed);
 
             }
-            
+            this.controller.View.loadingAnimation(false);
             stopWatchingProcess();
         }
 
@@ -527,6 +534,7 @@ namespace EasySave_graphical
                         waitHandle.Reset();
                         Console.WriteLine("paused");
                         this.wasPaused = true;
+                        this.controller.View.loadingAnimation(false);
                     }
                     else if (processes.Length == 0 && wasPaused)
                     {
@@ -534,6 +542,7 @@ namespace EasySave_graphical
                         waitHandle.Set();
                         Console.WriteLine("restarted");
                         this.wasPaused = false;
+                        this.controller.View.loadingAnimation(true);
                     }
                     Thread.Sleep(250);
                 }

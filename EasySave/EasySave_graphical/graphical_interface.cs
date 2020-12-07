@@ -493,7 +493,7 @@ namespace EasySave_graphical
         }
 
         //TODO: LOAD AND UNLOAD THIS ANIMATION
-        private void loadingAnimation(bool needsToBeVisible)
+        public void loadingAnimation(bool needsToBeVisible)
         {
             if (needsToBeVisible)
             {
