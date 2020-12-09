@@ -118,111 +118,111 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="about" xml:space="preserve">
-    <value>About</value>
+    <value>A propos</value>
   </data>
   <data name="add" xml:space="preserve">
-    <value>Add</value>
+    <value>Ajouter</value>
   </data>
   <data name="all_good" xml:space="preserve">
-    <value>Everything went well</value>
+    <value>Tout s'est bien passé</value>
   </data>
   <data name="business_software" xml:space="preserve">
-    <value>Business Software</value>
+    <value>Logiciel métier</value>
   </data>
   <data name="business_software_error" xml:space="preserve">
-    <value>A business process is running, we can't start the backup job</value>
+    <value>Un logiciel métier est en cours d'utilisation, nous ne pouvons pas démarrer de travail de sauvegarde</value>
   </data>
   <data name="delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Supprimer</value>
   </data>
   <data name="delete_check" xml:space="preserve">
-    <value>Do you really want to delete the following backup job :</value>
+    <value>Êtes-vous sûr de vouloir supprimer le travail de sauvegarde suivant :</value>
   </data>
   <data name="delete_confirm" xml:space="preserve">
-    <value>We have successfully deleted the following backup job : </value>
+    <value>Nous avons bien supprimé le travail de sauvegarde suivant : </value>
   </data>
   <data name="delete_label" xml:space="preserve">
-    <value>Select a backup job to delete</value>
+    <value>Sélectionner un travail de sauvegarde à supprimer</value>
   </data>
   <data name="delete_warning" xml:space="preserve">
-    <value>You need to select a backup job</value>
+    <value>Vous devez sélectionner un travail de sauvegarde</value>
   </data>
   <data name="destination" xml:space="preserve">
     <value>Destination</value>
   </data>
   <data name="differential" xml:space="preserve">
-    <value>Differential</value>
+    <value>Différentielle</value>
   </data>
   <data name="edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>Éditer</value>
   </data>
   <data name="error" xml:space="preserve">
-    <value>Error</value>
+    <value>Erreur</value>
   </data>
   <data name="error_message1" xml:space="preserve">
-    <value>The type of the backup job is not set</value>
+    <value>Le type de la sauvegarde est manquant</value>
   </data>
   <data name="error_message2" xml:space="preserve">
-    <value>A backup work needs a name to be identified</value>
+    <value>Le nom du travail de sauvegarde est nécessaire pour être identifiée</value>
   </data>
   <data name="error_message3" xml:space="preserve">
-    <value>The source folder is not set</value>
+    <value>Le dossier source est manquant</value>
   </data>
   <data name="error_message4" xml:space="preserve">
-    <value>The destination folder is not set</value>
+    <value>Le dossier de destination est manquant</value>
   </data>
   <data name="execute" xml:space="preserve">
-    <value>Execute</value>
+    <value>Exécuter</value>
   </data>
   <data name="execute_label" xml:space="preserve">
-    <value>Select the backup jobs to execute</value>
+    <value>Sélectionner les travaux à exécuter</value>
   </data>
   <data name="execute_warning" xml:space="preserve">
-    <value>You need to select at least one backup</value>
+    <value>Vous devez sélectionner au moins un travail</value>
   </data>
   <data name="extension" xml:space="preserve">
-    <value>Extension to encrypt : (.png,.txt,.mp3...)</value>
+    <value>Extension à crypter : (.png,.txt,.png)</value>
   </data>
   <data name="full" xml:space="preserve">
-    <value>Full</value>
+    <value>Complète</value>
   </data>
   <data name="home" xml:space="preserve">
-    <value>Home</value>
+    <value>Accueil</value>
   </data>
   <data name="information" xml:space="preserve">
     <value>Information</value>
   </data>
   <data name="log" xml:space="preserve">
-    <value>Log</value>
+    <value>Journal</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Name :</value>
+    <value>Nom :</value>
   </data>
   <data name="pause" xml:space="preserve">
     <value>Pause</value>
   </data>
   <data name="please" xml:space="preserve">
-    <value>Please : </value>
+    <value>S'il vous plaît : </value>
   </data>
   <data name="reference" xml:space="preserve">
-    <value>Please enter a full backup of reference :</value>
+    <value>Merci d'entrer une sauvegarde complète de référence :</value>
   </data>
   <data name="save" xml:space="preserve">
-    <value>Save</value>
+    <value>Sauvegarder</value>
   </data>
   <data name="select_label" xml:space="preserve">
-    <value>Choose a backup job</value>
+    <value>Choisir un travail</value>
   </data>
   <data name="source" xml:space="preserve">
     <value>Source</value>
   </data>
   <data name="state" xml:space="preserve">
-    <value>State</value>
+    <value>État</value>
   </data>
   <data name="stop" xml:space="preserve">
     <value>Stop</value>
   </data>
   <data name="success" xml:space="preserve">
-    <value>Added with success</value>
+    <value>Ajouté avec succès</value>
   </data>
 </root>

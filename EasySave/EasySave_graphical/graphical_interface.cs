@@ -1,27 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EasySave_graphical
 {
     public partial class graphical_interface : Form
     {
-        String language = "english";
         Controller controller;
 
         // Initialize ---------------------------------------------------------------------------------------------------------------------------------------------------
         public graphical_interface()
         {
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("");
             InitializeComponent();
             //reloadListView();
         }
@@ -82,7 +77,7 @@ namespace EasySave_graphical
 
         private Boolean addIsValid = true;
         private String errorMessage_add = "";
-        private String errorTitle_add = "";
+
         private void button1_Click(object sender, EventArgs e)
         {
             addIsValid = true;
@@ -91,18 +86,7 @@ namespace EasySave_graphical
             if (add_full.Checked == false && add_differential.Checked == false)
             {
                 addIsValid = false;
-                if (language == "spanish")
-                {
-                    errorMessage_add = "El tipo de trabajo no está establecido";
-                }
-                else if(language == "french")
-                {
-                    errorMessage_add = "Le type de la sauvegarde est manquant";
-                }
-                else
-                {
-                    errorMessage_add = "The type of the backup job is not set";
-                }
+                errorMessage_add = Properties.Resources.error_message1;
             }
             else if (add_full.Checked == true)
             {
@@ -116,55 +100,19 @@ namespace EasySave_graphical
             if (add_name.Text == "")
             {
                 addIsValid = false;
-                if (language == "spanish")
-                {
-                    errorMessage_add = "Un trabajo de copia necesita un nombre para ser identificado";
-                }
-                else if (language == "french")
-                {
-                    errorMessage_add = "Le nom du travail de sauvegarde est nécessaire pour être identifiée";
-                }
-                else
-                {
-                    errorMessage_add = "A backup work needs a name to be identified";
-                }
+                errorMessage_add = Properties.Resources.error_message2;
             }
 
             if (add_sourceFolder.Length < 2)
             {
                 addIsValid = false;
-                if (language == "spanish")
-                {
-                    errorMessage_add = "Un trabajo de copia necesita un origen";
-                }
-                else if (language == "french")
-                {
-                    errorMessage_add = "Le dossier source est manquant";
-                }
-                else
-                {
-                    errorMessage_add = "The source folder is not set";
-                }
+                errorMessage_add = Properties.Resources.error_message3;
             }
 
             if (add_destinationFolder.Length < 2)
             {
                 addIsValid = false;
-                if (language == "spanish")
-                {
-                    errorMessage_add = "Un trabajo de copia necesita una destinación";
-                    errorTitle_add = "Error durante la edición";
-                }
-                else if (language == "french")
-                {
-                    errorMessage_add = "Le dossier de destination est manquant";
-                    errorTitle_add = "Erreur lors de l'édition";
-                }
-                else
-                {
-                    errorMessage_add = "The destination folder is not set";
-                    errorTitle_add = "Error while editing";
-                }
+                errorMessage_add = Properties.Resources.error_message4;
             }
 
             if (addIsValid)
@@ -173,29 +121,17 @@ namespace EasySave_graphical
                 BackupJob backupJob = new BackupJob(add_name.Text, add_sourceFolder, add_destinationFolder, (backupType == "full"),parseUserInputAsList(add_extension.Text));
                 if (this.controller.Model.createBackupJob(backupJob))
                 {
-                    if (language == "spanish")
-                    {
-                        MessageBox.Show("Añadido con éxito", "Añadido", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else if (language == "french")
-                    {
-                        MessageBox.Show("Ajouté avec succès", "Ajout", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Added with success", "Added", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    
+                    MessageBox.Show(Properties.Resources.success, Properties.Resources.information, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     reloadListView();
                 }
                 else
                 {
-                    MessageBox.Show(errorMessage_add, errorTitle_add, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(errorMessage_add, Properties.Resources.error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show(errorMessage_add, errorTitle_add, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(errorMessage_add, Properties.Resources.information, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -236,18 +172,7 @@ namespace EasySave_graphical
             if (edit_full.Checked == false && edit_differential.Checked == false)
             {
                 editIsValid = false;
-                if (language == "spanish")
-                {
-                    errorMessage = "El tipo de trabajo no está establecido";
-                }
-                else if (language == "french")
-                {
-                    errorMessage = "Le type de la sauvegarde est manquant";
-                }
-                else
-                {
-                    errorMessage = "The type of the backup job is not set";
-                }
+                errorMessage = Properties.Resources.error_message1;
             }
             else if (edit_full.Checked == true)
             {
@@ -261,80 +186,32 @@ namespace EasySave_graphical
             if (edit_name.Text == "")
             {
                 editIsValid = false;
-                if (language == "spanish")
-                {
-                    errorMessage = "Un trabajo de copia necesita un nombre para ser identificado";
-                }
-                else if (language == "french")
-                {
-                    errorMessage = "Le nom du travail de sauvegarde est nécessaire pour être identifiée";
-                }
-                else
-                {
-                    errorMessage = "A backup work needs a name to be identified";
-                }
+                errorMessage = Properties.Resources.error_message2;
             }
 
             if (edit_sourceFolderValue.Length < 2)
             {
                 editIsValid = false;
-                if (language == "spanish")
-                {
-                    errorMessage = "Un trabajo de copia necesita un origen";
-                }
-                else if (language == "french")
-                {
-                    errorMessage = "Le dossier source est manquant";
-                }
-                else
-                {
-                    errorMessage = "The source folder is not set";
-                }
+                errorMessage = Properties.Resources.error_message3;
             }
 
             if (edit_destinationFolderValue.Length < 2)
             {
                 editIsValid = false;
-                if (language == "spanish")
-                {
-                    errorMessage = "Un trabajo de copia necesita una destinación";
-                }
-                else if (language == "french")
-                {
-                    errorMessage = "Le dossier de destination est manquant";
-                }
-                else
-                {
-                    errorMessage = "The destination folder is not set";
-                }
+                errorMessage = Properties.Resources.error_message4;
             }
 
             if (editIsValid)
             {
                 // Edit the backup
                 this.controller.Model.editBackupJob(this.edit_backup_list.SelectedIndex, edit_name.Text, edit_sourceFolderValue, edit_destinationFolderValue, (edit_backupType == "full"),parseUserInputAsList(edit_extension.Text));
-                if (language == "spanish")
-                {
-                     MessageBox.Show("Todo fue bien", "información",
-                     MessageBoxButtons.OK,
-                     MessageBoxIcon.Information);
-                }
-                else if (language == "french")
-                {
-                     MessageBox.Show("Tout s'est bien passé", "Information",
-                     MessageBoxButtons.OK,
-                     MessageBoxIcon.Information);
-                }
-                else
-                {
-                     MessageBox.Show("Everything went well", "Information",
-                     MessageBoxButtons.OK,
-                     MessageBoxIcon.Information);
-                }
+                MessageBox.Show(Properties.Resources.all_good, Properties.Resources.information,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show(errorMessage,"Error while editing", MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(errorMessage, Properties.Resources.error, MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
         }
 
@@ -345,15 +222,7 @@ namespace EasySave_graphical
             {
                 // We get the selected source path of the user
                 edit_sourceFolderValue = edit_browser_source.SelectedPath;
-                if (language == "spanish")
-                {
-                    edit_sourceFolder.Text = "Origen : " + edit_sourceFolderValue;
-                }
-                else
-                {
-                    edit_sourceFolder.Text = "Source : " + edit_sourceFolderValue;
-                }
-                
+                edit_sourceFolder.Text = Properties.Resources.source + " : " + edit_sourceFolderValue;
             }
         }
         private void edit_destinationFolder_Click_1(object sender, EventArgs e)
@@ -363,14 +232,7 @@ namespace EasySave_graphical
             {
                 // We get the selected source path of the user
                 edit_destinationFolderValue = edit_browser_destination.SelectedPath;
-                if (language == "spanish")
-                {
-                    edit_destinationFolder.Text = "Destinación : " + edit_destinationFolderValue;
-                }
-                else
-                {
-                    edit_destinationFolder.Text = "Destination : " + edit_destinationFolderValue;
-                }
+                edit_sourceFolder.Text = Properties.Resources.destination + " : " + edit_sourceFolderValue;
             }
         }
 
@@ -379,21 +241,7 @@ namespace EasySave_graphical
         {
                 if (delete_backup_list.SelectedItems.Count == 1)
                 {
-                    string delete_message = "Do you really want to delete the following backup job : " + delete_backup_list.SelectedItem;
-                    string caption = "Delete backup jobs";
-
-                    if (language == "french")
-                    {
-                        delete_message = "Êtes-vous sûr de vouloir supprimer le travail de sauvegarde suivant : " + delete_backup_list.SelectedItem;
-                        caption = "Supprimer le travail de sauvegarde";
-                    }
-                    else if (language == "spanish")
-                    {
-                        delete_message = "¿Estás seguro de que quieres borrar el siguiente trabajo de copia? : " + delete_backup_list.SelectedItem;
-                        caption = "Borrar el trabajo de copia";
-                    }
-
-                    var result = MessageBox.Show(delete_message, caption,
+                    var result = MessageBox.Show(Properties.Resources.delete_check, Properties.Resources.information,
                                                  MessageBoxButtons.YesNo,
                                                  MessageBoxIcon.Exclamation);
 
@@ -401,21 +249,9 @@ namespace EasySave_graphical
                     {
                     // Call the model to delete the backup
                     this.controller.Model.deleteBackupJob(delete_backup_list.SelectedIndex);
-                    if (language == "english")
-                    {
-                        MessageBox.Show("Deleted : " + delete_backup_list.SelectedItem);
-                    }
-                    else if (language == "french")
-                    {
-                        MessageBox.Show("Supprimé : " + delete_backup_list.SelectedItem);
-                    }
-                    else if (language == "spanish")
-                    {
-                        MessageBox.Show("Borrado : " + delete_backup_list.SelectedItem);
-                    }
-
+                    MessageBox.Show(Properties.Resources.delete_confirm + " : " + delete_backup_list.SelectedItem);
                     reloadListView();
-                     }
+                    }
                 }
                 else
                 {
@@ -435,18 +271,7 @@ namespace EasySave_graphical
             //Console.WriteLine(processes.Length);
             if (processes.Length >= 1)
             {
-                if (language == "english")
-                {
-                    MessageBox.Show("A business process is running, we can't start the backup job", "Business Software", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else if (language == "french")
-                {
-                    MessageBox.Show("Un logiciel métier est en cours d'utilisation, nous ne pouvons pas démarrer de travail de sauvegarde", "Logiciel métier", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else if (language == "spanish")
-                {
-                    MessageBox.Show("Un software empresarial está en uso, no podemos iniciar la copia de seguridad.", "Software para empresas", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                MessageBox.Show(Properties.Resources.business_software_error, Properties.Resources.business_software, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (processes.Length == 0)
             {
@@ -461,20 +286,8 @@ namespace EasySave_graphical
                         {
                             using (var fbd = new FolderBrowserDialog())
                             {
-                                if (language == "spanish")
-                                {
-                                    MessageBox.Show("Por favor, introduzca una copia de seguridad de referencia completa : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                }
-                                else if (language == "french")
-                                {
-                                    MessageBox.Show("Merci d'entrer une sauvegarde complète de référence : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Please enter a full backup of reference : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Plz", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                }
+                                MessageBox.Show(Properties.Resources.reference + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, Properties.Resources.information, MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 DialogResult result = fbd.ShowDialog();
                                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                                 {
@@ -484,20 +297,7 @@ namespace EasySave_graphical
                                 {
                                     while (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                                     {
-                                        if (language == "spanish")
-                                        {
-                                            MessageBox.Show("Por favor : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "entrada inválida", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                                        }
-                                        else if (language == "french")
-                                        {
-                                            MessageBox.Show("S'il vous plaît : " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Entrée invalide", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                                        }
-                                        else
-                                        {
-                                            MessageBox.Show("Please :  " + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                        }
+                                        MessageBox.Show(Properties.Resources.please + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, Properties.Resources.error, MessageBoxButtons.OK, MessageBoxIcon.Information);
                                         result = fbd.ShowDialog();
                                     }
                                 }
@@ -567,136 +367,64 @@ namespace EasySave_graphical
         // Language ---------------------------------------------------------------------------------------------------------------------------------------------------
         private void french_CheckedChanged(object sender, EventArgs e)
         {
-            language = "french";
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("fr-FR");
+            changeLanguage();
+        }
 
-            // strip - french
-            strip_home.Text = "Accueil";
-            strip_about.Text = "A propos";
-            strip_add.Text = "Ajouter";
-            strip_edit.Text = "Éditer";
-            strip_delete.Text = "Effacer";
-            strip_execute.Text = "Exécuter";
-            strip_state.Text = "État";
-            strip_log.Text = "Journal";
+        private void changeLanguage()
+        {
+            // stripe
+            strip_home.Text = Properties.Resources.home;
+            strip_about.Text = Properties.Resources.about;
+            strip_add.Text = Properties.Resources.add;
+            strip_edit.Text = Properties.Resources.edit;
+            strip_delete.Text = Properties.Resources.delete;
+            strip_execute.Text = Properties.Resources.execute;
+            strip_state.Text = Properties.Resources.state;
+            strip_log.Text = Properties.Resources.log;
 
-            // add - french
-            add_name_label.Text = "Nom : ";
-            add_full.Text = "Complète";
-            add_differential.Text = "Différentielle";
-            add_extension_label.Text = "Extension à crypter : (.png,.txt,.mp3...)";
-            add_save.Text = "Sauvegarder";
+            // add
+            add_name_label.Text = Properties.Resources.name;
+            add_full.Text = Properties.Resources.full;
+            add_source.Text = Properties.Resources.source;
+            add_destination.Text = Properties.Resources.destination;
+            add_differential.Text = Properties.Resources.differential;
+            add_extension_label.Text = Properties.Resources.extension;
+            add_save.Text = Properties.Resources.save;
 
-            // edit - french
-            edit_select_label.Text = "Choisir un travail";
-            edit_name_label.Text = "Nom";
-            edit_full.Text = "Complète";
-            edit_differential.Text = "Différentielle";
-            edit_extension_label.Text = "Extension à crypter : (.png,.txt,.mp3...)";
-            edit_label.Text = "Éditer";
+            // edit
+            edit_select_label.Text = Properties.Resources.select_label;
+            edit_name_label.Text = Properties.Resources.name;
+            edit_sourceFolder.Text = Properties.Resources.source;
+            edit_destinationFolder.Text = Properties.Resources.destination;
+            edit_full.Text = Properties.Resources.full;
+            edit_differential.Text = Properties.Resources.differential;
+            edit_extension_label.Text = Properties.Resources.extension;
+            edit_label.Text = Properties.Resources.edit;
 
-            // delete - french
-            delete_label.Text = "Sélectionner un travail à supprimer :";
-            delete_validation.Text = "Supprimer";
+            // delete
+            delete_label.Text = Properties.Resources.delete_label;
+            delete_validation.Text = Properties.Resources.delete;
 
-            // execute - french
-            execute_label.Text = "Sélectionner les sauvegardes à exécuter";
-            execute_play.Text = "Exécuter";
-            execute_warning.Text = "Vous devez sélectionner au moins un travail";
-            delete_warning.Text = "Vous devez sélectionner un travail";
-            execute_pause.Text = "Pause";
-            execute_stop.Text = "Stop";
+            // execute
+            execute_label.Text = Properties.Resources.execute_label;
+            execute_play.Text = Properties.Resources.execute;
+            execute_warning.Text = Properties.Resources.execute_warning;
+            delete_warning.Text = Properties.Resources.delete_warning;
+            execute_pause.Text = Properties.Resources.pause;
+            execute_stop.Text = Properties.Resources.stop;
         }
 
         private void spanish_CheckedChanged(object sender, EventArgs e)
         {
-            language = "spanish";
-
-            // strip - spanish
-            strip_home.Text = "Home";
-            strip_about.Text = "Sobre nosotros";
-            strip_add.Text = "Añadir";
-            strip_edit.Text = "Editar";
-            strip_delete.Text = "Borrar";
-            strip_execute.Text = "Ejecutar";
-            strip_state.Text = "Estado";
-            strip_log.Text = "Registro";
-
-            // add - spanish
-            add_name_label.Text = "Label : ";
-            add_full.Text = "Completa";
-            add_source.Text = "Origen";
-            add_destination.Text = "Destinación";
-            add_differential.Text = "Diferencial";
-            add_extension_label.Text = "Extensión para cifrar : (.png,.txt,.mp3...)";
-            add_save.Text = "Guardar";
-
-            // edit - spanish
-            edit_select_label.Text = "Elegir un trabajo";
-            edit_name_label.Text = "Label : ";
-            edit_sourceFolder.Text = "Origen";
-            edit_destinationFolder.Text = "Destinación";
-            edit_full.Text = "Completa";
-            edit_differential.Text = "Diferencial";
-            edit_extension_label.Text = "Extensión para cifrar : (.png,.txt,.mp3...)";
-            edit_label.Text = "Editar";
-
-            // delete - spanish
-            delete_label.Text = "Seleccione el trabajo que desea eliminar:";
-            delete_validation.Text = "Eliminar";
-
-            // execute - spanish
-            execute_label.Text = "Seleccione el trabajo(s) de copia a ejecutar :";
-            execute_play.Text = "Ejecutar";
-            execute_warning.Text = "Necesitas seleccionar al menos un trabajo";
-            delete_warning.Text = "Necesitas seleccionar un trabajo";
-            execute_pause.Text = "Pausar";
-            execute_stop.Text = "Parar";
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("es-ES");
+            changeLanguage();
         }
 
         private void english_CheckedChanged(object sender, EventArgs e)
         {
-            language = "english";
-
-            // strip - english
-            strip_home.Text = "Home";
-            strip_about.Text = "About";
-            strip_add.Text = "Add";
-            strip_edit.Text = "Edit";
-            strip_delete.Text = "Delete";
-            strip_execute.Text = "Execute";
-            strip_state.Text = "State";
-            strip_log.Text = "Log";
-
-            // add - english
-            add_name_label.Text = "Name : ";
-            add_source.Text = "Source";
-            add_destination.Text = "Destination";
-            add_full.Text = "Full";
-            add_differential.Text = "Differential";
-            add_extension_label.Text = "Extension to encrypt : (.png,.txt,.mp3...)";
-            add_save.Text = "Save";
-
-            // edit - english
-            edit_select_label.Text = "   Select a job";
-            edit_name_label.Text = "Name";
-            edit_sourceFolder.Text = "Source";
-            edit_destinationFolder.Text = "Destination";
-            edit_full.Text = "Full";
-            edit_differential.Text = "Differential";
-            edit_extension_label.Text = "Extension to encrypt : (.png,.txt,.mp3...)";
-            edit_label.Text = "Edit";
-
-            // delete - english
-            delete_label.Text = "Select the backup job to delete :";
-            delete_validation.Text = "Delete";
-
-            // execute - english
-            execute_label.Text = "Select the backup job(s) to execute :";
-            execute_play.Text = "Execute";
-            execute_warning.Text = "You need to select at least one job";
-            delete_warning.Text = "You need to select a job";
-            execute_pause.Text = "Break";
-            execute_stop.Text = "Stop";
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("");
+            changeLanguage();
         }
 
         // Other : 
