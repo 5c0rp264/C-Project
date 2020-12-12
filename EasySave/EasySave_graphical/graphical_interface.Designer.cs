@@ -75,6 +75,7 @@ namespace EasySave_graphical
             this.delete_label = new System.Windows.Forms.Label();
             this.delete_backup_list = new System.Windows.Forms.ListBox();
             this.executeTab = new System.Windows.Forms.TabPage();
+            this.execute_resume = new System.Windows.Forms.Button();
             this.loading = new System.Windows.Forms.PictureBox();
             this.execute_warning = new System.Windows.Forms.Label();
             this.execute_stop = new System.Windows.Forms.Button();
@@ -82,7 +83,6 @@ namespace EasySave_graphical
             this.execute_pause = new System.Windows.Forms.Button();
             this.execute_label = new System.Windows.Forms.Label();
             this.execute_backup_list = new System.Windows.Forms.ListBox();
-            this.execute_resume = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.TabControl.SuspendLayout();
@@ -215,7 +215,7 @@ namespace EasySave_graphical
             this.TabControl.Controls.Add(this.DeleteTab);
             this.TabControl.Controls.Add(this.executeTab);
             this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TabControl.ItemSize = new System.Drawing.Size(60, 20);
+            this.TabControl.ItemSize = new System.Drawing.Size(0, 1);
             this.TabControl.Location = new System.Drawing.Point(0, 35);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
@@ -230,9 +230,9 @@ namespace EasySave_graphical
             this.homeTab.Controls.Add(this.english);
             this.homeTab.Controls.Add(this.language_container);
             this.homeTab.Controls.Add(this.logoBox);
-            this.homeTab.Location = new System.Drawing.Point(4, 24);
+            this.homeTab.Location = new System.Drawing.Point(4, 5);
             this.homeTab.Name = "homeTab";
-            this.homeTab.Size = new System.Drawing.Size(600, 387);
+            this.homeTab.Size = new System.Drawing.Size(600, 406);
             this.homeTab.TabIndex = 4;
             this.homeTab.Text = "Home";
             this.homeTab.UseVisualStyleBackColor = true;
@@ -284,7 +284,7 @@ namespace EasySave_graphical
             this.language_container.HideSelection = false;
             this.language_container.Location = new System.Drawing.Point(0, 226);
             this.language_container.Name = "language_container";
-            this.language_container.Size = new System.Drawing.Size(600, 161);
+            this.language_container.Size = new System.Drawing.Size(600, 180);
             this.language_container.TabIndex = 17;
             this.language_container.UseCompatibleStateImageBehavior = false;
             // 
@@ -671,6 +671,18 @@ namespace EasySave_graphical
             this.executeTab.Text = "Execute";
             this.executeTab.UseVisualStyleBackColor = true;
             // 
+            // execute_resume
+            // 
+            this.execute_resume.Enabled = false;
+            this.execute_resume.Location = new System.Drawing.Point(204, 337);
+            this.execute_resume.Name = "execute_resume";
+            this.execute_resume.Size = new System.Drawing.Size(185, 42);
+            this.execute_resume.TabIndex = 11;
+            this.execute_resume.Text = "Resume";
+            this.execute_resume.UseVisualStyleBackColor = true;
+            this.execute_resume.Visible = false;
+            this.execute_resume.Click += new System.EventHandler(this.execute_resume_Click);
+            // 
             // loading
             // 
             this.loading.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
@@ -749,18 +761,6 @@ namespace EasySave_graphical
             this.execute_backup_list.Size = new System.Drawing.Size(263, 134);
             this.execute_backup_list.TabIndex = 4;
             this.execute_backup_list.SelectedIndexChanged += new System.EventHandler(this.execute_backup_list_SelectedIndexChanged);
-            // 
-            // execute_resume
-            // 
-            this.execute_resume.Enabled = false;
-            this.execute_resume.Location = new System.Drawing.Point(204, 337);
-            this.execute_resume.Name = "execute_resume";
-            this.execute_resume.Size = new System.Drawing.Size(185, 42);
-            this.execute_resume.TabIndex = 11;
-            this.execute_resume.Text = "Resume";
-            this.execute_resume.UseVisualStyleBackColor = true;
-            this.execute_resume.Visible = false;
-            this.execute_resume.Click += new System.EventHandler(this.execute_resume_Click);
             // 
             // graphical_interface
             // 
