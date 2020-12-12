@@ -1,5 +1,4 @@
-﻿using System;
-namespace EasySave_graphical
+﻿namespace EasySave_graphical
 {
     public class Log
     {

@@ -275,6 +275,8 @@ namespace EasySave_graphical
             }
             else if (processes.Length == 0)
             {
+                execute_stop.Enabled = true;
+                execute_pause.Enabled = true;
                 if (execute_backup_list.SelectedItems.Count > 0) // This is an array containing every backup the user want's to select.
                 {
                     List<int> slectedBUJ = new List<int>();
@@ -518,6 +520,32 @@ namespace EasySave_graphical
         private void strip_log_Click(object sender, EventArgs e)
         {
             this.controller.Model.openLogFile();
+        }
+
+        private void execute_stop_Click(object sender, EventArgs e)
+        {
+            this.controller.Model.abortThread();
+            MessageBox.Show(Properties.Resources.thread_stop, Properties.Resources.information,
+                                                 MessageBoxButtons.OK,
+                                                 MessageBoxIcon.Exclamation);
+            execute_stop.Enabled = false;
+            execute_pause.Enabled = false;
+            execute_resume.Visible = false;
+        }
+
+        private void execute_pause_Click(object sender, EventArgs e)
+        {
+            execute_pause.Enabled = false;
+            execute_resume.Visible = true;
+            execute_resume.Enabled = true;
+            this.controller.Model.suspendThread();
+        }
+
+        private void execute_resume_Click(object sender, EventArgs e)
+        {
+            this.controller.Model.resumeThread();
+            execute_pause.Enabled = true;
+            execute_resume.Visible = false;
         }
     }
 }

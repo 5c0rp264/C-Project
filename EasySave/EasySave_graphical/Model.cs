@@ -16,6 +16,7 @@ namespace EasySave_graphical
         //process watching to stop execution if openned :
         public string processNameToWatch = "Calculator";
         private Thread watchThread;
+        private Thread stopWatchThread;
         private static EventWaitHandle waitHandle = new ManualResetEvent(initialState: true);
         private bool wasPaused = false;
         private Controller controller;
@@ -27,6 +28,11 @@ namespace EasySave_graphical
         private String pathToJsonDB = @"./db.json";
         private String pathToStateFile = @"./state.log";
         private String pathToLogFile = @"./logs/" + DateTime.Now.ToString("MM.dd.yyyy") + ".log";
+        // Lock those files
+        private static readonly object logFileLocker = new object();
+        private static readonly object statelogFileLocker = new object();
+        // Thread for each backup will be stored in this list
+        List<Thread> backupThread = new List<Thread>();
 
         public List<BackupJob> BackupJobList
         {
@@ -34,7 +40,7 @@ namespace EasySave_graphical
             set { backupJobList = value; }
         }
 
-        public void setController (Controller controlelr)
+        public void setController(Controller controlelr)
         {
             this.controller = controlelr;
         }
@@ -64,7 +70,7 @@ namespace EasySave_graphical
         {
             //Console.WriteLine(File.Exists(pathToJsonDB) ? "File exists." : "File does not exist.");
             if (!File.Exists(pathToJsonDB))
-            {   
+            {
                 // We create a file and add the json string in and indexed way
                 FileStream stream = File.Create(pathToJsonDB);
                 TextWriter tw = new StreamWriter(stream);
@@ -94,9 +100,12 @@ namespace EasySave_graphical
 
         public void executeBUJList(List<int> backupJobIDList, List<String> fullBackupListForDiff)
         {
-            startWatchingProcess();
+            watchThread = new Thread(startWatchingProcess);
+            watchThread.IsBackground = true;
+            watchThread.Start();
+
             this.controller.View.loadingAnimation(true);
-            
+
             // The user can select one or multiple backup job to execute in the same time
             int numOfDiff = 0;
             List<BackupJobState> BUJStateList = new List<BackupJobState>();
@@ -105,12 +114,13 @@ namespace EasySave_graphical
                 // For each of them we will save them in our state file
                 try
                 {
-                    BUJStateList.Add(new BackupJobState(this.BackupJobList[backupJobIDList[i]].Name, this.BackupJobList[backupJobIDList[i]].Source, this.BackupJobList[backupJobIDList[i]].Destination, (this.BackupJobList[backupJobIDList[i]].IsFull ? "/Full" : "/Diff") + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source).Count : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff]).Count), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source) : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupJobList[backupJobIDList[i]].IsFull, false, this.BackupJobList[backupJobIDList[i]].ToBeEncryptedFileExtensions));
-                }catch (Exception e)
+                    BUJStateList.Add(new BackupJobState(this.BackupJobList[backupJobIDList[i]].Name, this.BackupJobList[backupJobIDList[i]].Source, this.BackupJobList[backupJobIDList[i]].Destination, (this.BackupJobList[backupJobIDList[i]].IsFull ? "/Full" : "/Diff") + "-" + backupJobIDList[i] + "-" + DateTime.Now.ToString("MM.dd.yyyy THH.mm.ss.fff"), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source).Count : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff]).Count), (this.BackupJobList[backupJobIDList[i]].IsFull ? concernedFile(this.BackupJobList[backupJobIDList[i]].Source) : concernedFileDiff(this.BackupJobList[backupJobIDList[i]].Source, fullBackupListForDiff[numOfDiff])), this.BackupJobList[backupJobIDList[i]].IsFull, false, this.BackupJobList[backupJobIDList[i]].ToBeEncryptedFileExtensions));
+                }
+                catch (Exception e)
                 {
                     //Console.WriteLine("BUG")
                     writeLogFile(" /!\\/!\\/!\\ Error for the backup job [" + backupJobIDList[i] + "] " + this.BackupJobList[backupJobIDList[i]].Name);
-                    writeLogFile(" /!\\/!\\/!\\ Source : \\\\?\\" + this.BackupJobList[backupJobIDList[i]].Source.Replace(":","$"));
+                    writeLogFile(" /!\\/!\\/!\\ Source : \\\\?\\" + this.BackupJobList[backupJobIDList[i]].Source.Replace(":", "$"));
                     writeLogFile(" /!\\/!\\/!\\ Destination : \\\\?\\" + this.BackupJobList[backupJobIDList[i]].Destination.Replace(":", "$"));
                     writeLogFile(" /!\\/!\\/!\\ Size : unavailable for failed jobs");
                     writeLogFile(" /!\\/!\\/!\\ Transfer time : -1ms");
@@ -138,12 +148,18 @@ namespace EasySave_graphical
                 if (this.BackupJobList[backupJobIDList[i]].IsFull)
                 {
                     // Full copy
-                    DirectoryCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, i, BUJStateList);
+                    Thread fullThread = new Thread(() => DirectoryCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, i, BUJStateList));
+                    fullThread.Name = "FULL_THREAD_ID_" + backupJobIDList[i];
+                    fullThread.Start();
+                    backupThread.Add(fullThread);
                 }
                 else
                 {
                     // Differential copy
-                    DirectoryDifferentialCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, fullBackupListForDiff[numOfDiff], i, BUJStateList);
+                    Thread diffThread = new Thread(() => DirectoryDifferentialCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, fullBackupListForDiff[numOfDiff], i, BUJStateList));
+                    diffThread.Name = "DIFF_THREAD_ID_" + backupJobIDList[i];
+                    diffThread.Start();
+                    backupThread.Add(diffThread);
                     numOfDiff++;
                 }
                 // At the end the work at the index i is no more active
@@ -154,9 +170,38 @@ namespace EasySave_graphical
 
             }
             this.controller.View.loadingAnimation(false);
-            stopWatchingProcess();
+
+            stopWatchThread = new Thread(stopWatchingProcess);
+            stopWatchThread.IsBackground = true;
+            stopWatchThread.Start();
         }
 
+        public void abortThread()
+        {
+            foreach (Thread item in backupThread)
+            {
+                try
+                {
+                    item.Abort(); // Stop each thread one by one
+                }
+                catch (ThreadAbortException abortException)
+                {
+                    Thread.ResetAbort(); // Prevent app from closing
+                }
+            }
+        }
+
+        public void suspendThread()
+        {
+            // Should pause the threads
+            waitHandle.Reset();
+        }
+
+        public void resumeThread()
+        {
+            // Should resume the threads
+            waitHandle.Set();
+        }
 
         public void editBackupJob(int idToEdit, String name, String source, String destination, Boolean isFull, List<string> extToCrypt)
         {
@@ -187,43 +232,50 @@ namespace EasySave_graphical
 
         private void writeStateFile(List<BackupJobState> BUJSList)
         {
-            // This will just open and write with the indentation appropriated in the state file
-            FileStream stream = File.Create(pathToStateFile);
-            TextWriter tw = new StreamWriter(stream);
-            String stringjson = JsonConvert.SerializeObject(BUJSList, Formatting.Indented);
-            tw.WriteLine(stringjson);
-            tw.Close();
+            lock (statelogFileLocker)
+            {
+                // This will just open and write with the indentation appropriated in the state file
+                FileStream stream = File.Create(pathToStateFile);
+                TextWriter tw = new StreamWriter(stream);
+                String stringjson = JsonConvert.SerializeObject(BUJSList, Formatting.Indented);
+                tw.WriteLine(stringjson);
+                tw.Close();
+            }
+
         }
+
 
 
         private void writeLogFile(String toBeWritten)
         {
-            // This will just open and write with the indentation appropriated in the state file
-            List<Log> loglist = new List<Log>();
-            if (!File.Exists(pathToLogFile))
+            lock (logFileLocker)
             {
-                // Create a file to write to.
-                FileStream stream = File.Create(pathToLogFile);
-                using (StreamWriter sw = new StreamWriter(stream))
+                // This will just open and write with the indentation appropriated in the state file
+                List<Log> loglist = new List<Log>();
+                if (!File.Exists(pathToLogFile))
                 {
-                    loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
-                    sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
-                    sw.Close();
+                    // Create a file to write to.
+                    FileStream stream = File.Create(pathToLogFile);
+                    using (StreamWriter sw = new StreamWriter(stream))
+                    {
+                        loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
+                        sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
+                        sw.Close();
+                    }
+                }
+                else
+                {
+                    string json = File.ReadAllText(pathToLogFile);
+                    FileStream stream = File.Create(pathToLogFile);
+                    using (StreamWriter sw = new StreamWriter(stream))
+                    {
+                        loglist = JsonConvert.DeserializeObject<List<Log>>(json);
+                        loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
+                        sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
+                        sw.Close();
+                    }
                 }
             }
-            else
-            {
-                string json = File.ReadAllText(pathToLogFile);
-                FileStream stream = File.Create(pathToLogFile);
-                using (StreamWriter sw = new StreamWriter(stream))
-                {
-                    loglist = JsonConvert.DeserializeObject<List<Log>>(json);
-                    loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
-                    sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
-                    sw.Close();
-                }
-            }
-
         }
 
 
@@ -307,7 +359,6 @@ namespace EasySave_graphical
 
         }
 
-
         private void DirectoryCopy(string sourceDirName, string destDirName, int index, List<BackupJobState> BUJS)
         {
             // Get the subdirectories for the specified directory.
@@ -332,7 +383,7 @@ namespace EasySave_graphical
                 Boolean didCryptIt = false;
                 foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
                 {
-                    if (ext == file.Extension)
+                    if (ext == file.Extension && ext != "")
                     {
                         ProcessStartInfo psi = new ProcessStartInfo("CryptoSoft.exe");
                         psi.WorkingDirectory = "../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/";
@@ -363,7 +414,7 @@ namespace EasySave_graphical
             foreach (DirectoryInfo subdir in dirs)
             {
                 DirectoryCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), index, BUJS);
-                _ = waitHandle.WaitOne();
+                _ = waitHandle.WaitOne(Timeout.Infinite);
             }
 
         }
@@ -433,7 +484,7 @@ namespace EasySave_graphical
                                 psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
                                 Process proc = Process.Start(psi);
                                 proc.WaitForExit();
-                                writeLogFile("Encryption time for "+ Path.Combine(destDirName, file.Name) + " was : " + proc.ExitCode + "ms");
+                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was : " + proc.ExitCode + "ms");
                                 didCryptIt = true;
                             }
                         }
@@ -523,52 +574,50 @@ namespace EasySave_graphical
 
         private void startWatchingProcess()
         {
-            watchThread = new Thread(() =>
+            while (true)
             {
-                while (true)
+                Process[] processes = Process.GetProcessesByName(processNameToWatch);
+                if (processes.Length >= 1 && !wasPaused)
                 {
-                    Process[] processes = Process.GetProcessesByName(processNameToWatch);
-                    //Console.WriteLine(processes.Length);
-                    if (processes.Length >= 1 && !wasPaused)
-                    {
-                        waitHandle.Reset();
-                        Console.WriteLine("paused");
-                        this.wasPaused = true;
-                        this.controller.View.loadingAnimation(false);
-                    }
-                    else if (processes.Length == 0 && wasPaused)
-                    {
-                        //Spinner.Start();
-                        waitHandle.Set();
-                        Console.WriteLine("restarted");
-                        this.wasPaused = false;
-                        this.controller.View.loadingAnimation(true);
-                    }
-                    Thread.Sleep(250);
+                    waitHandle.Reset();
+                    Debug.Print("CALCULATOR !!!!!!");
+                    this.wasPaused = true;
                 }
-            })
-            {
-                IsBackground = true
-            };
-            watchThread.Start();
-
-            //Console.WriteLine("Polling processes and waiting for process");
-            //Console.ReadLine();
+                else if (processes.Length == 0 && wasPaused)
+                {
+                    waitHandle.Set();
+                    Console.WriteLine("restarted");
+                    this.wasPaused = false;
+                }
+                Thread.Sleep(250);
+            }
         }
 
         private void stopWatchingProcess()
         {
+            int threadsAlive;
+
+            do
+            {
+                threadsAlive = 0;
+                foreach (Thread item in backupThread)
+                {
+                    if (item.IsAlive)
+                    {
+                        threadsAlive++;
+                    }
+                }
+            } while (threadsAlive > 0);
+
             watchThread.Abort();
         }
 
         public void openLogFile()
         {
-            //TODO: check if available
-
-            ProcessStartInfo newLogFile = new ProcessStartInfo(DateTime.Now.ToString("MM.dd.yyyy")+".log");
+            ProcessStartInfo newLogFile = new ProcessStartInfo(DateTime.Now.ToString("MM.dd.yyyy") + ".log");
             newLogFile.WorkingDirectory = "logs";
 
-            if (!IsFileLocked("logs/"+DateTime.Now.ToString("MM.dd.yyyy") + ".log"))
+            if (!IsFileLocked("logs/" + DateTime.Now.ToString("MM.dd.yyyy") + ".log"))
             {
                 Process.Start(newLogFile);
             }
@@ -583,10 +632,6 @@ namespace EasySave_graphical
             if (!IsFileLocked("state.log"))
             {
                 Process.Start("state.log");
-            }
-            else
-            {
-                //TODO: tell the user that file is already in use
             }
         }
 

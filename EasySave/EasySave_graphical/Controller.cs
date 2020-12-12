@@ -6,7 +6,7 @@ namespace EasySave_graphical
 {
     public class Controller //: IController
     {
-        private static Mutex mutex = null;
+        private static Mutex mutex;
 
         // Our attributes to define the MVC pattern
         private Model model;
@@ -28,7 +28,7 @@ namespace EasySave_graphical
 
             if (!createdNew)
             {
-                MessageBox.Show(appName + " is already running ! The application will now close.","Instantiation error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(appName + " is already running ! The application will now close.", "Instantiation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Console.ReadKey();
                 return;
             }

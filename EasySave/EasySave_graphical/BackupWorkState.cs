@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 
 
 namespace EasySave_graphical
 {
-    public class myOwnFileInfo {
+    public class myOwnFileInfo
+    {
         public long fileSize;
         public String fullName;
 
@@ -46,19 +46,23 @@ namespace EasySave_graphical
         public List<myOwnFileInfo> ElligibleFiles { get => elligibleFiles; set => elligibleFiles = value; }
         public Boolean IsFull { get => isFull; set => isFull = value; }
         // Timer
-        public Boolean ISACtive { get => isActive;
-            set {
+        public Boolean ISACtive
+        {
+            get => isActive;
+            set
+            {
                 isActive = value;
                 if (value)
                 {
                     this.stopwatch.Start();
-                }else
+                }
+                else
                 {
                     this.stopwatch.Stop();
                 }
             }
         }
-        public List<myOwnFileInfo> FilesTransfered { get => filesTransfered; set => filesTransfered = value;}
+        public List<myOwnFileInfo> FilesTransfered { get => filesTransfered; set => filesTransfered = value; }
 
         public Stopwatch Stopwatch { get => stopwatch; set => stopwatch = value; }
         public float Progress { get => progress; set => progress = value; }

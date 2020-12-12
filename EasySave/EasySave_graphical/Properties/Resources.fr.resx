@@ -225,4 +225,7 @@
   <data name="success" xml:space="preserve">
     <value>Ajouté avec succès</value>
   </data>
+  <data name="thread_stop" xml:space="preserve">
+    <value>Toutes les sauvegardes ont été arrêtées</value>
+  </data>
 </root>

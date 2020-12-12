@@ -222,6 +222,9 @@
   <data name="stop" xml:space="preserve">
     <value>Parar</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value>Cada copia de seguridad fue abortada</value>
+  </data>
   <data name="success" xml:space="preserve">
     <value>Añadido con éxito</value>
   </data>

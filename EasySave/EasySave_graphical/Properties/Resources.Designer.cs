@@ -383,5 +383,14 @@ namespace EasySave_graphical.Properties {
                 return ResourceManager.GetString("success", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Every backup jobs were aborted.
+        /// </summary>
+        internal static string thread_stop {
+            get {
+                return ResourceManager.GetString("thread_stop", resourceCulture);
+            }
+        }
     }
 }
