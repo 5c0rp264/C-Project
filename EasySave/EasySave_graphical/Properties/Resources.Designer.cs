@@ -259,6 +259,15 @@ namespace EasySave_graphical.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Priority files (.png,.txt,.png).
+        /// </summary>
+        internal static string file_priority {
+            get {
+                return ResourceManager.GetString("file_priority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Full.
         /// </summary>
         internal static string full {
@@ -345,6 +354,33 @@ namespace EasySave_graphical.Properties {
         internal static string select_label {
             get {
                 return ResourceManager.GetString("select_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Settings.
+        /// </summary>
+        internal static string settings {
+            get {
+                return ResourceManager.GetString("settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Maximum file size in case of simultaneous transfers.
+        /// </summary>
+        internal static string size_limit {
+            get {
+                return ResourceManager.GetString("size_limit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à kb.
+        /// </summary>
+        internal static string size_unit {
+            get {
+                return ResourceManager.GetString("size_unit", resourceCulture);
             }
         }
         

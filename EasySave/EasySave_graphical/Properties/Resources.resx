@@ -183,6 +183,9 @@
   <data name="extension" xml:space="preserve">
     <value>Extension to encrypt : (.png,.txt,.mp3...)</value>
   </data>
+  <data name="file_priority" xml:space="preserve">
+    <value>Priority files (.png,.txt,.png)</value>
+  </data>
   <data name="full" xml:space="preserve">
     <value>Full</value>
   </data>
@@ -212,6 +215,15 @@
   </data>
   <data name="select_label" xml:space="preserve">
     <value>Choose a backup job</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="size_limit" xml:space="preserve">
+    <value>Maximum file size in case of simultaneous transfers</value>
+  </data>
+  <data name="size_unit" xml:space="preserve">
+    <value>kb</value>
   </data>
   <data name="source" xml:space="preserve">
     <value>Source</value>

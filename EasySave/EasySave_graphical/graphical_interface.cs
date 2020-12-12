@@ -37,7 +37,7 @@ namespace EasySave_graphical
 
         private void strip_about_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("EasySave 2.0 - MiProSoft", "Information", MessageBoxButtons.OK,MessageBoxIcon.Information);
+            MessageBox.Show("EasySave 2.0 - MiProSoft", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // Add Section ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ namespace EasySave_graphical
             {
                 // We get the selected source path of the user
                 add_sourceFolder = add_browser_source.SelectedPath;
-                add_source.Text = "Source : "+add_sourceFolder;
+                add_source.Text = "Source : " + add_sourceFolder;
             }
 
         }
@@ -71,7 +71,7 @@ namespace EasySave_graphical
             {
                 // We get the selected source path of the user
                 add_destinationFolder = add_browser_destination.SelectedPath;
-                add_destination.Text = "Destination : "+add_destinationFolder;
+                add_destination.Text = "Destination : " + add_destinationFolder;
             }
         }
 
@@ -118,7 +118,7 @@ namespace EasySave_graphical
             if (addIsValid)
             {
                 // add the backup
-                BackupJob backupJob = new BackupJob(add_name.Text, add_sourceFolder, add_destinationFolder, (backupType == "full"),parseUserInputAsList(add_extension.Text));
+                BackupJob backupJob = new BackupJob(add_name.Text, add_sourceFolder, add_destinationFolder, (backupType == "full"), parseUserInputAsList(add_extension.Text));
                 if (this.controller.Model.createBackupJob(backupJob))
                 {
                     MessageBox.Show(Properties.Resources.success, Properties.Resources.information, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -158,7 +158,7 @@ namespace EasySave_graphical
             edit_differential.Checked = !this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].IsFull;
 
             edit_extension.ReadOnly = false;
-            edit_extension.Text = string.Join(", ",this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].ToBeEncryptedFileExtensions);
+            edit_extension.Text = string.Join(", ", this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].ToBeEncryptedFileExtensions);
             edit_label.Enabled = true;
         }
 
@@ -204,14 +204,14 @@ namespace EasySave_graphical
             if (editIsValid)
             {
                 // Edit the backup
-                this.controller.Model.editBackupJob(this.edit_backup_list.SelectedIndex, edit_name.Text, edit_sourceFolderValue, edit_destinationFolderValue, (edit_backupType == "full"),parseUserInputAsList(edit_extension.Text));
+                this.controller.Model.editBackupJob(this.edit_backup_list.SelectedIndex, edit_name.Text, edit_sourceFolderValue, edit_destinationFolderValue, (edit_backupType == "full"), parseUserInputAsList(edit_extension.Text));
                 MessageBox.Show(Properties.Resources.all_good, Properties.Resources.information,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show(errorMessage, Properties.Resources.error, MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(errorMessage, Properties.Resources.error, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -239,24 +239,24 @@ namespace EasySave_graphical
         // Delete ---------------------------------------------------------------------------------------------------------------------------------------------------
         private void delete_validation_Click(object sender, EventArgs e)
         {
-                if (delete_backup_list.SelectedItems.Count == 1)
-                {
-                    var result = MessageBox.Show(Properties.Resources.delete_check, Properties.Resources.information,
-                                                 MessageBoxButtons.YesNo,
-                                                 MessageBoxIcon.Exclamation);
+            if (delete_backup_list.SelectedItems.Count == 1)
+            {
+                var result = MessageBox.Show(Properties.Resources.delete_check, Properties.Resources.information,
+                                             MessageBoxButtons.YesNo,
+                                             MessageBoxIcon.Exclamation);
 
-                    if (result == DialogResult.Yes)
-                    {
+                if (result == DialogResult.Yes)
+                {
                     // Call the model to delete the backup
                     this.controller.Model.deleteBackupJob(delete_backup_list.SelectedIndex);
                     MessageBox.Show(Properties.Resources.delete_confirm + " : " + delete_backup_list.SelectedItem);
                     reloadListView();
-                    }
                 }
-                else
-                {
-                    delete_warning.Visible = true;
-                }  
+            }
+            else
+            {
+                delete_warning.Visible = true;
+            }
         }
 
         private void delete_backup_list_SelectedIndexChanged(object sender, EventArgs e)
@@ -313,16 +313,13 @@ namespace EasySave_graphical
                     execute_warning.Visible = true;
                 }
             }
-            
+
         }
 
         private void execute_backup_list_SelectedIndexChanged(object sender, EventArgs e)
         {
             execute_warning.Visible = false;
         }
-
-
-        // TODO: add a progress bar for each work
 
         // Progress bar for each backup thread
         List<ProgressBar> threadsTracking = new List<ProgressBar>();
@@ -362,12 +359,12 @@ namespace EasySave_graphical
         public delegate void updateProgressBarDelegate();
         public updateProgressBarDelegate refreshTrackingDelegate;
 
-        public void updateTracking(int id, int percent, string bname,string status="")
+        public void updateTracking(int id, int percent, string bname, string status = "")
         {
             refreshTrackingDelegate = new updateProgressBarDelegate(() => { refreshTracking(id, percent, bname, status); });
             Invoke(refreshTrackingDelegate);
         }
-        public void refreshTracking(int id, int percent,string bname, string status)
+        public void refreshTracking(int id, int percent, string bname, string status)
         {
             // Update the value
             ProgressBar item = this.trackingPanel.Controls.Find("ProgressBar" + id.ToString(), false)[0] as ProgressBar;
@@ -384,6 +381,23 @@ namespace EasySave_graphical
                 item.CreateGraphics().DrawString(bname + " : " + percent.ToString() + "%", new Font("Arial", (float)8.25, FontStyle.Regular), Brushes.Black, new PointF(item.Width / 2 - 20, item.Height / 2 - 7));
                 item.Value = percent;
             }
+        }
+
+        // Settings
+        private void strip_settings_Click(object sender, EventArgs e)
+        {
+            TabControl.SelectedIndex = 5;
+            sizeLimit.Value = this.controller.Model.maxFileSize;
+            file_size.Text = Properties.Resources.size_limit + " : " + sizeLimit.Value + " " + Properties.Resources.size_unit;
+        }
+        private void sizeLimit_Scroll(object sender, EventArgs e)
+        {
+            file_size.Text = Properties.Resources.size_limit + " : " + sizeLimit.Value + " " + Properties.Resources.size_unit;
+        }
+
+        private void settings_save_Click(object sender, EventArgs e)
+        {
+            this.controller.Model.maxFileSize = sizeLimit.Value;
         }
 
         // Color ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -467,6 +481,12 @@ namespace EasySave_graphical
             delete_warning.Text = Properties.Resources.delete_warning;
             execute_pause.Text = Properties.Resources.pause;
             execute_stop.Text = Properties.Resources.stop;
+
+            // settings
+            strip_settings.Text = Properties.Resources.settings;
+            settings_save.Text = Properties.Resources.save;
+            priority_label.Text = Properties.Resources.file_priority;
+            file_size.Text = Properties.Resources.size_limit;
         }
 
         private void spanish_CheckedChanged(object sender, EventArgs e)
@@ -494,9 +514,9 @@ namespace EasySave_graphical
             this.edit_backup_list.Items.Clear();
             this.delete_backup_list.Items.Clear();
             this.execute_backup_list.Items.Clear();
-            for (int i = 0; i < this.controller.Model.BackupJobList.Count; i++ )
+            for (int i = 0; i < this.controller.Model.BackupJobList.Count; i++)
             {
-                this.edit_backup_list.Items.Add("["+i+"] " + this.controller.Model.BackupJobList[i].Name);
+                this.edit_backup_list.Items.Add("[" + i + "] " + this.controller.Model.BackupJobList[i].Name);
                 this.delete_backup_list.Items.Add("[" + i + "] " + this.controller.Model.BackupJobList[i].Name);
                 this.execute_backup_list.Items.Add("[" + i + "] " + this.controller.Model.BackupJobList[i].Name);
             }

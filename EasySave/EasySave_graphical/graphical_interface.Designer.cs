@@ -33,6 +33,7 @@ namespace EasySave_graphical
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.strip_home = new System.Windows.Forms.ToolStripMenuItem();
             this.strip_about = new System.Windows.Forms.ToolStripMenuItem();
+            this.strip_settings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.strip_add = new System.Windows.Forms.ToolStripMenuItem();
             this.strip_edit = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,6 +76,7 @@ namespace EasySave_graphical
             this.delete_label = new System.Windows.Forms.Label();
             this.delete_backup_list = new System.Windows.Forms.ListBox();
             this.executeTab = new System.Windows.Forms.TabPage();
+            this.trackingPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.execute_resume = new System.Windows.Forms.Button();
             this.execute_warning = new System.Windows.Forms.Label();
             this.execute_stop = new System.Windows.Forms.Button();
@@ -82,7 +84,13 @@ namespace EasySave_graphical
             this.execute_pause = new System.Windows.Forms.Button();
             this.execute_label = new System.Windows.Forms.Label();
             this.execute_backup_list = new System.Windows.Forms.ListBox();
-            this.trackingPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.settingsTab = new System.Windows.Forms.TabPage();
+            this.settings_save = new System.Windows.Forms.Button();
+            this.priority_label = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.file_size = new System.Windows.Forms.Label();
+            this.sizeLimit = new System.Windows.Forms.TrackBar();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.TabControl.SuspendLayout();
@@ -92,6 +100,8 @@ namespace EasySave_graphical
             this.EditTab.SuspendLayout();
             this.DeleteTab.SuspendLayout();
             this.executeTab.SuspendLayout();
+            this.settingsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sizeLimit)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -99,7 +109,8 @@ namespace EasySave_graphical
             this.menuStrip1.AutoSize = false;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.strip_home,
-            this.strip_about});
+            this.strip_about,
+            this.strip_settings});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(774, 35);
@@ -121,6 +132,13 @@ namespace EasySave_graphical
             this.strip_about.Text = "About";
             this.strip_about.Click += new System.EventHandler(this.strip_about_Click);
             // 
+            // strip_settings
+            // 
+            this.strip_settings.Name = "strip_settings";
+            this.strip_settings.Size = new System.Drawing.Size(61, 31);
+            this.strip_settings.Text = "Settings";
+            this.strip_settings.Click += new System.EventHandler(this.strip_settings_Click);
+            // 
             // menuStrip2
             // 
             this.menuStrip2.AutoSize = false;
@@ -134,7 +152,7 @@ namespace EasySave_graphical
             this.strip_log});
             this.menuStrip2.Location = new System.Drawing.Point(608, 35);
             this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(166, 415);
+            this.menuStrip2.Size = new System.Drawing.Size(166, 390);
             this.menuStrip2.TabIndex = 1;
             this.menuStrip2.Text = "menuStrip2";
             this.menuStrip2.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip2_ItemClicked);
@@ -213,12 +231,13 @@ namespace EasySave_graphical
             this.TabControl.Controls.Add(this.EditTab);
             this.TabControl.Controls.Add(this.DeleteTab);
             this.TabControl.Controls.Add(this.executeTab);
+            this.TabControl.Controls.Add(this.settingsTab);
             this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TabControl.ItemSize = new System.Drawing.Size(0, 1);
+            this.TabControl.ItemSize = new System.Drawing.Size(60, 20);
             this.TabControl.Location = new System.Drawing.Point(0, 35);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(608, 415);
+            this.TabControl.Size = new System.Drawing.Size(608, 390);
             this.TabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.TabControl.TabIndex = 2;
             // 
@@ -229,9 +248,9 @@ namespace EasySave_graphical
             this.homeTab.Controls.Add(this.english);
             this.homeTab.Controls.Add(this.language_container);
             this.homeTab.Controls.Add(this.logoBox);
-            this.homeTab.Location = new System.Drawing.Point(4, 5);
+            this.homeTab.Location = new System.Drawing.Point(4, 24);
             this.homeTab.Name = "homeTab";
-            this.homeTab.Size = new System.Drawing.Size(600, 406);
+            this.homeTab.Size = new System.Drawing.Size(600, 362);
             this.homeTab.TabIndex = 4;
             this.homeTab.Text = "Home";
             this.homeTab.UseVisualStyleBackColor = true;
@@ -244,7 +263,7 @@ namespace EasySave_graphical
             this.spanish.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.spanish.Cursor = System.Windows.Forms.Cursors.Hand;
             this.spanish.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.spanish.Location = new System.Drawing.Point(423, 261);
+            this.spanish.Location = new System.Drawing.Point(423, 215);
             this.spanish.Name = "spanish";
             this.spanish.Size = new System.Drawing.Size(153, 97);
             this.spanish.TabIndex = 16;
@@ -258,7 +277,7 @@ namespace EasySave_graphical
             this.french.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.french.Cursor = System.Windows.Forms.Cursors.Hand;
             this.french.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.french.Location = new System.Drawing.Point(225, 261);
+            this.french.Location = new System.Drawing.Point(220, 215);
             this.french.Name = "french";
             this.french.Size = new System.Drawing.Size(153, 97);
             this.french.TabIndex = 15;
@@ -272,7 +291,7 @@ namespace EasySave_graphical
             this.english.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.english.Cursor = System.Windows.Forms.Cursors.Hand;
             this.english.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.english.Location = new System.Drawing.Point(30, 261);
+            this.english.Location = new System.Drawing.Point(32, 215);
             this.english.Name = "english";
             this.english.Size = new System.Drawing.Size(153, 97);
             this.english.TabIndex = 14;
@@ -285,9 +304,9 @@ namespace EasySave_graphical
             this.language_container.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.language_container.Dock = System.Windows.Forms.DockStyle.Fill;
             this.language_container.HideSelection = false;
-            this.language_container.Location = new System.Drawing.Point(0, 226);
+            this.language_container.Location = new System.Drawing.Point(0, 187);
             this.language_container.Name = "language_container";
-            this.language_container.Size = new System.Drawing.Size(600, 180);
+            this.language_container.Size = new System.Drawing.Size(600, 175);
             this.language_container.TabIndex = 17;
             this.language_container.UseCompatibleStateImageBehavior = false;
             // 
@@ -298,7 +317,7 @@ namespace EasySave_graphical
             this.logoBox.Image = ((System.Drawing.Image)(resources.GetObject("logoBox.Image")));
             this.logoBox.Location = new System.Drawing.Point(0, 0);
             this.logoBox.Name = "logoBox";
-            this.logoBox.Size = new System.Drawing.Size(600, 226);
+            this.logoBox.Size = new System.Drawing.Size(600, 187);
             this.logoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.logoBox.TabIndex = 13;
             this.logoBox.TabStop = false;
@@ -317,7 +336,7 @@ namespace EasySave_graphical
             this.Addtab.Location = new System.Drawing.Point(4, 24);
             this.Addtab.Name = "Addtab";
             this.Addtab.Padding = new System.Windows.Forms.Padding(3);
-            this.Addtab.Size = new System.Drawing.Size(600, 387);
+            this.Addtab.Size = new System.Drawing.Size(600, 362);
             this.Addtab.TabIndex = 0;
             this.Addtab.Text = "Add";
             this.Addtab.UseVisualStyleBackColor = true;
@@ -436,7 +455,7 @@ namespace EasySave_graphical
             this.EditTab.Location = new System.Drawing.Point(4, 24);
             this.EditTab.Name = "EditTab";
             this.EditTab.Padding = new System.Windows.Forms.Padding(3);
-            this.EditTab.Size = new System.Drawing.Size(600, 387);
+            this.EditTab.Size = new System.Drawing.Size(600, 362);
             this.EditTab.TabIndex = 1;
             this.EditTab.Text = "Edit";
             this.EditTab.UseVisualStyleBackColor = true;
@@ -607,7 +626,7 @@ namespace EasySave_graphical
             this.DeleteTab.Controls.Add(this.delete_backup_list);
             this.DeleteTab.Location = new System.Drawing.Point(4, 24);
             this.DeleteTab.Name = "DeleteTab";
-            this.DeleteTab.Size = new System.Drawing.Size(600, 387);
+            this.DeleteTab.Size = new System.Drawing.Size(600, 362);
             this.DeleteTab.TabIndex = 2;
             this.DeleteTab.Text = "Delete";
             this.DeleteTab.UseVisualStyleBackColor = true;
@@ -669,10 +688,18 @@ namespace EasySave_graphical
             this.executeTab.Controls.Add(this.execute_backup_list);
             this.executeTab.Location = new System.Drawing.Point(4, 24);
             this.executeTab.Name = "executeTab";
-            this.executeTab.Size = new System.Drawing.Size(600, 387);
+            this.executeTab.Size = new System.Drawing.Size(600, 362);
             this.executeTab.TabIndex = 3;
             this.executeTab.Text = "Execute";
             this.executeTab.UseVisualStyleBackColor = true;
+            // 
+            // trackingPanel
+            // 
+            this.trackingPanel.AutoScroll = true;
+            this.trackingPanel.Location = new System.Drawing.Point(344, 75);
+            this.trackingPanel.Name = "trackingPanel";
+            this.trackingPanel.Size = new System.Drawing.Size(222, 134);
+            this.trackingPanel.TabIndex = 12;
             // 
             // execute_resume
             // 
@@ -754,19 +781,84 @@ namespace EasySave_graphical
             this.execute_backup_list.TabIndex = 4;
             this.execute_backup_list.SelectedIndexChanged += new System.EventHandler(this.execute_backup_list_SelectedIndexChanged);
             // 
-            // trackingPanel
+            // settingsTab
             // 
-            this.trackingPanel.AutoScroll = true;
-            this.trackingPanel.Location = new System.Drawing.Point(344, 75);
-            this.trackingPanel.Name = "trackingPanel";
-            this.trackingPanel.Size = new System.Drawing.Size(222, 134);
-            this.trackingPanel.TabIndex = 12;
+            this.settingsTab.Controls.Add(this.settings_save);
+            this.settingsTab.Controls.Add(this.priority_label);
+            this.settingsTab.Controls.Add(this.textBox1);
+            this.settingsTab.Controls.Add(this.file_size);
+            this.settingsTab.Controls.Add(this.sizeLimit);
+            this.settingsTab.Location = new System.Drawing.Point(4, 24);
+            this.settingsTab.Name = "settingsTab";
+            this.settingsTab.Size = new System.Drawing.Size(600, 362);
+            this.settingsTab.TabIndex = 5;
+            this.settingsTab.Text = "Settings";
+            this.settingsTab.UseVisualStyleBackColor = true;
+            // 
+            // settings_save
+            // 
+            this.settings_save.Location = new System.Drawing.Point(198, 306);
+            this.settings_save.Name = "settings_save";
+            this.settings_save.Size = new System.Drawing.Size(157, 48);
+            this.settings_save.TabIndex = 4;
+            this.settings_save.Text = "Save";
+            this.settings_save.UseVisualStyleBackColor = true;
+            this.settings_save.Click += new System.EventHandler(this.settings_save_Click);
+            // 
+            // priority_label
+            // 
+            this.priority_label.AutoSize = true;
+            this.priority_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.priority_label.Location = new System.Drawing.Point(39, 160);
+            this.priority_label.Name = "priority_label";
+            this.priority_label.Size = new System.Drawing.Size(193, 20);
+            this.priority_label.TabIndex = 3;
+            this.priority_label.Text = "Priority files (.png,.txt,.png)";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(42, 195);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(504, 20);
+            this.textBox1.TabIndex = 2;
+            // 
+            // file_size
+            // 
+            this.file_size.AutoSize = true;
+            this.file_size.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.file_size.Location = new System.Drawing.Point(39, 232);
+            this.file_size.Name = "file_size";
+            this.file_size.Size = new System.Drawing.Size(377, 20);
+            this.file_size.TabIndex = 1;
+            this.file_size.Text = "Maximum file size in case of simultaneous transfers :";
+            // 
+            // sizeLimit
+            // 
+            this.sizeLimit.AutoSize = false;
+            this.sizeLimit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.sizeLimit.LargeChange = 100;
+            this.sizeLimit.Location = new System.Drawing.Point(33, 255);
+            this.sizeLimit.Maximum = 100000;
+            this.sizeLimit.Name = "sizeLimit";
+            this.sizeLimit.Size = new System.Drawing.Size(513, 45);
+            this.sizeLimit.TabIndex = 0;
+            this.sizeLimit.TickFrequency = 0;
+            this.sizeLimit.Scroll += new System.EventHandler(this.sizeLimit_Scroll);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.settingsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("settingsToolStripMenuItem.Image")));
+            this.settingsToolStripMenuItem.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // graphical_interface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(774, 450);
+            this.ClientSize = new System.Drawing.Size(774, 425);
             this.Controls.Add(this.TabControl);
             this.Controls.Add(this.menuStrip2);
             this.Controls.Add(this.menuStrip1);
@@ -792,6 +884,9 @@ namespace EasySave_graphical
             this.DeleteTab.PerformLayout();
             this.executeTab.ResumeLayout(false);
             this.executeTab.PerformLayout();
+            this.settingsTab.ResumeLayout(false);
+            this.settingsTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sizeLimit)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -851,6 +946,14 @@ namespace EasySave_graphical
         private System.Windows.Forms.Label delete_warning;
         private System.Windows.Forms.Button execute_resume;
         private System.Windows.Forms.FlowLayoutPanel trackingPanel;
+        private System.Windows.Forms.TabPage settingsTab;
+        private System.Windows.Forms.TrackBar sizeLimit;
+        private System.Windows.Forms.Label file_size;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem strip_settings;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label priority_label;
+        private System.Windows.Forms.Button settings_save;
     }
 }
 

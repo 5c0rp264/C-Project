@@ -183,6 +183,9 @@
   <data name="extension" xml:space="preserve">
     <value>Extensión para cifrar : (.png,.txt,.mp3...)</value>
   </data>
+  <data name="file_priority" xml:space="preserve">
+    <value>Archivos de prioridad (.png,.txt,.png)</value>
+  </data>
   <data name="full" xml:space="preserve">
     <value>Completa</value>
   </data>
@@ -212,6 +215,15 @@
   </data>
   <data name="select_label" xml:space="preserve">
     <value>Elegir un trabajo</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Ajustes</value>
+  </data>
+  <data name="size_limit" xml:space="preserve">
+    <value>Tamaño máximo de archivo para transferencias simultáneas</value>
+  </data>
+  <data name="size_unit" xml:space="preserve">
+    <value>kb</value>
   </data>
   <data name="source" xml:space="preserve">
     <value>Origen</value>
