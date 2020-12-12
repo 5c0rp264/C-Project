@@ -76,13 +76,13 @@ namespace EasySave_graphical
             this.delete_backup_list = new System.Windows.Forms.ListBox();
             this.executeTab = new System.Windows.Forms.TabPage();
             this.execute_resume = new System.Windows.Forms.Button();
-            this.loading = new System.Windows.Forms.PictureBox();
             this.execute_warning = new System.Windows.Forms.Label();
             this.execute_stop = new System.Windows.Forms.Button();
             this.execute_play = new System.Windows.Forms.Button();
             this.execute_pause = new System.Windows.Forms.Button();
             this.execute_label = new System.Windows.Forms.Label();
             this.execute_backup_list = new System.Windows.Forms.ListBox();
+            this.trackingPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.menuStrip1.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.TabControl.SuspendLayout();
@@ -92,7 +92,6 @@ namespace EasySave_graphical
             this.EditTab.SuspendLayout();
             this.DeleteTab.SuspendLayout();
             this.executeTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.loading)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -240,14 +239,16 @@ namespace EasySave_graphical
             // spanish
             // 
             this.spanish.Appearance = System.Windows.Forms.Appearance.Button;
+            this.spanish.BackColor = System.Drawing.Color.Transparent;
             this.spanish.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("spanish.BackgroundImage")));
             this.spanish.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.spanish.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.spanish.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.spanish.Location = new System.Drawing.Point(423, 261);
             this.spanish.Name = "spanish";
             this.spanish.Size = new System.Drawing.Size(153, 97);
             this.spanish.TabIndex = 16;
-            this.spanish.UseVisualStyleBackColor = true;
+            this.spanish.UseVisualStyleBackColor = false;
             this.spanish.CheckedChanged += new System.EventHandler(this.spanish_CheckedChanged);
             // 
             // french
@@ -256,6 +257,7 @@ namespace EasySave_graphical
             this.french.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("french.BackgroundImage")));
             this.french.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.french.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.french.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.french.Location = new System.Drawing.Point(225, 261);
             this.french.Name = "french";
             this.french.Size = new System.Drawing.Size(153, 97);
@@ -269,6 +271,7 @@ namespace EasySave_graphical
             this.english.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("english.BackgroundImage")));
             this.english.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.english.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.english.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.english.Location = new System.Drawing.Point(30, 261);
             this.english.Name = "english";
             this.english.Size = new System.Drawing.Size(153, 97);
@@ -656,8 +659,8 @@ namespace EasySave_graphical
             // 
             // executeTab
             // 
+            this.executeTab.Controls.Add(this.trackingPanel);
             this.executeTab.Controls.Add(this.execute_resume);
-            this.executeTab.Controls.Add(this.loading);
             this.executeTab.Controls.Add(this.execute_warning);
             this.executeTab.Controls.Add(this.execute_stop);
             this.executeTab.Controls.Add(this.execute_play);
@@ -682,17 +685,6 @@ namespace EasySave_graphical
             this.execute_resume.UseVisualStyleBackColor = true;
             this.execute_resume.Visible = false;
             this.execute_resume.Click += new System.EventHandler(this.execute_resume_Click);
-            // 
-            // loading
-            // 
-            this.loading.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.loading.Image = ((System.Drawing.Image)(resources.GetObject("loading.Image")));
-            this.loading.Location = new System.Drawing.Point(471, 110);
-            this.loading.Name = "loading";
-            this.loading.Size = new System.Drawing.Size(64, 64);
-            this.loading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.loading.TabIndex = 10;
-            this.loading.TabStop = false;
             // 
             // execute_warning
             // 
@@ -755,12 +747,20 @@ namespace EasySave_graphical
             "Backup1",
             "Backup2",
             "Backup3"});
-            this.execute_backup_list.Location = new System.Drawing.Point(151, 74);
+            this.execute_backup_list.Location = new System.Drawing.Point(44, 75);
             this.execute_backup_list.Name = "execute_backup_list";
             this.execute_backup_list.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.execute_backup_list.Size = new System.Drawing.Size(263, 134);
             this.execute_backup_list.TabIndex = 4;
             this.execute_backup_list.SelectedIndexChanged += new System.EventHandler(this.execute_backup_list_SelectedIndexChanged);
+            // 
+            // trackingPanel
+            // 
+            this.trackingPanel.AutoScroll = true;
+            this.trackingPanel.Location = new System.Drawing.Point(344, 75);
+            this.trackingPanel.Name = "trackingPanel";
+            this.trackingPanel.Size = new System.Drawing.Size(222, 134);
+            this.trackingPanel.TabIndex = 12;
             // 
             // graphical_interface
             // 
@@ -792,7 +792,6 @@ namespace EasySave_graphical
             this.DeleteTab.PerformLayout();
             this.executeTab.ResumeLayout(false);
             this.executeTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.loading)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -850,8 +849,8 @@ namespace EasySave_graphical
         private System.Windows.Forms.TextBox edit_name;
         private System.Windows.Forms.Label execute_warning;
         private System.Windows.Forms.Label delete_warning;
-        private System.Windows.Forms.PictureBox loading;
         private System.Windows.Forms.Button execute_resume;
+        private System.Windows.Forms.FlowLayoutPanel trackingPanel;
     }
 }
 

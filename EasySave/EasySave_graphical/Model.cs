@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
-
+using System.Windows.Forms;
 
 namespace EasySave_graphical
 {
@@ -104,8 +104,6 @@ namespace EasySave_graphical
             watchThread.IsBackground = true;
             watchThread.Start();
 
-            this.controller.View.loadingAnimation(true);
-
             // The user can select one or multiple backup job to execute in the same time
             int numOfDiff = 0;
             List<BackupJobState> BUJStateList = new List<BackupJobState>();
@@ -147,8 +145,13 @@ namespace EasySave_graphical
                 writeLogFile("Destination directory size : " + BUJStateList[i].TotalSizeOfElligbleFiles);
                 if (this.BackupJobList[backupJobIDList[i]].IsFull)
                 {
+                    // Create a progress bar based on the id of the backup -> BUJS
+                    this.controller.View.addProgressBar(i);
                     // Full copy
-                    Thread fullThread = new Thread(() => DirectoryCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, i, BUJStateList));
+                    Thread fullThread = new Thread(() =>
+                    {
+                        DirectoryCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, i, BUJStateList);
+                    });
                     fullThread.Name = "FULL_THREAD_ID_" + backupJobIDList[i];
                     fullThread.Start();
                     backupThread.Add(fullThread);
@@ -169,8 +172,6 @@ namespace EasySave_graphical
                 writeLogFile("Transfer time : " + BUJStateList[i].Stopwatch.Elapsed);
 
             }
-            this.controller.View.loadingAnimation(false);
-
             stopWatchThread = new Thread(stopWatchingProcess);
             stopWatchThread.IsBackground = true;
             stopWatchThread.Start();
@@ -237,8 +238,16 @@ namespace EasySave_graphical
                 // This will just open and write with the indentation appropriated in the state file
                 FileStream stream = File.Create(pathToStateFile);
                 TextWriter tw = new StreamWriter(stream);
-                String stringjson = JsonConvert.SerializeObject(BUJSList, Formatting.Indented);
-                tw.WriteLine(stringjson);
+                try
+                {
+                    String stringjson = JsonConvert.SerializeObject(BUJSList, Formatting.Indented);
+                    tw.WriteLine(stringjson);
+                }
+                catch (Exception exc)
+                {
+                    Debug.Print(exc.ToString());
+                }
+
                 tw.Close();
             }
 
@@ -270,7 +279,10 @@ namespace EasySave_graphical
                     using (StreamWriter sw = new StreamWriter(stream))
                     {
                         loglist = JsonConvert.DeserializeObject<List<Log>>(json);
-                        loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
+                        if (loglist != null)
+                        {
+                            loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
+                        }
                         sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
                         sw.Close();
                     }
@@ -361,6 +373,7 @@ namespace EasySave_graphical
 
         private void DirectoryCopy(string sourceDirName, string destDirName, int index, List<BackupJobState> BUJS)
         {
+
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
 
@@ -380,6 +393,16 @@ namespace EasySave_graphical
             FileInfo[] files = dir.GetFiles();
             foreach (FileInfo file in files)
             {
+                // Progress bar update
+                if (BUJS[index].TotalElligibleFile == 1)
+                {
+                    this.controller.View.updateTracking(index, Int32.Parse(Math.Ceiling((BUJS[index].Progress) * 100).ToString()), BUJS[index].Name,"end");
+                }
+                else
+                {
+                    this.controller.View.updateTracking(index, Int32.Parse(Math.Ceiling((BUJS[index].Progress) * 100).ToString()), BUJS[index].Name);
+                }
+
                 Boolean didCryptIt = false;
                 foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
                 {
@@ -416,7 +439,6 @@ namespace EasySave_graphical
                 DirectoryCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), index, BUJS);
                 _ = waitHandle.WaitOne(Timeout.Infinite);
             }
-
         }
         private void DirectoryDifferentialCopy(string sourceDirName, string destDirName, string comparisonDirName, int index, List<BackupJobState> BUJS)
         {
@@ -442,6 +464,7 @@ namespace EasySave_graphical
             FileInfo[] files = dirsrc.GetFiles();
             foreach (FileInfo file in files)
             {
+                this.controller.View.updateTracking(index, Int32.Parse(Math.Ceiling((BUJS[index].Progress) * 100).ToString()), BUJS[index].Name);
                 if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
                     Boolean didCryptIt = false;
@@ -507,7 +530,6 @@ namespace EasySave_graphical
                 DirectoryDifferentialCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), Path.Combine(comparisonDirName, subdir.Name), index, BUJS);
                 _ = waitHandle.WaitOne();
             }
-
         }
 
         // This will permit the comparison of file based on their md5 signature
@@ -607,8 +629,9 @@ namespace EasySave_graphical
                         threadsAlive++;
                     }
                 }
+                Thread.Sleep(250);
             } while (threadsAlive > 0);
-
+            this.controller.View.removeProgressBar();
             watchThread.Abort();
         }
 

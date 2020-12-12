@@ -29,7 +29,6 @@ namespace EasySave_graphical
             if (!createdNew)
             {
                 MessageBox.Show(appName + " is already running ! The application will now close.", "Instantiation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Console.ReadKey();
                 return;
             }
 

@@ -316,29 +316,81 @@ namespace EasySave_graphical
             
         }
 
-
-        public void loadingAnimation(bool needsToBeVisible)
-        {
-            if (needsToBeVisible)
-            {
-                loading.Visible = true;
-            }
-            else
-            {
-                loading.Visible = false;
-            }
-        }
-
         private void execute_backup_list_SelectedIndexChanged(object sender, EventArgs e)
         {
             execute_warning.Visible = false;
         }
+
+
+        // TODO: add a progress bar for each work
+
+        // Progress bar for each backup thread
+        List<ProgressBar> threadsTracking = new List<ProgressBar>();
+
+        public delegate void addProgressBarDelegate();
+        public addProgressBarDelegate trackingDelegate;
+
+        public void addProgressBar(int id)
+        {
+            trackingDelegate = new addProgressBarDelegate(() => { newProgressBar(id); });
+            Invoke(trackingDelegate);
+        }
+
+        public void newProgressBar(int id)
+        {
+            ProgressBar myProgressBar = new ProgressBar();
+            myProgressBar.Name = "ProgressBar" + id; // Should add the ID here
+            myProgressBar.Width = 190;
+            threadsTracking.Add(myProgressBar);
+            trackingPanel.Controls.Add(myProgressBar);
+        }
+
+        public delegate void removeProgressBarDelegate();
+        public removeProgressBarDelegate removeTrackingDelegate;
+
+        public void removeProgressBar()
+        {
+            removeTrackingDelegate = new removeProgressBarDelegate(deleteProgressBar);
+            Invoke(removeTrackingDelegate);
+        }
+        public void deleteProgressBar()
+        {
+            trackingPanel.Controls.Clear();
+        }
+
+
+        public delegate void updateProgressBarDelegate();
+        public updateProgressBarDelegate refreshTrackingDelegate;
+
+        public void updateTracking(int id, int percent, string bname,string status="")
+        {
+            refreshTrackingDelegate = new updateProgressBarDelegate(() => { refreshTracking(id, percent, bname, status); });
+            Invoke(refreshTrackingDelegate);
+        }
+        public void refreshTracking(int id, int percent,string bname, string status)
+        {
+            // Update the value
+            ProgressBar item = this.trackingPanel.Controls.Find("ProgressBar" + id.ToString(), false)[0] as ProgressBar;
+
+            if (status == "end" || percent == 100)
+            {
+                //TODO: add persistent "complete"
+                item.CreateGraphics().DrawString(bname + " : " + percent.ToString() + "COMPLETE", new Font("Arial", (float)8.25, FontStyle.Regular), Brushes.Black, new PointF(item.Width / 2 - 40, item.Height / 2 - 7));
+                item.Value = 100;
+
+            }
+            else
+            {
+                item.CreateGraphics().DrawString(bname + " : " + percent.ToString() + "%", new Font("Arial", (float)8.25, FontStyle.Regular), Brushes.Black, new PointF(item.Width / 2 - 20, item.Height / 2 - 7));
+                item.Value = percent;
+            }
+        }
+
         // Color ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
         private void stripe_execute_Click(object sender, EventArgs e)
         {
-            loading.Visible = false;
             TabControl.SelectedIndex = 4;
             resetStripColor();
             strip_execute.BackColor = ColorTranslator.FromHtml("#CCCAC8");
@@ -546,6 +598,11 @@ namespace EasySave_graphical
             this.controller.Model.resumeThread();
             execute_pause.Enabled = true;
             execute_resume.Visible = false;
+        }
+
+        private void trackingPanel_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
