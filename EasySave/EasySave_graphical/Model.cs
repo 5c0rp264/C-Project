@@ -32,6 +32,8 @@ namespace EasySave_graphical
         // Thread for each backup will be stored in this list
         List<Thread> backupThreadList = new List<Thread>();
 
+        // Pause
+        public List<String> backupToPause = new List<string>();
 
         // Settings
         public int maxFileSize = 0;
@@ -178,6 +180,7 @@ namespace EasySave_graphical
                     fullThread.Name = "FULL_THREAD_ID_" + backupJobIDList[i];
                     fullThread.Start();
                     backupThreadList.Add(fullThread);
+                    this.controller.View.UpdateBackupPauseList(BackupJobList[backupJobIDList[i]].Name);
                 }
                 else
                 {
@@ -189,6 +192,7 @@ namespace EasySave_graphical
                     backupThreadList.Add(diffThread);
                     // The number is increasing before the thread has start
                     numOfDiff++;
+                    this.controller.View.UpdateBackupPauseList(BackupJobList[backupJobIDList[i]].Name);
                 }
                 // At the end the work at the index i is no more active
                 BUJStateList[i].ISACtive = false;
@@ -451,7 +455,15 @@ namespace EasySave_graphical
                     BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                     BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                     writeStateFile(BUJS);
-                    _ = waitHandle.WaitOne();
+                    
+                    // Check if we need to suspend the thread or not
+                    foreach (var item in backupToPause)
+                    {
+                        if (BUJS[index].Name == item)
+                        {
+                            _ = waitHandle.WaitOne();
+                        }
+                    }
 
                     // We release the semaphore because we don't need one anymore
                     copyBigFile.ReleaseMutex();
@@ -495,7 +507,15 @@ namespace EasySave_graphical
                     BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                     BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                     writeStateFile(BUJS);
-                    _ = waitHandle.WaitOne();
+
+                    // Do we need to stop it or not
+                    foreach (var item in backupToPause)
+                    {
+                        if (BUJS[index].Name == item)
+                        {
+                            _ = waitHandle.WaitOne();
+                        }
+                    }
                 }
 
             }
@@ -505,7 +525,14 @@ namespace EasySave_graphical
             foreach (DirectoryInfo subdir in dirs)
             {
                 DirectoryCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), index, BUJS);
-                _ = waitHandle.WaitOne(Timeout.Infinite);
+                // Do we need to stop it or not
+                foreach (var item in backupToPause)
+                {
+                    if (BUJS[index].Name == item)
+                    {
+                        _ = waitHandle.WaitOne();
+                    }
+                }
             }
         }
         private void DirectoryDifferentialCopy(string sourceDirName, string destDirName, string comparisonDirName, int index, List<BackupJobState> BUJS)
@@ -563,7 +590,13 @@ namespace EasySave_graphical
                         BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                         BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                         writeStateFile(BUJS);
-                        _ = waitHandle.WaitOne();
+                        foreach (var item in backupToPause)
+                        {
+                            if (BUJS[index].Name == item)
+                            {
+                                _ = waitHandle.WaitOne();
+                            }
+                        }
                     }
                     else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
                     {
@@ -592,7 +625,13 @@ namespace EasySave_graphical
                             BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                             BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                             writeStateFile(BUJS);
-                            _ = waitHandle.WaitOne();
+                            foreach (var item in backupToPause)
+                            {
+                                if (BUJS[index].Name == item)
+                                {
+                                    _ = waitHandle.WaitOne();
+                                }
+                            }
                         }
                     }
                     // We release the mutex because we don't need one anymore
@@ -627,7 +666,13 @@ namespace EasySave_graphical
                         BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                         BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                         writeStateFile(BUJS);
-                        _ = waitHandle.WaitOne();
+                        foreach (var item in backupToPause)
+                        {
+                            if (BUJS[index].Name == item)
+                            {
+                                _ = waitHandle.WaitOne();
+                            }
+                        }
                     }
                     else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
                     {
@@ -656,7 +701,13 @@ namespace EasySave_graphical
                             BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                             BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                             writeStateFile(BUJS);
-                            _ = waitHandle.WaitOne();
+                            foreach (var item in backupToPause)
+                            {
+                                if (BUJS[index].Name == item)
+                                {
+                                    _ = waitHandle.WaitOne();
+                                }
+                            }
                         }
                     }
                 }
@@ -666,7 +717,13 @@ namespace EasySave_graphical
             foreach (DirectoryInfo subdir in dirs)
             {
                 DirectoryDifferentialCopy(subdir.FullName, Path.Combine(destDirName, subdir.Name), Path.Combine(comparisonDirName, subdir.Name), index, BUJS);
-                _ = waitHandle.WaitOne();
+                foreach (var item in backupToPause)
+                {
+                    if (BUJS[index].Name == item)
+                    {
+                        _ = waitHandle.WaitOne();
+                    }
+                }
             }
         }
 
@@ -770,6 +827,7 @@ namespace EasySave_graphical
                 Thread.Sleep(250);
             } while (threadsAlive > 0);
             this.controller.View.removeProgressBar();
+            this.controller.View.clearBackupPauseListDelegate();
             watchThread.Abort();
         }
 

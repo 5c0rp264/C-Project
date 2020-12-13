@@ -91,6 +91,7 @@ namespace EasySave_graphical
             this.file_size = new System.Windows.Forms.Label();
             this.sizeLimit = new System.Windows.Forms.TrackBar();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.execute_backup_pause = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.TabControl.SuspendLayout();
@@ -678,6 +679,7 @@ namespace EasySave_graphical
             // 
             // executeTab
             // 
+            this.executeTab.Controls.Add(this.execute_backup_pause);
             this.executeTab.Controls.Add(this.trackingPanel);
             this.executeTab.Controls.Add(this.execute_resume);
             this.executeTab.Controls.Add(this.execute_warning);
@@ -696,7 +698,7 @@ namespace EasySave_graphical
             // trackingPanel
             // 
             this.trackingPanel.AutoScroll = true;
-            this.trackingPanel.Location = new System.Drawing.Point(344, 75);
+            this.trackingPanel.Location = new System.Drawing.Point(358, 75);
             this.trackingPanel.Name = "trackingPanel";
             this.trackingPanel.Size = new System.Drawing.Size(222, 134);
             this.trackingPanel.TabIndex = 12;
@@ -761,7 +763,7 @@ namespace EasySave_graphical
             // 
             this.execute_label.AutoSize = true;
             this.execute_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.execute_label.Location = new System.Drawing.Point(121, 29);
+            this.execute_label.Location = new System.Drawing.Point(39, 33);
             this.execute_label.Name = "execute_label";
             this.execute_label.Size = new System.Drawing.Size(329, 25);
             this.execute_label.TabIndex = 5;
@@ -774,10 +776,10 @@ namespace EasySave_graphical
             "Backup1",
             "Backup2",
             "Backup3"});
-            this.execute_backup_list.Location = new System.Drawing.Point(44, 75);
+            this.execute_backup_list.Location = new System.Drawing.Point(13, 75);
             this.execute_backup_list.Name = "execute_backup_list";
             this.execute_backup_list.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.execute_backup_list.Size = new System.Drawing.Size(263, 134);
+            this.execute_backup_list.Size = new System.Drawing.Size(154, 134);
             this.execute_backup_list.TabIndex = 4;
             this.execute_backup_list.SelectedIndexChanged += new System.EventHandler(this.execute_backup_list_SelectedIndexChanged);
             // 
@@ -853,6 +855,18 @@ namespace EasySave_graphical
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // execute_backup_pause
+            // 
+            this.execute_backup_pause.FormattingEnabled = true;
+            this.execute_backup_pause.Items.AddRange(new object[] {
+            ""});
+            this.execute_backup_pause.Location = new System.Drawing.Point(184, 75);
+            this.execute_backup_pause.Name = "execute_backup_pause";
+            this.execute_backup_pause.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.execute_backup_pause.Size = new System.Drawing.Size(154, 134);
+            this.execute_backup_pause.TabIndex = 13;
+            this.execute_backup_pause.Tag = "";
             // 
             // graphical_interface
             // 
@@ -954,6 +968,7 @@ namespace EasySave_graphical
         private System.Windows.Forms.TextBox settings_priority;
         private System.Windows.Forms.Label priority_label;
         private System.Windows.Forms.Button settings_save;
+        private System.Windows.Forms.ListBox execute_backup_pause;
     }
 }
 

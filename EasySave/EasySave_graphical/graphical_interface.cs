@@ -383,6 +383,58 @@ namespace EasySave_graphical
             }
         }
 
+        // Pause the backup
+        public void UpdateBackupPauseList(string name)
+        {
+            //Add a backup to the collection -> execute_backup_pause
+            execute_backup_pause.Items.Add(name);
+        }
+
+        public delegate void removePauseBackupList();
+        public removePauseBackupList removePause;
+
+        public void clearBackupPauseListDelegate()
+        {
+            removePause = new removePauseBackupList(ClearBackupPauseList);
+            Invoke(removePause);
+        }
+        public void ClearBackupPauseList()
+        {
+            execute_backup_pause.Items.Clear();
+        }
+
+        private void execute_pause_Click(object sender, EventArgs e)
+        {
+            execute_pause.Enabled = false;
+            execute_resume.Visible = true;
+            execute_resume.Enabled = true;
+
+            foreach (var item in execute_backup_pause.SelectedItems)
+            {
+                this.controller.Model.backupToPause.Add(item.ToString());
+            }
+
+            this.controller.Model.suspendThread();
+        }
+
+        private void execute_resume_Click(object sender, EventArgs e)
+        {
+            this.controller.Model.resumeThread();
+            execute_pause.Enabled = true;
+            execute_resume.Visible = false;
+        }
+        private void execute_stop_Click(object sender, EventArgs e)
+        {
+            this.controller.Model.abortThread();
+            deleteProgressBar();
+            MessageBox.Show(Properties.Resources.thread_stop, Properties.Resources.information,
+                                                 MessageBoxButtons.OK,
+                                                 MessageBoxIcon.Exclamation);
+            execute_stop.Enabled = false;
+            execute_pause.Enabled = false;
+            execute_resume.Visible = false;
+        }
+
         // Settings
         private void strip_settings_Click(object sender, EventArgs e)
         {
@@ -409,6 +461,7 @@ namespace EasySave_graphical
             TabControl.SelectedIndex = 4;
             resetStripColor();
             strip_execute.BackColor = ColorTranslator.FromHtml("#CCCAC8");
+            execute_backup_pause.Items.Clear();
         }
 
         private void strip_edit_Click(object sender, EventArgs e)
@@ -593,33 +646,6 @@ namespace EasySave_graphical
         private void strip_log_Click(object sender, EventArgs e)
         {
             this.controller.Model.openLogFile();
-        }
-
-        private void execute_stop_Click(object sender, EventArgs e)
-        {
-            this.controller.Model.abortThread();
-            deleteProgressBar();
-            MessageBox.Show(Properties.Resources.thread_stop, Properties.Resources.information,
-                                                 MessageBoxButtons.OK,
-                                                 MessageBoxIcon.Exclamation);
-            execute_stop.Enabled = false;
-            execute_pause.Enabled = false;
-            execute_resume.Visible = false;
-        }
-
-        private void execute_pause_Click(object sender, EventArgs e)
-        {
-            execute_pause.Enabled = false;
-            execute_resume.Visible = true;
-            execute_resume.Enabled = true;
-            this.controller.Model.suspendThread();
-        }
-
-        private void execute_resume_Click(object sender, EventArgs e)
-        {
-            this.controller.Model.resumeThread();
-            execute_pause.Enabled = true;
-            execute_resume.Visible = false;
         }
 
         private void trackingPanel_Paint(object sender, PaintEventArgs e)
