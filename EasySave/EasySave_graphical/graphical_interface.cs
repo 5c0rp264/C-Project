@@ -152,8 +152,8 @@ namespace EasySave_graphical
             this.edit_sourceFolder.Text = this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].Source;
             this.edit_destinationFolder.Text = this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].Destination;
 
-            edit_full.Checked = true;
-            edit_full.Enabled = this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].IsFull;
+            edit_full.Checked = this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].IsFull;
+            edit_full.Enabled = true;
             edit_differential.Enabled = true;
             edit_differential.Checked = !this.controller.Model.BackupJobList[this.edit_backup_list.SelectedIndex].IsFull;
 

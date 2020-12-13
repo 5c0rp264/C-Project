@@ -28,7 +28,6 @@ namespace EasySave_graphical
         private String pathToStateFile = @"./state.log";
         private String pathToLogFile = @"./logs/" + DateTime.Now.ToString("MM.dd.yyyy") + ".log";
         // Lock those files
-        private static readonly object logFileLocker = new object();
         private static readonly object statelogFileLocker = new object();
         // Thread for each backup will be stored in this list
         List<Thread> backupThread = new List<Thread>();
@@ -254,40 +253,40 @@ namespace EasySave_graphical
         }
 
 
-
+        private static Mutex logFileMutex = new Mutex();
         private void writeLogFile(String toBeWritten)
         {
-            lock (logFileLocker)
+            logFileMutex.WaitOne();
+            // This will just open and write with the indentation appropriated in the state file
+            List<Log> loglist = new List<Log>();
+            if (!File.Exists(pathToLogFile))
             {
-                // This will just open and write with the indentation appropriated in the state file
-                List<Log> loglist = new List<Log>();
-                if (!File.Exists(pathToLogFile))
+                // Create a file to write to.
+                FileStream stream = File.Create(pathToLogFile);
+                using (StreamWriter sw = new StreamWriter(stream))
                 {
-                    // Create a file to write to.
-                    FileStream stream = File.Create(pathToLogFile);
-                    using (StreamWriter sw = new StreamWriter(stream))
-                    {
-                        loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
-                        sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
-                        sw.Close();
-                    }
-                }
-                else
-                {
-                    string json = File.ReadAllText(pathToLogFile);
-                    FileStream stream = File.Create(pathToLogFile);
-                    using (StreamWriter sw = new StreamWriter(stream))
-                    {
-                        loglist = JsonConvert.DeserializeObject<List<Log>>(json);
-                        if (loglist != null)
-                        {
-                            loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
-                        }
-                        sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
-                        sw.Close();
-                    }
+                    loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
+                    sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
+                    sw.Close();
                 }
             }
+            else
+            {
+                string json = File.ReadAllText(pathToLogFile);
+                FileStream stream = File.Create(pathToLogFile);
+                using (StreamWriter sw = new StreamWriter(stream))
+                {
+                    loglist = JsonConvert.DeserializeObject<List<Log>>(json);
+                    if (loglist != null)
+                    {
+                        loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
+                    }
+                    sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
+                    sw.Close();
+                }
+            }
+
+            logFileMutex.ReleaseMutex();
         }
 
 
@@ -379,10 +378,8 @@ namespace EasySave_graphical
 
         private void DirectoryCopy(string sourceDirName, string destDirName, int index, List<BackupJobState> BUJS)
         {
-
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
-
             if (!dir.Exists)
             {
                 throw new DirectoryNotFoundException(
@@ -400,7 +397,7 @@ namespace EasySave_graphical
             foreach (FileInfo file in files)
             {
                 // If the file is too big and there is already another file being copied
-                if (file.Length > maxFileSize)
+                if (file.Length > maxFileSize && maxFileSize != 0)
                 {
                     // We wait for the semaphore to accept us
                     copyBigFile.WaitOne();
@@ -426,7 +423,7 @@ namespace EasySave_graphical
                     if (!didCryptIt)
                     {
                         file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                        writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( super useful log since there is no encryption )");
+                        writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms (no encryption)");
                     }
                     BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                     //Console.Write(BUJS[index].FilesTransfered.Count / BUJS[index].TotalElligibleFile);
@@ -470,7 +467,7 @@ namespace EasySave_graphical
                     if (!didCryptIt)
                     {
                         file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                        writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( super useful log since there is no encryption )");
+                        writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms (no encryption )");
                     }
                     BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                     //Console.Write(BUJS[index].FilesTransfered.Count / BUJS[index].TotalElligibleFile);
@@ -514,9 +511,9 @@ namespace EasySave_graphical
             FileInfo[] files = dirsrc.GetFiles();
             foreach (FileInfo file in files)
             {
-                if (file.Length > maxFileSize)
+                if (file.Length > maxFileSize && maxFileSize != 0)
                 {
-                    // We wait for the semaphore to accept us
+                    // We wait for the mutex to accept us
                     copyBigFile.WaitOne();
                     this.controller.View.updateTracking(index, Int32.Parse(Math.Ceiling((BUJS[index].Progress) * 100).ToString()), BUJS[index].Name);
                     if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
@@ -539,7 +536,7 @@ namespace EasySave_graphical
                         if (!didCryptIt)
                         {
                             file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                            writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( super useful log since there is no encryption )");
+                            writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( no encryption )");
                         }
                         BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                         BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
@@ -568,7 +565,7 @@ namespace EasySave_graphical
                             if (!didCryptIt)
                             {
                                 file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( super useful log since there is no encryption )");
+                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( no encryption )");
                             }
                             BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                             BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
@@ -577,7 +574,7 @@ namespace EasySave_graphical
                             _ = waitHandle.WaitOne();
                         }
                     }
-                    // We release the semaphore because we don't need one anymore
+                    // We release the mutex because we don't need one anymore
                     copyBigFile.ReleaseMutex();
                 }
                 else
@@ -603,7 +600,7 @@ namespace EasySave_graphical
                         if (!didCryptIt)
                         {
                             file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                            writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( super useful log since there is no encryption )");
+                            writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( no encryption )");
                         }
                         BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                         BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
@@ -632,7 +629,7 @@ namespace EasySave_graphical
                             if (!didCryptIt)
                             {
                                 file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( super useful log since there is no encryption )");
+                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( no encryption )");
                             }
                             BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                             BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
@@ -642,7 +639,7 @@ namespace EasySave_graphical
                         }
                     }
                 }
-                
+
             }
 
             foreach (DirectoryInfo subdir in dirs)

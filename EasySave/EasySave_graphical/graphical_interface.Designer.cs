@@ -248,9 +248,9 @@ namespace EasySave_graphical
             this.homeTab.Controls.Add(this.english);
             this.homeTab.Controls.Add(this.language_container);
             this.homeTab.Controls.Add(this.logoBox);
-            this.homeTab.Location = new System.Drawing.Point(4, 24);
+            this.homeTab.Location = new System.Drawing.Point(4, 5);
             this.homeTab.Name = "homeTab";
-            this.homeTab.Size = new System.Drawing.Size(600, 362);
+            this.homeTab.Size = new System.Drawing.Size(600, 409);
             this.homeTab.TabIndex = 4;
             this.homeTab.Text = "Home";
             this.homeTab.UseVisualStyleBackColor = true;
@@ -306,7 +306,7 @@ namespace EasySave_graphical
             this.language_container.HideSelection = false;
             this.language_container.Location = new System.Drawing.Point(0, 187);
             this.language_container.Name = "language_container";
-            this.language_container.Size = new System.Drawing.Size(600, 175);
+            this.language_container.Size = new System.Drawing.Size(600, 222);
             this.language_container.TabIndex = 17;
             this.language_container.UseCompatibleStateImageBehavior = false;
             // 
@@ -333,10 +333,10 @@ namespace EasySave_graphical
             this.Addtab.Controls.Add(this.add_source);
             this.Addtab.Controls.Add(this.add_extension);
             this.Addtab.Controls.Add(this.add_name);
-            this.Addtab.Location = new System.Drawing.Point(4, 24);
+            this.Addtab.Location = new System.Drawing.Point(4, 34);
             this.Addtab.Name = "Addtab";
             this.Addtab.Padding = new System.Windows.Forms.Padding(3);
-            this.Addtab.Size = new System.Drawing.Size(600, 362);
+            this.Addtab.Size = new System.Drawing.Size(600, 380);
             this.Addtab.TabIndex = 0;
             this.Addtab.Text = "Add";
             this.Addtab.UseVisualStyleBackColor = true;
@@ -452,10 +452,10 @@ namespace EasySave_graphical
             this.EditTab.Controls.Add(this.edit_sourceFolder);
             this.EditTab.Controls.Add(this.edit_extension);
             this.EditTab.Controls.Add(this.edit_name);
-            this.EditTab.Location = new System.Drawing.Point(4, 24);
+            this.EditTab.Location = new System.Drawing.Point(4, 34);
             this.EditTab.Name = "EditTab";
             this.EditTab.Padding = new System.Windows.Forms.Padding(3);
-            this.EditTab.Size = new System.Drawing.Size(600, 362);
+            this.EditTab.Size = new System.Drawing.Size(600, 380);
             this.EditTab.TabIndex = 1;
             this.EditTab.Text = "Edit";
             this.EditTab.UseVisualStyleBackColor = true;
@@ -624,9 +624,9 @@ namespace EasySave_graphical
             this.DeleteTab.Controls.Add(this.delete_validation);
             this.DeleteTab.Controls.Add(this.delete_label);
             this.DeleteTab.Controls.Add(this.delete_backup_list);
-            this.DeleteTab.Location = new System.Drawing.Point(4, 24);
+            this.DeleteTab.Location = new System.Drawing.Point(4, 34);
             this.DeleteTab.Name = "DeleteTab";
-            this.DeleteTab.Size = new System.Drawing.Size(600, 362);
+            this.DeleteTab.Size = new System.Drawing.Size(600, 380);
             this.DeleteTab.TabIndex = 2;
             this.DeleteTab.Text = "Delete";
             this.DeleteTab.UseVisualStyleBackColor = true;
@@ -686,9 +686,9 @@ namespace EasySave_graphical
             this.executeTab.Controls.Add(this.execute_pause);
             this.executeTab.Controls.Add(this.execute_label);
             this.executeTab.Controls.Add(this.execute_backup_list);
-            this.executeTab.Location = new System.Drawing.Point(4, 5);
+            this.executeTab.Location = new System.Drawing.Point(4, 34);
             this.executeTab.Name = "executeTab";
-            this.executeTab.Size = new System.Drawing.Size(600, 409);
+            this.executeTab.Size = new System.Drawing.Size(600, 380);
             this.executeTab.TabIndex = 3;
             this.executeTab.Text = "Execute";
             this.executeTab.UseVisualStyleBackColor = true;
@@ -788,9 +788,9 @@ namespace EasySave_graphical
             this.settingsTab.Controls.Add(this.textBox1);
             this.settingsTab.Controls.Add(this.file_size);
             this.settingsTab.Controls.Add(this.sizeLimit);
-            this.settingsTab.Location = new System.Drawing.Point(4, 24);
+            this.settingsTab.Location = new System.Drawing.Point(4, 34);
             this.settingsTab.Name = "settingsTab";
-            this.settingsTab.Size = new System.Drawing.Size(600, 362);
+            this.settingsTab.Size = new System.Drawing.Size(600, 380);
             this.settingsTab.TabIndex = 5;
             this.settingsTab.Text = "Settings";
             this.settingsTab.UseVisualStyleBackColor = true;
