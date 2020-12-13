@@ -333,10 +333,10 @@ namespace EasySave_graphical
             this.Addtab.Controls.Add(this.add_source);
             this.Addtab.Controls.Add(this.add_extension);
             this.Addtab.Controls.Add(this.add_name);
-            this.Addtab.Location = new System.Drawing.Point(4, 34);
+            this.Addtab.Location = new System.Drawing.Point(4, 24);
             this.Addtab.Name = "Addtab";
             this.Addtab.Padding = new System.Windows.Forms.Padding(3);
-            this.Addtab.Size = new System.Drawing.Size(600, 380);
+            this.Addtab.Size = new System.Drawing.Size(600, 390);
             this.Addtab.TabIndex = 0;
             this.Addtab.Text = "Add";
             this.Addtab.UseVisualStyleBackColor = true;
@@ -452,10 +452,10 @@ namespace EasySave_graphical
             this.EditTab.Controls.Add(this.edit_sourceFolder);
             this.EditTab.Controls.Add(this.edit_extension);
             this.EditTab.Controls.Add(this.edit_name);
-            this.EditTab.Location = new System.Drawing.Point(4, 34);
+            this.EditTab.Location = new System.Drawing.Point(4, 24);
             this.EditTab.Name = "EditTab";
             this.EditTab.Padding = new System.Windows.Forms.Padding(3);
-            this.EditTab.Size = new System.Drawing.Size(600, 380);
+            this.EditTab.Size = new System.Drawing.Size(600, 390);
             this.EditTab.TabIndex = 1;
             this.EditTab.Text = "Edit";
             this.EditTab.UseVisualStyleBackColor = true;
@@ -624,9 +624,9 @@ namespace EasySave_graphical
             this.DeleteTab.Controls.Add(this.delete_validation);
             this.DeleteTab.Controls.Add(this.delete_label);
             this.DeleteTab.Controls.Add(this.delete_backup_list);
-            this.DeleteTab.Location = new System.Drawing.Point(4, 34);
+            this.DeleteTab.Location = new System.Drawing.Point(4, 24);
             this.DeleteTab.Name = "DeleteTab";
-            this.DeleteTab.Size = new System.Drawing.Size(600, 380);
+            this.DeleteTab.Size = new System.Drawing.Size(600, 390);
             this.DeleteTab.TabIndex = 2;
             this.DeleteTab.Text = "Delete";
             this.DeleteTab.UseVisualStyleBackColor = true;

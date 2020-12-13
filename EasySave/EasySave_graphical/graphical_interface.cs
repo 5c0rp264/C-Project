@@ -398,6 +398,7 @@ namespace EasySave_graphical
         private void settings_save_Click(object sender, EventArgs e)
         {
             this.controller.Model.maxFileSize = sizeLimit.Value;
+            this.controller.Model.WriteToFileInFirstLine("settings.txt", sizeLimit.Value.ToString());
         }
 
         // Color ---------------------------------------------------------------------------------------------------------------------------------------------------

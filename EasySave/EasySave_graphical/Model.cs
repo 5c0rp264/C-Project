@@ -25,11 +25,16 @@ namespace EasySave_graphical
 
         // Path to the json files that store the backup job list in the root folder
         private String pathToJsonDB = @"./db.json";
+        private String pathToSettings = @"./settings.txt";
         private String pathToStateFile = @"./state.log";
         private String pathToLogFile = @"./logs/" + DateTime.Now.ToString("MM.dd.yyyy") + ".log";
 
         // Thread for each backup will be stored in this list
         List<Thread> backupThreadList = new List<Thread>();
+
+
+        // Settings
+        public int maxFileSize = 0;
 
         public List<BackupJob> BackupJobList
         {
@@ -59,6 +64,28 @@ namespace EasySave_graphical
                 //Console.WriteLine(json);
                 BackupJobList = JsonConvert.DeserializeObject<List<BackupJob>>(json);
 
+            }
+
+            // Simple verification to check if the settings file is already present or not
+            if (!File.Exists(pathToSettings))
+            {
+                File.Create("settings.txt");
+            }
+            else
+            {
+                string fileSize = "";
+                using (StreamReader reader = new StreamReader(pathToSettings))
+                {
+                    fileSize = reader.ReadLine() ?? "";
+                }
+                try
+                {
+                    maxFileSize = Int32.Parse(fileSize);
+                }
+                catch
+                {
+                    maxFileSize = 0;
+                }
             }
         }
 
@@ -366,9 +393,6 @@ namespace EasySave_graphical
             return totalCount;
 
         }
-
-        // Settings
-        public int maxFileSize = 0;
 
         // Number of file beyond the limit set by the user
         private static Mutex copyBigFile = new Mutex();
@@ -788,5 +812,13 @@ namespace EasySave_graphical
             }
             return Locked;
         }
+        public void WriteToFileInFirstLine(string Path, string Text)
+        {
+            string content = File.ReadAllText(Path);
+            content = Text + "\n" + content;
+            File.WriteAllText(Path, content);
+        }
     }
+
+
 }
