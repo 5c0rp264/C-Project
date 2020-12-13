@@ -87,7 +87,7 @@ namespace EasySave_graphical
             this.settingsTab = new System.Windows.Forms.TabPage();
             this.settings_save = new System.Windows.Forms.Button();
             this.priority_label = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.settings_priority = new System.Windows.Forms.TextBox();
             this.file_size = new System.Windows.Forms.Label();
             this.sizeLimit = new System.Windows.Forms.TrackBar();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -233,7 +233,7 @@ namespace EasySave_graphical
             this.TabControl.Controls.Add(this.executeTab);
             this.TabControl.Controls.Add(this.settingsTab);
             this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TabControl.ItemSize = new System.Drawing.Size(0, 1);
+            this.TabControl.ItemSize = new System.Drawing.Size(30, 20);
             this.TabControl.Location = new System.Drawing.Point(0, 35);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
@@ -248,9 +248,9 @@ namespace EasySave_graphical
             this.homeTab.Controls.Add(this.english);
             this.homeTab.Controls.Add(this.language_container);
             this.homeTab.Controls.Add(this.logoBox);
-            this.homeTab.Location = new System.Drawing.Point(4, 5);
+            this.homeTab.Location = new System.Drawing.Point(4, 24);
             this.homeTab.Name = "homeTab";
-            this.homeTab.Size = new System.Drawing.Size(600, 409);
+            this.homeTab.Size = new System.Drawing.Size(600, 390);
             this.homeTab.TabIndex = 4;
             this.homeTab.Text = "Home";
             this.homeTab.UseVisualStyleBackColor = true;
@@ -306,7 +306,7 @@ namespace EasySave_graphical
             this.language_container.HideSelection = false;
             this.language_container.Location = new System.Drawing.Point(0, 187);
             this.language_container.Name = "language_container";
-            this.language_container.Size = new System.Drawing.Size(600, 222);
+            this.language_container.Size = new System.Drawing.Size(600, 203);
             this.language_container.TabIndex = 17;
             this.language_container.UseCompatibleStateImageBehavior = false;
             // 
@@ -686,9 +686,9 @@ namespace EasySave_graphical
             this.executeTab.Controls.Add(this.execute_pause);
             this.executeTab.Controls.Add(this.execute_label);
             this.executeTab.Controls.Add(this.execute_backup_list);
-            this.executeTab.Location = new System.Drawing.Point(4, 34);
+            this.executeTab.Location = new System.Drawing.Point(4, 24);
             this.executeTab.Name = "executeTab";
-            this.executeTab.Size = new System.Drawing.Size(600, 380);
+            this.executeTab.Size = new System.Drawing.Size(600, 390);
             this.executeTab.TabIndex = 3;
             this.executeTab.Text = "Execute";
             this.executeTab.UseVisualStyleBackColor = true;
@@ -785,19 +785,19 @@ namespace EasySave_graphical
             // 
             this.settingsTab.Controls.Add(this.settings_save);
             this.settingsTab.Controls.Add(this.priority_label);
-            this.settingsTab.Controls.Add(this.textBox1);
+            this.settingsTab.Controls.Add(this.settings_priority);
             this.settingsTab.Controls.Add(this.file_size);
             this.settingsTab.Controls.Add(this.sizeLimit);
-            this.settingsTab.Location = new System.Drawing.Point(4, 34);
+            this.settingsTab.Location = new System.Drawing.Point(4, 24);
             this.settingsTab.Name = "settingsTab";
-            this.settingsTab.Size = new System.Drawing.Size(600, 380);
+            this.settingsTab.Size = new System.Drawing.Size(600, 390);
             this.settingsTab.TabIndex = 5;
             this.settingsTab.Text = "Settings";
             this.settingsTab.UseVisualStyleBackColor = true;
             // 
             // settings_save
             // 
-            this.settings_save.Location = new System.Drawing.Point(198, 306);
+            this.settings_save.Location = new System.Drawing.Point(214, 254);
             this.settings_save.Name = "settings_save";
             this.settings_save.Size = new System.Drawing.Size(157, 48);
             this.settings_save.TabIndex = 4;
@@ -809,24 +809,24 @@ namespace EasySave_graphical
             // 
             this.priority_label.AutoSize = true;
             this.priority_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.priority_label.Location = new System.Drawing.Point(39, 160);
+            this.priority_label.Location = new System.Drawing.Point(39, 65);
             this.priority_label.Name = "priority_label";
             this.priority_label.Size = new System.Drawing.Size(193, 20);
             this.priority_label.TabIndex = 3;
             this.priority_label.Text = "Priority files (.png,.txt,.png)";
             // 
-            // textBox1
+            // settings_priority
             // 
-            this.textBox1.Location = new System.Drawing.Point(42, 195);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(504, 20);
-            this.textBox1.TabIndex = 2;
+            this.settings_priority.Location = new System.Drawing.Point(43, 99);
+            this.settings_priority.Name = "settings_priority";
+            this.settings_priority.Size = new System.Drawing.Size(504, 20);
+            this.settings_priority.TabIndex = 2;
             // 
             // file_size
             // 
             this.file_size.AutoSize = true;
             this.file_size.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.file_size.Location = new System.Drawing.Point(39, 232);
+            this.file_size.Location = new System.Drawing.Point(39, 145);
             this.file_size.Name = "file_size";
             this.file_size.Size = new System.Drawing.Size(377, 20);
             this.file_size.TabIndex = 1;
@@ -837,7 +837,7 @@ namespace EasySave_graphical
             this.sizeLimit.AutoSize = false;
             this.sizeLimit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.sizeLimit.LargeChange = 100;
-            this.sizeLimit.Location = new System.Drawing.Point(33, 255);
+            this.sizeLimit.Location = new System.Drawing.Point(33, 185);
             this.sizeLimit.Maximum = 100000;
             this.sizeLimit.Name = "sizeLimit";
             this.sizeLimit.Size = new System.Drawing.Size(513, 45);
@@ -951,7 +951,7 @@ namespace EasySave_graphical
         private System.Windows.Forms.Label file_size;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem strip_settings;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox settings_priority;
         private System.Windows.Forms.Label priority_label;
         private System.Windows.Forms.Button settings_save;
     }
