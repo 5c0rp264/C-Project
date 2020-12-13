@@ -16,7 +16,7 @@ namespace EasySave_graphical
         public string processNameToWatch = "Calculator";
         private Thread watchThread;
         private Thread stopWatchThread;
-        private static EventWaitHandle waitHandle = new ManualResetEvent(initialState: true);
+        private static readonly EventWaitHandle waitHandle = new ManualResetEvent(initialState: true);
         private bool wasPaused = false;
         private Controller controller;
 
@@ -24,13 +24,13 @@ namespace EasySave_graphical
         private List<BackupJob> backupJobList;
 
         // Path to the json files that store the backup job list in the root folder
-        private String pathToJsonDB = @"./db.json";
-        private String pathToSettings = @"./settings.txt";
-        private String pathToStateFile = @"./state.log";
-        private String pathToLogFile = @"./logs/" + DateTime.Now.ToString("MM.dd.yyyy") + ".log";
+        private readonly String pathToJsonDB = @"./db.json";
+        private readonly String pathToSettings = @"./settings.txt";
+        private readonly String pathToStateFile = @"./state.log";
+        private readonly String pathToLogFile = @"./logs/" + DateTime.Now.ToString("MM.dd.yyyy") + ".log";
 
         // Thread for each backup will be stored in this list
-        List<Thread> backupThreadList = new List<Thread>();
+        readonly List<Thread> backupThreadList = new List<Thread>();
 
         // Pause
         public List<String> backupToPause = new List<string>();
@@ -214,7 +214,7 @@ namespace EasySave_graphical
                 {
                     item.Abort(); // Stop each thread one by one
                 }
-                catch (ThreadAbortException abortException)
+                catch
                 {
                     Thread.ResetAbort(); // Prevent app from closing
                 }
@@ -259,7 +259,7 @@ namespace EasySave_graphical
 
 
         // --------------------- Method to make life easier ---------------------------------
-        private static Mutex stateFileMutex = new Mutex();
+        private static readonly Mutex stateFileMutex = new Mutex();
         private void writeStateFile(List<BackupJobState> BUJSList)
         {
             stateFileMutex.WaitOne();
@@ -281,7 +281,7 @@ namespace EasySave_graphical
         }
 
 
-        private static Mutex logFileMutex = new Mutex();
+        private static readonly Mutex logFileMutex = new Mutex();
         private void writeLogFile(String toBeWritten)
         {
             logFileMutex.WaitOne();
@@ -399,7 +399,7 @@ namespace EasySave_graphical
         }
 
         // Number of file beyond the limit set by the user
-        private static Mutex copyBigFile = new Mutex();
+        private static readonly Mutex copyBigFile = new Mutex();
 
         private void DirectoryCopy(string sourceDirName, string destDirName, int index, List<BackupJobState> BUJS)
         {
@@ -455,7 +455,7 @@ namespace EasySave_graphical
                     BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                     BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
                     writeStateFile(BUJS);
-                    
+
                     // Check if we need to suspend the thread or not
                     foreach (var item in backupToPause)
                     {
@@ -864,7 +864,7 @@ namespace EasySave_graphical
                     FileAccess.ReadWrite, FileShare.None);
                 fs.Close();
             }
-            catch (IOException ex)
+            catch
             {
                 Locked = true;
             }

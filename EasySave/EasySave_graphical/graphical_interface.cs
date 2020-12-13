@@ -322,7 +322,7 @@ namespace EasySave_graphical
         }
 
         // Progress bar for each backup thread
-        List<ProgressBar> threadsTracking = new List<ProgressBar>();
+        readonly List<ProgressBar> threadsTracking = new List<ProgressBar>();
 
         public delegate void addProgressBarDelegate();
         public addProgressBarDelegate trackingDelegate;
@@ -651,6 +651,12 @@ namespace EasySave_graphical
         private void trackingPanel_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void radioButton1_CheckedChanged_1(object sender, EventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("pt-PT");
+            changeLanguage();
         }
     }
 }

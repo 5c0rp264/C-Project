@@ -92,6 +92,7 @@ namespace EasySave_graphical
             this.sizeLimit = new System.Windows.Forms.TrackBar();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.execute_backup_pause = new System.Windows.Forms.ListBox();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.menuStrip1.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.TabControl.SuspendLayout();
@@ -244,6 +245,7 @@ namespace EasySave_graphical
             // 
             // homeTab
             // 
+            this.homeTab.Controls.Add(this.radioButton1);
             this.homeTab.Controls.Add(this.spanish);
             this.homeTab.Controls.Add(this.french);
             this.homeTab.Controls.Add(this.english);
@@ -264,9 +266,9 @@ namespace EasySave_graphical
             this.spanish.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.spanish.Cursor = System.Windows.Forms.Cursors.Hand;
             this.spanish.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.spanish.Location = new System.Drawing.Point(423, 215);
+            this.spanish.Location = new System.Drawing.Point(469, 193);
             this.spanish.Name = "spanish";
-            this.spanish.Size = new System.Drawing.Size(153, 97);
+            this.spanish.Size = new System.Drawing.Size(102, 69);
             this.spanish.TabIndex = 16;
             this.spanish.UseVisualStyleBackColor = false;
             this.spanish.CheckedChanged += new System.EventHandler(this.spanish_CheckedChanged);
@@ -278,9 +280,9 @@ namespace EasySave_graphical
             this.french.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.french.Cursor = System.Windows.Forms.Cursors.Hand;
             this.french.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.french.Location = new System.Drawing.Point(220, 215);
+            this.french.Location = new System.Drawing.Point(220, 193);
             this.french.Name = "french";
-            this.french.Size = new System.Drawing.Size(153, 97);
+            this.french.Size = new System.Drawing.Size(102, 69);
             this.french.TabIndex = 15;
             this.french.UseVisualStyleBackColor = true;
             this.french.CheckedChanged += new System.EventHandler(this.french_CheckedChanged);
@@ -292,9 +294,9 @@ namespace EasySave_graphical
             this.english.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.english.Cursor = System.Windows.Forms.Cursors.Hand;
             this.english.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.english.Location = new System.Drawing.Point(32, 215);
+            this.english.Location = new System.Drawing.Point(57, 193);
             this.english.Name = "english";
-            this.english.Size = new System.Drawing.Size(153, 97);
+            this.english.Size = new System.Drawing.Size(102, 69);
             this.english.TabIndex = 14;
             this.english.UseVisualStyleBackColor = true;
             this.english.CheckedChanged += new System.EventHandler(this.english_CheckedChanged);
@@ -868,6 +870,20 @@ namespace EasySave_graphical
             this.execute_backup_pause.TabIndex = 13;
             this.execute_backup_pause.Tag = "";
             // 
+            // radioButton1
+            // 
+            this.radioButton1.Appearance = System.Windows.Forms.Appearance.Button;
+            this.radioButton1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("radioButton1.BackgroundImage")));
+            this.radioButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.radioButton1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.radioButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.radioButton1.Location = new System.Drawing.Point(57, 299);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(102, 69);
+            this.radioButton1.TabIndex = 18;
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged_1);
+            // 
             // graphical_interface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -969,6 +985,7 @@ namespace EasySave_graphical
         private System.Windows.Forms.Label priority_label;
         private System.Windows.Forms.Button settings_save;
         private System.Windows.Forms.ListBox execute_backup_pause;
+        private System.Windows.Forms.RadioButton radioButton1;
     }
 }
 
