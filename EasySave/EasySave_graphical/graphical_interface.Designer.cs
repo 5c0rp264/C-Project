@@ -152,7 +152,7 @@ namespace EasySave_graphical
             this.strip_log});
             this.menuStrip2.Location = new System.Drawing.Point(608, 35);
             this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(166, 390);
+            this.menuStrip2.Size = new System.Drawing.Size(166, 418);
             this.menuStrip2.TabIndex = 1;
             this.menuStrip2.Text = "menuStrip2";
             this.menuStrip2.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip2_ItemClicked);
@@ -233,11 +233,11 @@ namespace EasySave_graphical
             this.TabControl.Controls.Add(this.executeTab);
             this.TabControl.Controls.Add(this.settingsTab);
             this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TabControl.ItemSize = new System.Drawing.Size(60, 20);
+            this.TabControl.ItemSize = new System.Drawing.Size(0, 1);
             this.TabControl.Location = new System.Drawing.Point(0, 35);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(608, 390);
+            this.TabControl.Size = new System.Drawing.Size(608, 418);
             this.TabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.TabControl.TabIndex = 2;
             // 
@@ -686,9 +686,9 @@ namespace EasySave_graphical
             this.executeTab.Controls.Add(this.execute_pause);
             this.executeTab.Controls.Add(this.execute_label);
             this.executeTab.Controls.Add(this.execute_backup_list);
-            this.executeTab.Location = new System.Drawing.Point(4, 24);
+            this.executeTab.Location = new System.Drawing.Point(4, 5);
             this.executeTab.Name = "executeTab";
-            this.executeTab.Size = new System.Drawing.Size(600, 362);
+            this.executeTab.Size = new System.Drawing.Size(600, 409);
             this.executeTab.TabIndex = 3;
             this.executeTab.Text = "Execute";
             this.executeTab.UseVisualStyleBackColor = true;
@@ -858,7 +858,7 @@ namespace EasySave_graphical
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(774, 425);
+            this.ClientSize = new System.Drawing.Size(774, 453);
             this.Controls.Add(this.TabControl);
             this.Controls.Add(this.menuStrip2);
             this.Controls.Add(this.menuStrip1);

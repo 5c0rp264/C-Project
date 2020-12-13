@@ -597,6 +597,7 @@ namespace EasySave_graphical
         private void execute_stop_Click(object sender, EventArgs e)
         {
             this.controller.Model.abortThread();
+            deleteProgressBar();
             MessageBox.Show(Properties.Resources.thread_stop, Properties.Resources.information,
                                                  MessageBoxButtons.OK,
                                                  MessageBoxIcon.Exclamation);

@@ -134,6 +134,7 @@ namespace EasySave_graphical
             // For each backup job the user wants to execute we will execute it based on it's type (full / differential)
             for (int i = 0; i < backupJobIDList.Count; i++)
             {
+                this.controller.View.addProgressBar(i);
                 BUJStateList[i].ISACtive = true;
                 // Update the state file
                 writeStateFile(BUJStateList);
@@ -144,8 +145,6 @@ namespace EasySave_graphical
                 writeLogFile("Destination directory size : " + BUJStateList[i].TotalSizeOfElligbleFiles);
                 if (this.BackupJobList[backupJobIDList[i]].IsFull)
                 {
-                    // Create a progress bar based on the id of the backup -> BUJS
-                    this.controller.View.addProgressBar(i);
                     // Full copy
                     Thread fullThread = new Thread(() =>
                     {
@@ -158,10 +157,12 @@ namespace EasySave_graphical
                 else
                 {
                     // Differential copy
-                    Thread diffThread = new Thread(() => DirectoryDifferentialCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, fullBackupListForDiff[numOfDiff], i, BUJStateList));
+                    int current_backupIndex = numOfDiff;
+                    Thread diffThread = new Thread(() => DirectoryDifferentialCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, fullBackupListForDiff[current_backupIndex], i, BUJStateList));
                     diffThread.Name = "DIFF_THREAD_ID_" + backupJobIDList[i];
                     diffThread.Start();
                     backupThread.Add(diffThread);
+                    // The number is increasing before the thread has start
                     numOfDiff++;
                 }
                 // At the end the work at the index i is no more active
@@ -398,17 +399,11 @@ namespace EasySave_graphical
             FileInfo[] files = dir.GetFiles();
             foreach (FileInfo file in files)
             {
-                Console.WriteLine(file.FullName);
                 // If the file is too big and there is already another file being copied
                 if (file.Length > maxFileSize)
                 {
                     // We wait for the semaphore to accept us
-
-                    Console.WriteLine("{0} is requesting the mutex",
-                          Thread.CurrentThread.Name);
                     copyBigFile.WaitOne();
-                    Console.WriteLine("{0} has entered the protected area",
-                          Thread.CurrentThread.Name);
                     // Progress bar update
                     this.controller.View.updateTracking(index, Int32.Parse(Math.Ceiling((BUJS[index].Progress) * 100).ToString()), BUJS[index].Name);
 
@@ -441,16 +436,10 @@ namespace EasySave_graphical
                     _ = waitHandle.WaitOne();
 
                     // We release the semaphore because we don't need one anymore
-
-                    Console.WriteLine("{0} is leaving the protected area",
-                        Thread.CurrentThread.Name);
                     copyBigFile.ReleaseMutex();
-                    Console.WriteLine("{0} has released the mutex",
-    Thread.CurrentThread.Name);
                 }
                 else
                 {
-                    Debug.Print("No problem of size with file : " + file.FullName);
                     // copy the file -> there is no problem with the size
                     // Progress bar update
                     if (BUJS[index].TotalElligibleFile == 1)
@@ -525,38 +514,12 @@ namespace EasySave_graphical
             FileInfo[] files = dirsrc.GetFiles();
             foreach (FileInfo file in files)
             {
-                this.controller.View.updateTracking(index, Int32.Parse(Math.Ceiling((BUJS[index].Progress) * 100).ToString()), BUJS[index].Name);
-                if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
+                if (file.Length > maxFileSize)
                 {
-                    Boolean didCryptIt = false;
-                    foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
-                    {
-                        if (ext == file.Extension)
-                        {
-                            ProcessStartInfo psi = new ProcessStartInfo("CryptoSoft.exe");
-                            psi.WorkingDirectory = "../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/";
-                            psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
-                            Process proc = Process.Start(psi);
-                            proc.WaitForExit();
-                            writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
-                            didCryptIt = true;
-                        }
-
-                    }
-                    if (!didCryptIt)
-                    {
-                        file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                        writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( super useful log since there is no encryption )");
-                    }
-                    BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
-                    BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
-                    BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
-                    writeStateFile(BUJS);
-                    _ = waitHandle.WaitOne();
-                }
-                else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
-                {
-                    if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
+                    // We wait for the semaphore to accept us
+                    copyBigFile.WaitOne();
+                    this.controller.View.updateTracking(index, Int32.Parse(Math.Ceiling((BUJS[index].Progress) * 100).ToString()), BUJS[index].Name);
+                    if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
                     {
                         Boolean didCryptIt = false;
                         foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
@@ -568,9 +531,10 @@ namespace EasySave_graphical
                                 psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
                                 Process proc = Process.Start(psi);
                                 proc.WaitForExit();
-                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was : " + proc.ExitCode + "ms");
+                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
                                 didCryptIt = true;
                             }
+
                         }
                         if (!didCryptIt)
                         {
@@ -583,7 +547,102 @@ namespace EasySave_graphical
                         writeStateFile(BUJS);
                         _ = waitHandle.WaitOne();
                     }
+                    else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
+                    {
+                        if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
+                        {
+                            Boolean didCryptIt = false;
+                            foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
+                            {
+                                if (ext == file.Extension)
+                                {
+                                    ProcessStartInfo psi = new ProcessStartInfo("CryptoSoft.exe");
+                                    psi.WorkingDirectory = "../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/";
+                                    psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
+                                    Process proc = Process.Start(psi);
+                                    proc.WaitForExit();
+                                    writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was : " + proc.ExitCode + "ms");
+                                    didCryptIt = true;
+                                }
+                            }
+                            if (!didCryptIt)
+                            {
+                                file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( super useful log since there is no encryption )");
+                            }
+                            BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
+                            BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
+                            BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
+                            writeStateFile(BUJS);
+                            _ = waitHandle.WaitOne();
+                        }
+                    }
+                    // We release the semaphore because we don't need one anymore
+                    copyBigFile.ReleaseMutex();
                 }
+                else
+                {
+                    this.controller.View.updateTracking(index, Int32.Parse(Math.Ceiling((BUJS[index].Progress) * 100).ToString()), BUJS[index].Name);
+                    if (!File.Exists(Path.Combine(comparisonDirName, file.Name)))
+                    {
+                        Boolean didCryptIt = false;
+                        foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
+                        {
+                            if (ext == file.Extension)
+                            {
+                                ProcessStartInfo psi = new ProcessStartInfo("CryptoSoft.exe");
+                                psi.WorkingDirectory = "../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/";
+                                psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
+                                Process proc = Process.Start(psi);
+                                proc.WaitForExit();
+                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
+                                didCryptIt = true;
+                            }
+
+                        }
+                        if (!didCryptIt)
+                        {
+                            file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                            writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( super useful log since there is no encryption )");
+                        }
+                        BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
+                        BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
+                        BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
+                        writeStateFile(BUJS);
+                        _ = waitHandle.WaitOne();
+                    }
+                    else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
+                    {
+                        if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
+                        {
+                            Boolean didCryptIt = false;
+                            foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
+                            {
+                                if (ext == file.Extension)
+                                {
+                                    ProcessStartInfo psi = new ProcessStartInfo("CryptoSoft.exe");
+                                    psi.WorkingDirectory = "../../../../CryptoSoft/CryptoSoft.scorp264/CryptoSoft/bin/Debug/netcoreapp3.1/";
+                                    psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
+                                    Process proc = Process.Start(psi);
+                                    proc.WaitForExit();
+                                    writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was : " + proc.ExitCode + "ms");
+                                    didCryptIt = true;
+                                }
+                            }
+                            if (!didCryptIt)
+                            {
+                                file.CopyTo(Path.Combine(destDirName, file.Name), false);
+                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( super useful log since there is no encryption )");
+                            }
+                            BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
+                            BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
+                            BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
+                            writeStateFile(BUJS);
+                            _ = waitHandle.WaitOne();
+                        }
+                    }
+                }
+                
             }
 
             foreach (DirectoryInfo subdir in dirs)
