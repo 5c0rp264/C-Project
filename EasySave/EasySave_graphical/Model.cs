@@ -27,10 +27,9 @@ namespace EasySave_graphical
         private String pathToJsonDB = @"./db.json";
         private String pathToStateFile = @"./state.log";
         private String pathToLogFile = @"./logs/" + DateTime.Now.ToString("MM.dd.yyyy") + ".log";
-        // Lock those files
-        private static readonly object statelogFileLocker = new object();
+
         // Thread for each backup will be stored in this list
-        List<Thread> backupThread = new List<Thread>();
+        List<Thread> backupThreadList = new List<Thread>();
 
         public List<BackupJob> BackupJobList
         {
@@ -151,7 +150,7 @@ namespace EasySave_graphical
                     });
                     fullThread.Name = "FULL_THREAD_ID_" + backupJobIDList[i];
                     fullThread.Start();
-                    backupThread.Add(fullThread);
+                    backupThreadList.Add(fullThread);
                 }
                 else
                 {
@@ -160,7 +159,7 @@ namespace EasySave_graphical
                     Thread diffThread = new Thread(() => DirectoryDifferentialCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, fullBackupListForDiff[current_backupIndex], i, BUJStateList));
                     diffThread.Name = "DIFF_THREAD_ID_" + backupJobIDList[i];
                     diffThread.Start();
-                    backupThread.Add(diffThread);
+                    backupThreadList.Add(diffThread);
                     // The number is increasing before the thread has start
                     numOfDiff++;
                 }
@@ -178,7 +177,7 @@ namespace EasySave_graphical
 
         public void abortThread()
         {
-            foreach (Thread item in backupThread)
+            foreach (Thread item in backupThreadList)
             {
                 try
                 {
@@ -229,27 +228,25 @@ namespace EasySave_graphical
 
 
         // --------------------- Method to make life easier ---------------------------------
-
+        private static Mutex stateFileMutex = new Mutex();
         private void writeStateFile(List<BackupJobState> BUJSList)
         {
-            lock (statelogFileLocker)
+            stateFileMutex.WaitOne();
+            // This will just open and write with the indentation appropriated in the state file
+            FileStream stream = File.Create(pathToStateFile);
+            TextWriter tw = new StreamWriter(stream);
+            try
             {
-                // This will just open and write with the indentation appropriated in the state file
-                FileStream stream = File.Create(pathToStateFile);
-                TextWriter tw = new StreamWriter(stream);
-                try
-                {
-                    String stringjson = JsonConvert.SerializeObject(BUJSList, Formatting.Indented);
-                    tw.WriteLine(stringjson);
-                }
-                catch (Exception exc)
-                {
-                    Debug.Print(exc.ToString());
-                }
-
-                tw.Close();
+                String stringjson = JsonConvert.SerializeObject(BUJSList, Formatting.Indented);
+                tw.WriteLine(stringjson);
+            }
+            catch (Exception exc)
+            {
+                Debug.Print(exc.ToString());
             }
 
+            tw.Close();
+            stateFileMutex.ReleaseMutex();
         }
 
 
@@ -739,7 +736,7 @@ namespace EasySave_graphical
             do
             {
                 threadsAlive = 0;
-                foreach (Thread item in backupThread)
+                foreach (Thread item in backupThreadList)
                 {
                     if (item.IsAlive)
                     {
