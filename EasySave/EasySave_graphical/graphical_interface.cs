@@ -487,11 +487,6 @@ namespace EasySave_graphical
         }
 
         // Language ---------------------------------------------------------------------------------------------------------------------------------------------------
-        private void french_CheckedChanged(object sender, EventArgs e)
-        {
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("fr-FR");
-            changeLanguage();
-        }
 
         private void changeLanguage()
         {
@@ -546,12 +541,72 @@ namespace EasySave_graphical
         private void spanish_CheckedChanged(object sender, EventArgs e)
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("es-ES");
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.RightToLeftLayout = false;
             changeLanguage();
         }
 
         private void english_CheckedChanged(object sender, EventArgs e)
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("");
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.RightToLeftLayout = false;
+            changeLanguage();
+        }
+
+        private void french_CheckedChanged(object sender, EventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("fr-FR");
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.RightToLeftLayout = false;
+            changeLanguage();
+        }
+
+        private void chinese_CheckedChanged(object sender, EventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("zh-CN");
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.RightToLeftLayout = false;
+            changeLanguage();
+        }
+
+        private void radioButton1_CheckedChanged_1(object sender, EventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("pt-PT");
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.RightToLeftLayout = false;
+            changeLanguage();
+        }
+
+        private void arabic_CheckedChanged(object sender, EventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("ar-DZ");
+            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.RightToLeftLayout = true;
+            changeLanguage();
+        }
+
+        private void deutsch_CheckedChanged(object sender, EventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("de-DE");
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.RightToLeftLayout = false;
+            changeLanguage();
+        }
+
+        private void russian_CheckedChanged(object sender, EventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("ru-RU");
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.RightToLeftLayout = false;
+            changeLanguage();
+        }
+
+        private void hebrew_CheckedChanged(object sender, EventArgs e)
+        {
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("he-IL");
+            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.RightToLeftLayout = true;
             changeLanguage();
         }
 
@@ -651,12 +706,6 @@ namespace EasySave_graphical
         private void trackingPanel_Paint(object sender, PaintEventArgs e)
         {
 
-        }
-
-        private void radioButton1_CheckedChanged_1(object sender, EventArgs e)
-        {
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("pt-PT");
-            changeLanguage();
         }
     }
 }

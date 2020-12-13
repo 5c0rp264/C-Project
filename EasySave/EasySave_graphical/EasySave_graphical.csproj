@@ -68,6 +68,31 @@
     <Compile Include="BackupWorkState.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="IController.cs" />
+    <Compile Include="Properties\Resources.ar.Designer.cs">
+      <DependentUpon>Resources.ar.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\Resources.he.Designer.cs">
+      <DependentUpon>Resources.he.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\Resources.ru.Designer.cs">
+      <DependentUpon>Resources.ru.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\Resources.fr.Designer.cs">
+      <DependentUpon>Resources.fr.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\Resources.zh.Designer.cs">
+      <DependentUpon>Resources.zh.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\Resources.pt.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -78,10 +103,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\Resources.fr.Designer.cs">
+    <Compile Include="Properties\Resources.de.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.fr.resx</DependentUpon>
+      <DependentUpon>Resources.de.resx</DependentUpon>
     </Compile>
     <Compile Include="Log.cs" />
     <Compile Include="Model.cs" />
@@ -96,6 +121,26 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="graphical_interface.resx">
       <DependentUpon>graphical_interface.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.ar.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.he.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.he.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.ru.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.ru.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.zh.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.zh.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.pt.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -115,9 +160,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.fr.resx">
+    <EmbeddedResource Include="Properties\Resources.de.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.de.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

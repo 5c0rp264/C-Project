@@ -43,6 +43,12 @@ namespace EasySave_graphical
             this.strip_log = new System.Windows.Forms.ToolStripMenuItem();
             this.TabControl = new System.Windows.Forms.TabControl();
             this.homeTab = new System.Windows.Forms.TabPage();
+            this.hebrew = new System.Windows.Forms.RadioButton();
+            this.russian = new System.Windows.Forms.RadioButton();
+            this.deutsch = new System.Windows.Forms.RadioButton();
+            this.arabic = new System.Windows.Forms.RadioButton();
+            this.chinese = new System.Windows.Forms.RadioButton();
+            this.portuguese = new System.Windows.Forms.RadioButton();
             this.spanish = new System.Windows.Forms.RadioButton();
             this.french = new System.Windows.Forms.RadioButton();
             this.english = new System.Windows.Forms.RadioButton();
@@ -76,6 +82,7 @@ namespace EasySave_graphical
             this.delete_label = new System.Windows.Forms.Label();
             this.delete_backup_list = new System.Windows.Forms.ListBox();
             this.executeTab = new System.Windows.Forms.TabPage();
+            this.execute_backup_pause = new System.Windows.Forms.ListBox();
             this.trackingPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.execute_resume = new System.Windows.Forms.Button();
             this.execute_warning = new System.Windows.Forms.Label();
@@ -91,8 +98,6 @@ namespace EasySave_graphical
             this.file_size = new System.Windows.Forms.Label();
             this.sizeLimit = new System.Windows.Forms.TrackBar();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.execute_backup_pause = new System.Windows.Forms.ListBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.menuStrip1.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.TabControl.SuspendLayout();
@@ -235,7 +240,7 @@ namespace EasySave_graphical
             this.TabControl.Controls.Add(this.executeTab);
             this.TabControl.Controls.Add(this.settingsTab);
             this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TabControl.ItemSize = new System.Drawing.Size(30, 20);
+            this.TabControl.ItemSize = new System.Drawing.Size(0, 1);
             this.TabControl.Location = new System.Drawing.Point(0, 35);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
@@ -245,18 +250,108 @@ namespace EasySave_graphical
             // 
             // homeTab
             // 
-            this.homeTab.Controls.Add(this.radioButton1);
+            this.homeTab.Controls.Add(this.hebrew);
+            this.homeTab.Controls.Add(this.russian);
+            this.homeTab.Controls.Add(this.deutsch);
+            this.homeTab.Controls.Add(this.arabic);
+            this.homeTab.Controls.Add(this.chinese);
+            this.homeTab.Controls.Add(this.portuguese);
             this.homeTab.Controls.Add(this.spanish);
             this.homeTab.Controls.Add(this.french);
             this.homeTab.Controls.Add(this.english);
             this.homeTab.Controls.Add(this.language_container);
             this.homeTab.Controls.Add(this.logoBox);
-            this.homeTab.Location = new System.Drawing.Point(4, 24);
+            this.homeTab.Location = new System.Drawing.Point(4, 5);
             this.homeTab.Name = "homeTab";
-            this.homeTab.Size = new System.Drawing.Size(600, 390);
+            this.homeTab.Size = new System.Drawing.Size(600, 409);
             this.homeTab.TabIndex = 4;
             this.homeTab.Text = "Home";
             this.homeTab.UseVisualStyleBackColor = true;
+            // 
+            // hebrew
+            // 
+            this.hebrew.Appearance = System.Windows.Forms.Appearance.Button;
+            this.hebrew.BackColor = System.Drawing.Color.Transparent;
+            this.hebrew.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("hebrew.BackgroundImage")));
+            this.hebrew.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.hebrew.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.hebrew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.hebrew.Location = new System.Drawing.Point(469, 333);
+            this.hebrew.Name = "hebrew";
+            this.hebrew.Size = new System.Drawing.Size(102, 69);
+            this.hebrew.TabIndex = 23;
+            this.hebrew.UseVisualStyleBackColor = false;
+            this.hebrew.CheckedChanged += new System.EventHandler(this.hebrew_CheckedChanged);
+            // 
+            // russian
+            // 
+            this.russian.Appearance = System.Windows.Forms.Appearance.Button;
+            this.russian.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("russian.BackgroundImage")));
+            this.russian.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.russian.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.russian.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.russian.Location = new System.Drawing.Point(268, 333);
+            this.russian.Name = "russian";
+            this.russian.Size = new System.Drawing.Size(102, 69);
+            this.russian.TabIndex = 22;
+            this.russian.UseVisualStyleBackColor = true;
+            this.russian.CheckedChanged += new System.EventHandler(this.russian_CheckedChanged);
+            // 
+            // deutsch
+            // 
+            this.deutsch.Appearance = System.Windows.Forms.Appearance.Button;
+            this.deutsch.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("deutsch.BackgroundImage")));
+            this.deutsch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.deutsch.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.deutsch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.deutsch.Location = new System.Drawing.Point(57, 333);
+            this.deutsch.Name = "deutsch";
+            this.deutsch.Size = new System.Drawing.Size(102, 69);
+            this.deutsch.TabIndex = 21;
+            this.deutsch.UseVisualStyleBackColor = true;
+            this.deutsch.CheckedChanged += new System.EventHandler(this.deutsch_CheckedChanged);
+            // 
+            // arabic
+            // 
+            this.arabic.Appearance = System.Windows.Forms.Appearance.Button;
+            this.arabic.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("arabic.BackgroundImage")));
+            this.arabic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.arabic.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.arabic.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.arabic.Location = new System.Drawing.Point(469, 253);
+            this.arabic.Name = "arabic";
+            this.arabic.Size = new System.Drawing.Size(102, 69);
+            this.arabic.TabIndex = 20;
+            this.arabic.UseVisualStyleBackColor = true;
+            this.arabic.CheckedChanged += new System.EventHandler(this.arabic_CheckedChanged);
+            // 
+            // chinese
+            // 
+            this.chinese.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chinese.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("chinese.BackgroundImage")));
+            this.chinese.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.chinese.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.chinese.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chinese.Location = new System.Drawing.Point(268, 253);
+            this.chinese.Name = "chinese";
+            this.chinese.Size = new System.Drawing.Size(102, 69);
+            this.chinese.TabIndex = 19;
+            this.chinese.UseVisualStyleBackColor = true;
+            this.chinese.CheckedChanged += new System.EventHandler(this.chinese_CheckedChanged);
+            // 
+            // portuguese
+            // 
+            this.portuguese.Appearance = System.Windows.Forms.Appearance.Button;
+            this.portuguese.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("portuguese.BackgroundImage")));
+            this.portuguese.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.portuguese.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.portuguese.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.portuguese.Location = new System.Drawing.Point(57, 253);
+            this.portuguese.Name = "portuguese";
+            this.portuguese.Size = new System.Drawing.Size(102, 69);
+            this.portuguese.TabIndex = 18;
+            this.portuguese.UseVisualStyleBackColor = true;
+            this.portuguese.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged_1);
             // 
             // spanish
             // 
@@ -266,7 +361,7 @@ namespace EasySave_graphical
             this.spanish.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.spanish.Cursor = System.Windows.Forms.Cursors.Hand;
             this.spanish.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.spanish.Location = new System.Drawing.Point(469, 193);
+            this.spanish.Location = new System.Drawing.Point(469, 174);
             this.spanish.Name = "spanish";
             this.spanish.Size = new System.Drawing.Size(102, 69);
             this.spanish.TabIndex = 16;
@@ -280,7 +375,7 @@ namespace EasySave_graphical
             this.french.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.french.Cursor = System.Windows.Forms.Cursors.Hand;
             this.french.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.french.Location = new System.Drawing.Point(220, 193);
+            this.french.Location = new System.Drawing.Point(268, 174);
             this.french.Name = "french";
             this.french.Size = new System.Drawing.Size(102, 69);
             this.french.TabIndex = 15;
@@ -294,7 +389,7 @@ namespace EasySave_graphical
             this.english.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.english.Cursor = System.Windows.Forms.Cursors.Hand;
             this.english.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.english.Location = new System.Drawing.Point(57, 193);
+            this.english.Location = new System.Drawing.Point(57, 174);
             this.english.Name = "english";
             this.english.Size = new System.Drawing.Size(102, 69);
             this.english.TabIndex = 14;
@@ -307,9 +402,9 @@ namespace EasySave_graphical
             this.language_container.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.language_container.Dock = System.Windows.Forms.DockStyle.Fill;
             this.language_container.HideSelection = false;
-            this.language_container.Location = new System.Drawing.Point(0, 187);
+            this.language_container.Location = new System.Drawing.Point(0, 168);
             this.language_container.Name = "language_container";
-            this.language_container.Size = new System.Drawing.Size(600, 203);
+            this.language_container.Size = new System.Drawing.Size(600, 241);
             this.language_container.TabIndex = 17;
             this.language_container.UseCompatibleStateImageBehavior = false;
             // 
@@ -320,7 +415,7 @@ namespace EasySave_graphical
             this.logoBox.Image = ((System.Drawing.Image)(resources.GetObject("logoBox.Image")));
             this.logoBox.Location = new System.Drawing.Point(0, 0);
             this.logoBox.Name = "logoBox";
-            this.logoBox.Size = new System.Drawing.Size(600, 187);
+            this.logoBox.Size = new System.Drawing.Size(600, 168);
             this.logoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.logoBox.TabIndex = 13;
             this.logoBox.TabStop = false;
@@ -697,6 +792,18 @@ namespace EasySave_graphical
             this.executeTab.Text = "Execute";
             this.executeTab.UseVisualStyleBackColor = true;
             // 
+            // execute_backup_pause
+            // 
+            this.execute_backup_pause.FormattingEnabled = true;
+            this.execute_backup_pause.Items.AddRange(new object[] {
+            ""});
+            this.execute_backup_pause.Location = new System.Drawing.Point(184, 75);
+            this.execute_backup_pause.Name = "execute_backup_pause";
+            this.execute_backup_pause.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.execute_backup_pause.Size = new System.Drawing.Size(154, 134);
+            this.execute_backup_pause.TabIndex = 13;
+            this.execute_backup_pause.Tag = "";
+            // 
             // trackingPanel
             // 
             this.trackingPanel.AutoScroll = true;
@@ -858,32 +965,6 @@ namespace EasySave_graphical
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
-            // execute_backup_pause
-            // 
-            this.execute_backup_pause.FormattingEnabled = true;
-            this.execute_backup_pause.Items.AddRange(new object[] {
-            ""});
-            this.execute_backup_pause.Location = new System.Drawing.Point(184, 75);
-            this.execute_backup_pause.Name = "execute_backup_pause";
-            this.execute_backup_pause.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.execute_backup_pause.Size = new System.Drawing.Size(154, 134);
-            this.execute_backup_pause.TabIndex = 13;
-            this.execute_backup_pause.Tag = "";
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.Appearance = System.Windows.Forms.Appearance.Button;
-            this.radioButton1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("radioButton1.BackgroundImage")));
-            this.radioButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.radioButton1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.radioButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.radioButton1.Location = new System.Drawing.Point(57, 299);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(102, 69);
-            this.radioButton1.TabIndex = 18;
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged_1);
-            // 
             // graphical_interface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -985,7 +1066,12 @@ namespace EasySave_graphical
         private System.Windows.Forms.Label priority_label;
         private System.Windows.Forms.Button settings_save;
         private System.Windows.Forms.ListBox execute_backup_pause;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton portuguese;
+        private System.Windows.Forms.RadioButton chinese;
+        private System.Windows.Forms.RadioButton arabic;
+        private System.Windows.Forms.RadioButton hebrew;
+        private System.Windows.Forms.RadioButton russian;
+        private System.Windows.Forms.RadioButton deutsch;
     }
 }
 

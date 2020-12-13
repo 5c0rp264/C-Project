@@ -118,126 +118,126 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="about" xml:space="preserve">
-    <value>Sobre nós</value>
+    <value>بالمناسبة</value>
   </data>
   <data name="add" xml:space="preserve">
-    <value>Adicionar</value>
+    <value>اضافه</value>
   </data>
   <data name="all_good" xml:space="preserve">
-    <value>Tudo correu bem</value>
+    <value>كل شيء سار على ما يرام</value>
   </data>
   <data name="business_software" xml:space="preserve">
-    <value>Programa empresarial</value>
+    <value>برامج الأعمال</value>
   </data>
   <data name="business_software_error" xml:space="preserve">
-    <value>Um programa empresarial está a ser usado, não podemos iniciar um trabalho de salvaguarda</value>
+    <value>برامج الأعمال قيد الاستخدام، لا يمكننا بدء العمل النسخ الاحتياطي</value>
   </data>
   <data name="delete" xml:space="preserve">
-    <value>Eliminar</value>
+    <value>للقضاء علي</value>
   </data>
   <data name="delete_check" xml:space="preserve">
-    <value>Tem a certeza de que quer apagar o seguinte trabalho de salvaguarda :</value>
+    <value>هل تريد بالتأكيد حذف عمل النسخ الاحتياطي التالي:</value>
   </data>
   <data name="delete_confirm" xml:space="preserve">
-    <value>Removemos o seguinte trabalho de salvaguarda :</value>
+    <value>لقد قمنا بإزالة عمل النسخ الاحتياطي التالي:</value>
   </data>
   <data name="delete_label" xml:space="preserve">
-    <value>Seleccionar um trabalho de salvaguarda a apagar</value>
+    <value>تحديد عمل النسخ الاحتياطي لحذفه</value>
   </data>
   <data name="delete_warning" xml:space="preserve">
-    <value>Deve seleccionar um trabalho de salvaguarda</value>
+    <value>تحتاج إلى تحديد مهمة النسخ الاحتياطي</value>
   </data>
   <data name="destination" xml:space="preserve">
-    <value>Destinação</value>
+    <value>الوجهة</value>
   </data>
   <data name="differential" xml:space="preserve">
-    <value>Diferencial</value>
+    <value>التفاضليه</value>
   </data>
   <data name="edit" xml:space="preserve">
-    <value>Editar</value>
+    <value>تحرير</value>
   </data>
   <data name="error" xml:space="preserve">
-    <value>Error</value>
+    <value>الخطا</value>
   </data>
   <data name="error_message1" xml:space="preserve">
-    <value>Falta o tipo de salvaguarda</value>
+    <value>نوع النسخ الاحتياطي مفقود</value>
   </data>
   <data name="error_message2" xml:space="preserve">
-    <value>O nome do trabalho de salvaguarda é necessário para ser identificado.</value>
+    <value>مطلوب اسم عمل النسخ الاحتياطي ليتم تعريفه</value>
   </data>
   <data name="error_message3" xml:space="preserve">
-    <value>Falta o ficheiro de origem</value>
+    <value>المجلد المصدر مفقود</value>
   </data>
   <data name="error_message4" xml:space="preserve">
-    <value>Falta a pasta de destinação</value>
+    <value>المجلد الوجهة مفقود</value>
   </data>
   <data name="execute" xml:space="preserve">
-    <value>Executar</value>
+    <value>تشغيل</value>
   </data>
   <data name="execute_label" xml:space="preserve">
-    <value>Seleccionar os trabalhos a realizar</value>
+    <value>تحديد المهام التي سيتم إنجازها</value>
   </data>
   <data name="execute_warning" xml:space="preserve">
-    <value>Deve seleccionar pelo menos um trabalho</value>
+    <value>تحتاج إلى تحديد وظيفة واحدة على الأقل</value>
   </data>
   <data name="extension" xml:space="preserve">
-    <value>Extensão a codificar : (.png,.txt,.png)</value>
+    <value>ملحق التشفير: (.png,.txt,.png)</value>
   </data>
   <data name="file_priority" xml:space="preserve">
-    <value>Ficheiros prioritários  (.png,.txt,.png)</value>
+    <value>ملفات الأولوية (.png,.txt,.png)</value>
   </data>
   <data name="full" xml:space="preserve">
-    <value>Completa</value>
+    <value>كامله</value>
   </data>
   <data name="home" xml:space="preserve">
-    <value>Início</value>
+    <value>الصفحة الرئيسية</value>
   </data>
   <data name="information" xml:space="preserve">
-    <value>Informação</value>
+    <value>المعلومات</value>
   </data>
   <data name="log" xml:space="preserve">
-    <value>Jornal</value>
+    <value>صحيفه</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Nome :</value>
+    <value>اسم:</value>
   </data>
   <data name="pause" xml:space="preserve">
-    <value>Pausa</value>
+    <value>كسر</value>
   </data>
   <data name="please" xml:space="preserve">
-    <value>Por favor : </value>
+    <value>الرجاء:</value>
   </data>
   <data name="reference" xml:space="preserve">
-    <value>Por favor, introduza uma cópia de salvaguarda completa de referência :</value>
+    <value>الرجاء إدخال نسخة احتياطية كاملة المرجع:</value>
   </data>
   <data name="save" xml:space="preserve">
-    <value>Salvaguarda</value>
+    <value>لحفظ</value>
   </data>
   <data name="select_label" xml:space="preserve">
-    <value>Escolher um trabalho</value>
+    <value>اختيار وظيفة</value>
   </data>
   <data name="settings" xml:space="preserve">
-    <value>Parâmetros</value>
+    <value>معلمات</value>
   </data>
   <data name="size_limit" xml:space="preserve">
-    <value>Tamanho máximo do ficheiro para transferências simultâneas</value>
+    <value>الحد الأقصى لحجم الملف لعمليات النقل المتزامنة</value>
   </data>
   <data name="size_unit" xml:space="preserve">
-    <value>kb</value>
+    <value>كيلو بايت</value>
   </data>
   <data name="source" xml:space="preserve">
-    <value>Origem</value>
+    <value>مصدر</value>
   </data>
   <data name="state" xml:space="preserve">
-    <value>Estado</value>
+    <value>الدوله</value>
   </data>
   <data name="stop" xml:space="preserve">
-    <value>Parar</value>
+    <value>وقف</value>
   </data>
   <data name="success" xml:space="preserve">
-    <value>Adicionado com sucesso</value>
+    <value>تمت الإضافة بنجاح</value>
   </data>
   <data name="thread_stop" xml:space="preserve">
-    <value>Todos as salvaguardas foram paradas</value>
+    <value>تم إيقاف كافة النسخ الاحتياطية</value>
   </data>
 </root>

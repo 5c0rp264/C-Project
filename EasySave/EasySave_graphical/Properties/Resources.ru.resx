@@ -118,126 +118,126 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="about" xml:space="preserve">
-    <value>Sobre nós</value>
+    <value>О нас</value>
   </data>
   <data name="add" xml:space="preserve">
-    <value>Adicionar</value>
+    <value>Добавить</value>
   </data>
   <data name="all_good" xml:space="preserve">
-    <value>Tudo correu bem</value>
+    <value>Все прошло хорошо.</value>
   </data>
   <data name="business_software" xml:space="preserve">
-    <value>Programa empresarial</value>
+    <value>Программное обеспечение для бизнеса</value>
   </data>
   <data name="business_software_error" xml:space="preserve">
-    <value>Um programa empresarial está a ser usado, não podemos iniciar um trabalho de salvaguarda</value>
+    <value>Бизнес-программа используется, мы не можем начать резервное копирование.</value>
   </data>
   <data name="delete" xml:space="preserve">
-    <value>Eliminar</value>
+    <value>Удалить</value>
   </data>
   <data name="delete_check" xml:space="preserve">
-    <value>Tem a certeza de que quer apagar o seguinte trabalho de salvaguarda :</value>
+    <value>Вы уверены, что хотите удалить следующее задание резервного копирования :</value>
   </data>
   <data name="delete_confirm" xml:space="preserve">
-    <value>Removemos o seguinte trabalho de salvaguarda :</value>
+    <value>Мы удалили следующую резервную работу:</value>
   </data>
   <data name="delete_label" xml:space="preserve">
-    <value>Seleccionar um trabalho de salvaguarda a apagar</value>
+    <value>Выберите резервное задание для удаления</value>
   </data>
   <data name="delete_warning" xml:space="preserve">
-    <value>Deve seleccionar um trabalho de salvaguarda</value>
+    <value>Вы должны выбрать задание на резервное копирование</value>
   </data>
   <data name="destination" xml:space="preserve">
-    <value>Destinação</value>
+    <value>Назначение</value>
   </data>
   <data name="differential" xml:space="preserve">
-    <value>Diferencial</value>
+    <value>Дифференциальный</value>
   </data>
   <data name="edit" xml:space="preserve">
-    <value>Editar</value>
+    <value>Редактирование</value>
   </data>
   <data name="error" xml:space="preserve">
-    <value>Error</value>
+    <value>Ошибка</value>
   </data>
   <data name="error_message1" xml:space="preserve">
-    <value>Falta o tipo de salvaguarda</value>
+    <value>Отсутствует тип резервного копирования</value>
   </data>
   <data name="error_message2" xml:space="preserve">
-    <value>O nome do trabalho de salvaguarda é necessário para ser identificado.</value>
+    <value>Название резервного задания должно быть идентифицировано.</value>
   </data>
   <data name="error_message3" xml:space="preserve">
-    <value>Falta o ficheiro de origem</value>
+    <value>Исходный файл отсутствует</value>
   </data>
   <data name="error_message4" xml:space="preserve">
-    <value>Falta a pasta de destinação</value>
+    <value>Отсутствует конечная папка</value>
   </data>
   <data name="execute" xml:space="preserve">
-    <value>Executar</value>
+    <value>Запустить</value>
   </data>
   <data name="execute_label" xml:space="preserve">
-    <value>Seleccionar os trabalhos a realizar</value>
+    <value>Выберите выполняемые работы</value>
   </data>
   <data name="execute_warning" xml:space="preserve">
-    <value>Deve seleccionar pelo menos um trabalho</value>
+    <value>Вы должны выбрать хотя бы одну работу</value>
   </data>
   <data name="extension" xml:space="preserve">
-    <value>Extensão a codificar : (.png,.txt,.png)</value>
+    <value>Расширение должно быть зашифровано : (.png, .txt, .png)</value>
   </data>
   <data name="file_priority" xml:space="preserve">
-    <value>Ficheiros prioritários  (.png,.txt,.png)</value>
+    <value>Приоритетные файлы (.png, .txt, .png)</value>
   </data>
   <data name="full" xml:space="preserve">
-    <value>Completa</value>
+    <value>Полный</value>
   </data>
   <data name="home" xml:space="preserve">
-    <value>Início</value>
+    <value>Главная страница</value>
   </data>
   <data name="information" xml:space="preserve">
-    <value>Informação</value>
+    <value>Информация</value>
   </data>
   <data name="log" xml:space="preserve">
-    <value>Jornal</value>
+    <value>Журнал</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Nome :</value>
+    <value>Имя :</value>
   </data>
   <data name="pause" xml:space="preserve">
-    <value>Pausa</value>
+    <value>Перерыв</value>
   </data>
   <data name="please" xml:space="preserve">
-    <value>Por favor : </value>
+    <value>Пожалуйста:</value>
   </data>
   <data name="reference" xml:space="preserve">
-    <value>Por favor, introduza uma cópia de salvaguarda completa de referência :</value>
+    <value>Пожалуйста, введите полную резервную копию ссылки:</value>
   </data>
   <data name="save" xml:space="preserve">
-    <value>Salvaguarda</value>
+    <value>Сохранить</value>
   </data>
   <data name="select_label" xml:space="preserve">
-    <value>Escolher um trabalho</value>
+    <value>Выберите работу</value>
   </data>
   <data name="settings" xml:space="preserve">
-    <value>Parâmetros</value>
+    <value>Настройки</value>
   </data>
   <data name="size_limit" xml:space="preserve">
-    <value>Tamanho máximo do ficheiro para transferências simultâneas</value>
+    <value>Максимальный размер файла для одновременной передачи</value>
   </data>
   <data name="size_unit" xml:space="preserve">
-    <value>kb</value>
+    <value>ко</value>
   </data>
   <data name="source" xml:space="preserve">
-    <value>Origem</value>
+    <value>Источник</value>
   </data>
   <data name="state" xml:space="preserve">
-    <value>Estado</value>
+    <value>Государственный</value>
   </data>
   <data name="stop" xml:space="preserve">
-    <value>Parar</value>
+    <value>Остановить</value>
   </data>
   <data name="success" xml:space="preserve">
-    <value>Adicionado com sucesso</value>
+    <value>Успешно добавленный</value>
   </data>
   <data name="thread_stop" xml:space="preserve">
-    <value>Todos as salvaguardas foram paradas</value>
+    <value>Все резервные копии были остановлены</value>
   </data>
 </root>

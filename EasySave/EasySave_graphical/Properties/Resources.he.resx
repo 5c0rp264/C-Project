@@ -118,126 +118,126 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="about" xml:space="preserve">
-    <value>Sobre nós</value>
+    <value>על אודות</value>
   </data>
   <data name="add" xml:space="preserve">
-    <value>Adicionar</value>
+    <value>לְהוֹסִיף</value>
   </data>
   <data name="all_good" xml:space="preserve">
-    <value>Tudo correu bem</value>
+    <value>הכל התנהל כשורה</value>
   </data>
   <data name="business_software" xml:space="preserve">
-    <value>Programa empresarial</value>
+    <value>תוכנה עסקית</value>
   </data>
   <data name="business_software_error" xml:space="preserve">
-    <value>Um programa empresarial está a ser usado, não podemos iniciar um trabalho de salvaguarda</value>
+    <value>תוכנה עסקית נמצאת בשימוש, איננו יכולים להתחיל בעבודת גיבוי</value>
   </data>
   <data name="delete" xml:space="preserve">
-    <value>Eliminar</value>
+    <value>לְהַסִיר</value>
   </data>
   <data name="delete_check" xml:space="preserve">
-    <value>Tem a certeza de que quer apagar o seguinte trabalho de salvaguarda :</value>
+    <value>האם אתה בטוח שברצונך למחוק את עבודת הגיבוי הבאה:</value>
   </data>
   <data name="delete_confirm" xml:space="preserve">
-    <value>Removemos o seguinte trabalho de salvaguarda :</value>
+    <value>מחקנו את עבודת הגיבוי הבאה:</value>
   </data>
   <data name="delete_label" xml:space="preserve">
-    <value>Seleccionar um trabalho de salvaguarda a apagar</value>
+    <value>בחר עבודת גיבוי למחיקה</value>
   </data>
   <data name="delete_warning" xml:space="preserve">
-    <value>Deve seleccionar um trabalho de salvaguarda</value>
+    <value>עליך לבחור משרת גיבוי</value>
   </data>
   <data name="destination" xml:space="preserve">
-    <value>Destinação</value>
+    <value>יַעַד</value>
   </data>
   <data name="differential" xml:space="preserve">
-    <value>Diferencial</value>
+    <value>דִיפֵרֶנציִאָלִי</value>
   </data>
   <data name="edit" xml:space="preserve">
-    <value>Editar</value>
+    <value>לַעֲרוֹך</value>
   </data>
   <data name="error" xml:space="preserve">
-    <value>Error</value>
+    <value>אשמה</value>
   </data>
   <data name="error_message1" xml:space="preserve">
-    <value>Falta o tipo de salvaguarda</value>
+    <value>סוג הגיבוי חסר</value>
   </data>
   <data name="error_message2" xml:space="preserve">
-    <value>O nome do trabalho de salvaguarda é necessário para ser identificado.</value>
+    <value>יש לזהות את שם עבודת הגיבוי</value>
   </data>
   <data name="error_message3" xml:space="preserve">
-    <value>Falta o ficheiro de origem</value>
+    <value>תיקיית המקור חסרה</value>
   </data>
   <data name="error_message4" xml:space="preserve">
-    <value>Falta a pasta de destinação</value>
+    <value>תיקיית היעד חסרה</value>
   </data>
   <data name="execute" xml:space="preserve">
-    <value>Executar</value>
+    <value>לבצע</value>
   </data>
   <data name="execute_label" xml:space="preserve">
-    <value>Seleccionar os trabalhos a realizar</value>
+    <value>בחר את המשרות להפעלה</value>
   </data>
   <data name="execute_warning" xml:space="preserve">
-    <value>Deve seleccionar pelo menos um trabalho</value>
+    <value>עליך לבחור משרה אחת לפחות</value>
   </data>
   <data name="extension" xml:space="preserve">
-    <value>Extensão a codificar : (.png,.txt,.png)</value>
+    <value>הרחבה להצפנה: (.png, .txt, .png)</value>
   </data>
   <data name="file_priority" xml:space="preserve">
-    <value>Ficheiros prioritários  (.png,.txt,.png)</value>
+    <value>קבצי עדיפות (.png, .txt, .png)</value>
   </data>
   <data name="full" xml:space="preserve">
-    <value>Completa</value>
+    <value>לְהַשְׁלִים</value>
   </data>
   <data name="home" xml:space="preserve">
-    <value>Início</value>
+    <value>בית</value>
   </data>
   <data name="information" xml:space="preserve">
-    <value>Informação</value>
+    <value>מֵידָע</value>
   </data>
   <data name="log" xml:space="preserve">
-    <value>Jornal</value>
+    <value>עיתון</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Nome :</value>
+    <value>שם משפחה :</value>
   </data>
   <data name="pause" xml:space="preserve">
-    <value>Pausa</value>
+    <value>הַפסָקָה</value>
   </data>
   <data name="please" xml:space="preserve">
-    <value>Por favor : </value>
+    <value>אנא :</value>
   </data>
   <data name="reference" xml:space="preserve">
-    <value>Por favor, introduza uma cópia de salvaguarda completa de referência :</value>
+    <value>אנא הכנס גיבוי מלא להפניה:</value>
   </data>
   <data name="save" xml:space="preserve">
-    <value>Salvaguarda</value>
+    <value>להציל</value>
   </data>
   <data name="select_label" xml:space="preserve">
-    <value>Escolher um trabalho</value>
+    <value>בחר עבודה</value>
   </data>
   <data name="settings" xml:space="preserve">
-    <value>Parâmetros</value>
+    <value>הגדרות</value>
   </data>
   <data name="size_limit" xml:space="preserve">
-    <value>Tamanho máximo do ficheiro para transferências simultâneas</value>
+    <value>גודל קובץ מרבי במקרה של העברות בו זמנית</value>
   </data>
   <data name="size_unit" xml:space="preserve">
-    <value>kb</value>
+    <value>קו</value>
   </data>
   <data name="source" xml:space="preserve">
-    <value>Origem</value>
+    <value>מָקוֹר</value>
   </data>
   <data name="state" xml:space="preserve">
-    <value>Estado</value>
+    <value>מדינה</value>
   </data>
   <data name="stop" xml:space="preserve">
-    <value>Parar</value>
+    <value>תפסיק</value>
   </data>
   <data name="success" xml:space="preserve">
-    <value>Adicionado com sucesso</value>
+    <value>נוסף בהצלחה</value>
   </data>
   <data name="thread_stop" xml:space="preserve">
-    <value>Todos as salvaguardas foram paradas</value>
+    <value>כל הגיבויים הופסקו</value>
   </data>
 </root>

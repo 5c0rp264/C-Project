@@ -118,126 +118,126 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="about" xml:space="preserve">
-    <value>Sobre nós</value>
+    <value>Über uns</value>
   </data>
   <data name="add" xml:space="preserve">
-    <value>Adicionar</value>
+    <value>Hinzufügen</value>
   </data>
   <data name="all_good" xml:space="preserve">
-    <value>Tudo correu bem</value>
+    <value>Alles ist gut gelaufen.</value>
   </data>
   <data name="business_software" xml:space="preserve">
-    <value>Programa empresarial</value>
+    <value>Geschäftssoftware</value>
   </data>
   <data name="business_software_error" xml:space="preserve">
-    <value>Um programa empresarial está a ser usado, não podemos iniciar um trabalho de salvaguarda</value>
+    <value>Eine Unternehmenssoftware ist im Einsatz, wir können keinen Sicherungsauftrag starten.</value>
   </data>
   <data name="delete" xml:space="preserve">
-    <value>Eliminar</value>
+    <value>Löschen</value>
   </data>
   <data name="delete_check" xml:space="preserve">
-    <value>Tem a certeza de que quer apagar o seguinte trabalho de salvaguarda :</value>
+    <value>Sind Sie sicher, dass Sie den folgenden Sicherungsauftrag löschen wollen:</value>
   </data>
   <data name="delete_confirm" xml:space="preserve">
-    <value>Removemos o seguinte trabalho de salvaguarda :</value>
+    <value>Wir haben den folgenden Sicherungsauftrag entfernt:</value>
   </data>
   <data name="delete_label" xml:space="preserve">
-    <value>Seleccionar um trabalho de salvaguarda a apagar</value>
+    <value>Wählen Sie einen zu löschenden Sicherungsauftrag</value>
   </data>
   <data name="delete_warning" xml:space="preserve">
-    <value>Deve seleccionar um trabalho de salvaguarda</value>
+    <value>Sie müssen einen Sicherungsauftrag auswählen</value>
   </data>
   <data name="destination" xml:space="preserve">
-    <value>Destinação</value>
+    <value>Zielort</value>
   </data>
   <data name="differential" xml:space="preserve">
-    <value>Diferencial</value>
+    <value>Differential</value>
   </data>
   <data name="edit" xml:space="preserve">
-    <value>Editar</value>
+    <value>Bearbeiten</value>
   </data>
   <data name="error" xml:space="preserve">
-    <value>Error</value>
+    <value>Fehler</value>
   </data>
   <data name="error_message1" xml:space="preserve">
-    <value>Falta o tipo de salvaguarda</value>
+    <value>Der Typ der Sicherung fehlt</value>
   </data>
   <data name="error_message2" xml:space="preserve">
-    <value>O nome do trabalho de salvaguarda é necessário para ser identificado.</value>
+    <value>Der Name des Sicherungsauftrags muss identifiziert werden.</value>
   </data>
   <data name="error_message3" xml:space="preserve">
-    <value>Falta o ficheiro de origem</value>
+    <value>Die Quelldatei fehlt</value>
   </data>
   <data name="error_message4" xml:space="preserve">
-    <value>Falta a pasta de destinação</value>
+    <value>Der Zielordner fehlt</value>
   </data>
   <data name="execute" xml:space="preserve">
-    <value>Executar</value>
+    <value>Lauf</value>
   </data>
   <data name="execute_label" xml:space="preserve">
-    <value>Seleccionar os trabalhos a realizar</value>
+    <value>Wählen Sie die auszuführenden Aufträge</value>
   </data>
   <data name="execute_warning" xml:space="preserve">
-    <value>Deve seleccionar pelo menos um trabalho</value>
+    <value>Sie müssen mindestens einen Job auswählen</value>
   </data>
   <data name="extension" xml:space="preserve">
-    <value>Extensão a codificar : (.png,.txt,.png)</value>
+    <value>Zu verschlüsselnde Erweiterung : (.png, .txt, .png)</value>
   </data>
   <data name="file_priority" xml:space="preserve">
-    <value>Ficheiros prioritários  (.png,.txt,.png)</value>
+    <value>Vorrangige Dateien (.png, .txt, .png)</value>
   </data>
   <data name="full" xml:space="preserve">
-    <value>Completa</value>
+    <value>Vollständig</value>
   </data>
   <data name="home" xml:space="preserve">
-    <value>Início</value>
+    <value>Startseite</value>
   </data>
   <data name="information" xml:space="preserve">
-    <value>Informação</value>
+    <value>Informationen</value>
   </data>
   <data name="log" xml:space="preserve">
-    <value>Jornal</value>
+    <value>Zeitung</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Nome :</value>
+    <value>Name :</value>
   </data>
   <data name="pause" xml:space="preserve">
-    <value>Pausa</value>
+    <value>Bruch</value>
   </data>
   <data name="please" xml:space="preserve">
-    <value>Por favor : </value>
+    <value>Bitte:</value>
   </data>
   <data name="reference" xml:space="preserve">
-    <value>Por favor, introduza uma cópia de salvaguarda completa de referência :</value>
+    <value>Bitte geben Sie eine vollständige Referenzsicherung ein:</value>
   </data>
   <data name="save" xml:space="preserve">
-    <value>Salvaguarda</value>
+    <value>Speichern</value>
   </data>
   <data name="select_label" xml:space="preserve">
-    <value>Escolher um trabalho</value>
+    <value>Wählen Sie einen Job</value>
   </data>
   <data name="settings" xml:space="preserve">
-    <value>Parâmetros</value>
+    <value>Einstellungen</value>
   </data>
   <data name="size_limit" xml:space="preserve">
-    <value>Tamanho máximo do ficheiro para transferências simultâneas</value>
+    <value>Maximale Dateigröße für gleichzeitige Übertragungen</value>
   </data>
   <data name="size_unit" xml:space="preserve">
-    <value>kb</value>
+    <value>ko</value>
   </data>
   <data name="source" xml:space="preserve">
-    <value>Origem</value>
+    <value>Quelle</value>
   </data>
   <data name="state" xml:space="preserve">
-    <value>Estado</value>
+    <value>Zustand</value>
   </data>
   <data name="stop" xml:space="preserve">
-    <value>Parar</value>
+    <value>Stopp</value>
   </data>
   <data name="success" xml:space="preserve">
-    <value>Adicionado com sucesso</value>
+    <value>Erfolgreich hinzugefügt</value>
   </data>
   <data name="thread_stop" xml:space="preserve">
-    <value>Todos as salvaguardas foram paradas</value>
+    <value>Alle Backups wurden gestoppt</value>
   </data>
 </root>
