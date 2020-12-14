@@ -638,6 +638,22 @@ namespace EasySave_graphical
 
         }
 
+        private void strip_state_Click(object sender, EventArgs e)
+        {
+            this.controller.Model.openStateFile();
+        }
+
+        private void strip_log_Click(object sender, EventArgs e)
+        {
+            this.controller.Model.openLogFile();
+        }
+
+        private void trackingPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
@@ -689,21 +705,6 @@ namespace EasySave_graphical
         }
 
         private void menuStrip2_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
-        private void strip_state_Click(object sender, EventArgs e)
-        {
-            this.controller.Model.openStateFile();
-        }
-
-        private void strip_log_Click(object sender, EventArgs e)
-        {
-            this.controller.Model.openLogFile();
-        }
-
-        private void trackingPanel_Paint(object sender, PaintEventArgs e)
         {
 
         }
