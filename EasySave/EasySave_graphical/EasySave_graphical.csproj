@@ -68,6 +68,8 @@
     <Compile Include="BackupWorkState.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="IController.cs" />
+    <Compile Include="logManager.cs" />
+    <Compile Include="Model.cs" />
     <Compile Include="Properties\Resources.ar.Designer.cs">
       <DependentUpon>Resources.ar.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -109,7 +111,7 @@
       <DependentUpon>Resources.de.resx</DependentUpon>
     </Compile>
     <Compile Include="Log.cs" />
-    <Compile Include="Model.cs" />
+    <Compile Include="stateManager.cs" />
     <Compile Include="translation.cs" />
     <Compile Include="graphical_interface.cs">
       <SubType>Form</SubType>

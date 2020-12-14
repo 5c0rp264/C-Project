@@ -26,8 +26,8 @@ namespace EasySave_graphical
         // Path to the json files that store the backup job list in the root folder
         private readonly String pathToJsonDB = @"./db.json";
         private readonly String pathToSettings = @"./settings.txt";
-        private readonly String pathToStateFile = @"./state.log";
-        private readonly String pathToLogFile = @"./logs/" + DateTime.Now.ToString("MM.dd.yyyy") + ".log";
+        public static readonly String pathToStateFile = @"./state.log";
+        public static readonly String pathToLogFile = @"./logs/" + DateTime.Now.ToString("MM.dd.yyyy") + ".log";
 
         // Thread for each backup will be stored in this list
         readonly List<Thread> backupThreadList = new List<Thread>();
@@ -143,11 +143,12 @@ namespace EasySave_graphical
                 catch (Exception e)
                 {
                     //Console.WriteLine("BUG")
-                    writeLogFile(" /!\\/!\\/!\\ Error for the backup job [" + backupJobIDList[i] + "] " + this.BackupJobList[backupJobIDList[i]].Name);
-                    writeLogFile(" /!\\/!\\/!\\ Source : \\\\?\\" + this.BackupJobList[backupJobIDList[i]].Source.Replace(":", "$"));
-                    writeLogFile(" /!\\/!\\/!\\ Destination : \\\\?\\" + this.BackupJobList[backupJobIDList[i]].Destination.Replace(":", "$"));
-                    writeLogFile(" /!\\/!\\/!\\ Size : unavailable for failed jobs");
-                    writeLogFile(" /!\\/!\\/!\\ Transfer time : -1ms");
+                    logManager lm = logManager.getInstance();
+                    lm.writeLogFile(" /!\\/!\\/!\\ Error for the backup job [" + backupJobIDList[i] + "] " + this.BackupJobList[backupJobIDList[i]].Name);
+                    lm.writeLogFile(" /!\\/!\\/!\\ Source : \\\\?\\" + this.BackupJobList[backupJobIDList[i]].Source.Replace(":", "$"));
+                    lm.writeLogFile(" /!\\/!\\/!\\ Destination : \\\\?\\" + this.BackupJobList[backupJobIDList[i]].Destination.Replace(":", "$"));
+                    lm.writeLogFile(" /!\\/!\\/!\\ Size : unavailable for failed jobs");
+                    lm.writeLogFile(" /!\\/!\\/!\\ Transfer time : -1ms");
 
                     throw e;
                 }
@@ -156,7 +157,7 @@ namespace EasySave_graphical
                     numOfDiff++;
                 }
             }
-            writeStateFile(BUJStateList);
+            stateManager.getInstance().writeStateFile(BUJStateList);
             numOfDiff = 0;
             // For each backup job the user wants to execute we will execute it based on it's type (full / differential)
             for (int i = 0; i < backupJobIDList.Count; i++)
@@ -164,12 +165,13 @@ namespace EasySave_graphical
                 this.controller.View.addProgressBar(i);
                 BUJStateList[i].ISACtive = true;
                 // Update the state file
-                writeStateFile(BUJStateList);
-                writeLogFile("Starting the backup job [" + backupJobIDList[i] + "] " + BUJStateList[i].Name);
-                writeLogFile("Source : \\?\\" + BUJStateList[i].Source.Replace(":", "$"));
-                writeLogFile("Destination : \\\\?\\" + BUJStateList[i].Destination.Replace(":", "$"));
-                writeLogFile("Source directory size : " + CalculateFolderSize(BUJStateList[i].Source));
-                writeLogFile("Destination directory size : " + BUJStateList[i].TotalSizeOfElligbleFiles);
+                stateManager.getInstance().writeStateFile(BUJStateList);
+                logManager lm = logManager.getInstance();
+                lm.writeLogFile("Starting the backup job [" + backupJobIDList[i] + "] " + BUJStateList[i].Name);
+                lm.writeLogFile("Source : \\?\\" + BUJStateList[i].Source.Replace(":", "$"));
+                lm.writeLogFile("Destination : \\\\?\\" + BUJStateList[i].Destination.Replace(":", "$"));
+                lm.writeLogFile("Source directory size : " + CalculateFolderSize(BUJStateList[i].Source));
+                lm.writeLogFile("Destination directory size : " + BUJStateList[i].TotalSizeOfElligbleFiles);
                 if (this.BackupJobList[backupJobIDList[i]].IsFull)
                 {
                     // Full copy
@@ -197,8 +199,8 @@ namespace EasySave_graphical
                 // At the end the work at the index i is no more active
                 BUJStateList[i].ISACtive = false;
                 // We reupdate it one last time
-                writeStateFile(BUJStateList);
-                writeLogFile("Transfer time : " + BUJStateList[i].Stopwatch.Elapsed);
+                stateManager.getInstance().writeStateFile(BUJStateList);
+                lm.writeLogFile("Transfer time : " + BUJStateList[i].Stopwatch.Elapsed);
 
             }
             stopWatchThread = new Thread(stopWatchingProcess);
@@ -259,63 +261,9 @@ namespace EasySave_graphical
 
 
         // --------------------- Method to make life easier ---------------------------------
-        private static readonly Mutex stateFileMutex = new Mutex();
-        private void writeStateFile(List<BackupJobState> BUJSList)
-        {
-            stateFileMutex.WaitOne();
-            // This will just open and write with the indentation appropriated in the state file
-            FileStream stream = File.Create(pathToStateFile);
-            TextWriter tw = new StreamWriter(stream);
-            try
-            {
-                String stringjson = JsonConvert.SerializeObject(BUJSList, Formatting.Indented);
-                tw.WriteLine(stringjson);
-            }
-            catch (Exception exc)
-            {
-                Debug.Print(exc.ToString());
-            }
-
-            tw.Close();
-            stateFileMutex.ReleaseMutex();
-        }
 
 
-        private static readonly Mutex logFileMutex = new Mutex();
-        private void writeLogFile(String toBeWritten)
-        {
-            logFileMutex.WaitOne();
-            // This will just open and write with the indentation appropriated in the state file
-            List<Log> loglist = new List<Log>();
-            if (!File.Exists(pathToLogFile))
-            {
-                // Create a file to write to.
-                FileStream stream = File.Create(pathToLogFile);
-                using (StreamWriter sw = new StreamWriter(stream))
-                {
-                    loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
-                    sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
-                    sw.Close();
-                }
-            }
-            else
-            {
-                string json = File.ReadAllText(pathToLogFile);
-                FileStream stream = File.Create(pathToLogFile);
-                using (StreamWriter sw = new StreamWriter(stream))
-                {
-                    loglist = JsonConvert.DeserializeObject<List<Log>>(json);
-                    if (loglist != null)
-                    {
-                        loglist.Add(new Log(toBeWritten, (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
-                    }
-                    sw.WriteLine(JsonConvert.SerializeObject(loglist, Formatting.Indented));
-                    sw.Close();
-                }
-            }
 
-            logFileMutex.ReleaseMutex();
-        }
 
 
 
@@ -439,7 +387,8 @@ namespace EasySave_graphical
                             psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
                             Process proc = Process.Start(psi);
                             proc.WaitForExit();
-                            writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
+                            logManager lm = logManager.getInstance();
+                            lm.writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
                             didCryptIt = true;
                             //Console.WriteLine(Path.Combine(destDirName, file.Name));
                         }
@@ -448,13 +397,14 @@ namespace EasySave_graphical
                     if (!didCryptIt)
                     {
                         file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                        writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms (no encryption)");
+                        logManager lm = logManager.getInstance();
+                        lm.writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms (no encryption)");
                     }
                     BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                     //Console.Write(BUJS[index].FilesTransfered.Count / BUJS[index].TotalElligibleFile);
                     BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                     BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
-                    writeStateFile(BUJS);
+                    stateManager.getInstance().writeStateFile(BUJS);
 
                     // Check if we need to suspend the thread or not
                     foreach (var item in backupToPause)
@@ -491,7 +441,8 @@ namespace EasySave_graphical
                             psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
                             Process proc = Process.Start(psi);
                             proc.WaitForExit();
-                            writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
+                            logManager lm = logManager.getInstance();
+                            lm.writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
                             didCryptIt = true;
                             //Console.WriteLine(Path.Combine(destDirName, file.Name));
                         }
@@ -500,13 +451,14 @@ namespace EasySave_graphical
                     if (!didCryptIt)
                     {
                         file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                        writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms (no encryption )");
+                        logManager lm = logManager.getInstance();
+                        lm.writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms (no encryption )");
                     }
                     BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                     //Console.Write(BUJS[index].FilesTransfered.Count / BUJS[index].TotalElligibleFile);
                     BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                     BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
-                    writeStateFile(BUJS);
+                    stateManager.getInstance().writeStateFile(BUJS);
 
                     // Do we need to stop it or not
                     foreach (var item in backupToPause)
@@ -576,7 +528,8 @@ namespace EasySave_graphical
                                 psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
                                 Process proc = Process.Start(psi);
                                 proc.WaitForExit();
-                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
+                                logManager lm = logManager.getInstance();
+                                lm.writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
                                 didCryptIt = true;
                             }
 
@@ -584,12 +537,13 @@ namespace EasySave_graphical
                         if (!didCryptIt)
                         {
                             file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                            writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( no encryption )");
+                            logManager lm = logManager.getInstance();
+                            lm.writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( no encryption )");
                         }
                         BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                         BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                         BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
-                        writeStateFile(BUJS);
+                        stateManager.getInstance().writeStateFile(BUJS);
                         foreach (var item in backupToPause)
                         {
                             if (BUJS[index].Name == item)
@@ -612,19 +566,21 @@ namespace EasySave_graphical
                                     psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
                                     Process proc = Process.Start(psi);
                                     proc.WaitForExit();
-                                    writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was : " + proc.ExitCode + "ms");
+                                    logManager lm = logManager.getInstance();
+                                    lm.writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was : " + proc.ExitCode + "ms");
                                     didCryptIt = true;
                                 }
                             }
                             if (!didCryptIt)
                             {
                                 file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( no encryption )");
+                                logManager lm = logManager.getInstance();
+                                lm.writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( no encryption )");
                             }
                             BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                             BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                             BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
-                            writeStateFile(BUJS);
+                            stateManager.getInstance().writeStateFile(BUJS);
                             foreach (var item in backupToPause)
                             {
                                 if (BUJS[index].Name == item)
@@ -652,7 +608,8 @@ namespace EasySave_graphical
                                 psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
                                 Process proc = Process.Start(psi);
                                 proc.WaitForExit();
-                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
+                                logManager lm = logManager.getInstance();
+                                lm.writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: " + proc.ExitCode + "ms");
                                 didCryptIt = true;
                             }
 
@@ -660,12 +617,13 @@ namespace EasySave_graphical
                         if (!didCryptIt)
                         {
                             file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                            writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( no encryption )");
+                            logManager lm = logManager.getInstance();
+                            lm.writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( no encryption )");
                         }
                         BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                         BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                         BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
-                        writeStateFile(BUJS);
+                        stateManager.getInstance().writeStateFile(BUJS);
                         foreach (var item in backupToPause)
                         {
                             if (BUJS[index].Name == item)
@@ -688,19 +646,21 @@ namespace EasySave_graphical
                                     psi.Arguments = "\"" + Path.Combine(sourceDirName, file.Name) + "\" \"" + Path.Combine(destDirName, file.Name) + "\"";
                                     Process proc = Process.Start(psi);
                                     proc.WaitForExit();
-                                    writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was : " + proc.ExitCode + "ms");
+                                    logManager lm = logManager.getInstance();
+                                    lm.writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was : " + proc.ExitCode + "ms");
                                     didCryptIt = true;
                                 }
                             }
                             if (!didCryptIt)
                             {
                                 file.CopyTo(Path.Combine(destDirName, file.Name), false);
-                                writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( no encryption )");
+                                logManager lm = logManager.getInstance();
+                                lm.writeLogFile("Encryption time for " + Path.Combine(destDirName, file.Name) + " was: 0ms ( no encryption )");
                             }
                             BUJS[index].FilesTransfered.Add(new myOwnFileInfo(file.Length, file.FullName));
                             BUJS[index].Progress = ((float)BUJS[index].FilesTransfered.Count) / ((float)BUJS[index].TotalElligibleFile);
                             BUJS[index].SizeOfRemainingFiles = BUJS[index].TotalSizeOfElligbleFiles - BUJS[index].FilesTransfered.Sum(item => item.fileSize);
-                            writeStateFile(BUJS);
+                            stateManager.getInstance().writeStateFile(BUJS);
                             foreach (var item in backupToPause)
                             {
                                 if (BUJS[index].Name == item)
