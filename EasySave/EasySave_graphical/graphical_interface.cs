@@ -440,6 +440,7 @@ namespace EasySave_graphical
         {
             TabControl.SelectedIndex = 5;
             sizeLimit.Value = this.controller.Model.maxFileSize;
+            settings_priority.Text = string.Join(", ", this.controller.Model.extensionPrioritized);
             file_size.Text = Properties.Resources.size_limit + " : " + sizeLimit.Value + " " + Properties.Resources.size_unit;
         }
         private void sizeLimit_Scroll(object sender, EventArgs e)
@@ -450,7 +451,8 @@ namespace EasySave_graphical
         private void settings_save_Click(object sender, EventArgs e)
         {
             this.controller.Model.maxFileSize = sizeLimit.Value;
-            this.controller.Model.WriteToFileInFirstLine("settings.txt", sizeLimit.Value.ToString());
+            this.controller.Model.extensionPrioritized = parseUserInputAsList(settings_priority.Text);
+            this.controller.Model.saveToSettingFile(sizeLimit.Value.ToString(), settings_priority.Text);
         }
 
         // Color ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -699,5 +701,6 @@ namespace EasySave_graphical
         {
 
         }
+
     }
 }

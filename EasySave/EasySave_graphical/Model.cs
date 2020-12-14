@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace EasySave_graphical
@@ -37,6 +38,7 @@ namespace EasySave_graphical
 
         // Settings
         public int maxFileSize = 0;
+        public List<string> extensionPrioritized = new List<string>();
 
         public List<BackupJob> BackupJobList
         {
@@ -76,17 +78,21 @@ namespace EasySave_graphical
             else
             {
                 string fileSize = "";
+                string fileExtensions = "";
                 using (StreamReader reader = new StreamReader(pathToSettings))
                 {
                     fileSize = reader.ReadLine() ?? "";
+                    fileExtensions = reader.ReadLine() ?? "";
                 }
                 try
                 {
                     maxFileSize = Int32.Parse(fileSize);
+                    extensionPrioritized = this.parseUserInputAsList(fileExtensions);
                 }
                 catch
                 {
                     maxFileSize = 0;
+                    extensionPrioritized = new List<string>();
                 }
             }
         }
@@ -817,12 +823,21 @@ namespace EasySave_graphical
             }
             return Locked;
         }
-        public void WriteToFileInFirstLine(string Path, string Text)
+        public void saveToSettingFile(string valueSimultaneousFileSize, string extensions)
         {
-            string content = File.ReadAllText(Path);
-            content = Text + "\n" + content;
-            File.WriteAllText(Path, content);
+            //string content = File.ReadAllText(Path);
+            string content = valueSimultaneousFileSize + "\n" + extensions;
+            File.WriteAllText(pathToSettings, content);
         }
+
+        private List<string> parseUserInputAsList(string userInput)
+        {
+            //List <string> listParsed = new List<string>();
+            List<string> listParsed = new List<string>(Regex.Replace(userInput, @"\s+", "").Split(','));
+            return listParsed;
+        }
+
+
     }
 
 
