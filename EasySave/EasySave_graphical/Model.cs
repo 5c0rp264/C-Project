@@ -183,8 +183,9 @@ namespace EasySave_graphical
                     // Full copy
                     Thread fullThread = new Thread(() =>
                     {
-                        DirectoryCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, i, BUJStateList, true);
-                        DirectoryCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, i, BUJStateList, false);
+                        int valueI = i;
+                        DirectoryCopy(this.BackupJobList[backupJobIDList[valueI]].Source, BUJStateList[valueI].Destination + BUJStateList[valueI].FolderName, valueI, BUJStateList, true);
+                        DirectoryCopy(this.BackupJobList[backupJobIDList[valueI]].Source, BUJStateList[valueI].Destination + BUJStateList[valueI].FolderName, valueI, BUJStateList, false);
                     });
                     fullThread.Name = "FULL_THREAD_ID_" + backupJobIDList[i];
                     fullThread.Start();
@@ -197,8 +198,9 @@ namespace EasySave_graphical
                     int current_backupIndex = numOfDiff;
                     Thread diffThread = new Thread(() =>
                     {
-                        DirectoryDifferentialCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, fullBackupListForDiff[current_backupIndex], i, BUJStateList, true);
-                        DirectoryDifferentialCopy(this.BackupJobList[backupJobIDList[i]].Source, BUJStateList[i].Destination + BUJStateList[i].FolderName, fullBackupListForDiff[current_backupIndex], i, BUJStateList, false);
+                        int valueI = i;
+                        DirectoryDifferentialCopy(this.BackupJobList[backupJobIDList[valueI]].Source, BUJStateList[valueI].Destination + BUJStateList[valueI].FolderName, fullBackupListForDiff[current_backupIndex], valueI, BUJStateList, true);
+                        DirectoryDifferentialCopy(this.BackupJobList[backupJobIDList[valueI]].Source, BUJStateList[valueI].Destination + BUJStateList[valueI].FolderName, fullBackupListForDiff[current_backupIndex], valueI, BUJStateList, false);
                     });
                     diffThread.Name = "DIFF_THREAD_ID_" + backupJobIDList[i];
                     diffThread.Start();
