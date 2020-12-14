@@ -329,7 +329,7 @@ namespace EasySave_graphical
                 }
                 else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
                 {
-                    if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
+                    if ((new FileInfo(Path.Combine(comparisonDirName, file.Name))).LastWriteTime < file.LastWriteTime)
                     {
                         totalCount.Add(new myOwnFileInfo(file.Length, file.FullName));
                     }
@@ -554,7 +554,7 @@ namespace EasySave_graphical
                     }
                     else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
                     {
-                        if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
+                        if ((new FileInfo(Path.Combine(comparisonDirName, file.Name))).LastWriteTime < file.LastWriteTime)
                         {
                             Boolean didCryptIt = false;
                             foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
@@ -634,7 +634,7 @@ namespace EasySave_graphical
                     }
                     else if (File.Exists(Path.Combine(comparisonDirName, file.Name)))
                     {
-                        if (CalculateMD5(Path.Combine(comparisonDirName, file.Name)) != CalculateMD5(Path.Combine(sourceDirName, file.Name)))
+                        if ((new FileInfo(Path.Combine(comparisonDirName, file.Name))).LastWriteTime < file.LastWriteTime)
                         {
                             Boolean didCryptIt = false;
                             foreach (string ext in BUJS[index].ToBeEncryptedFileExtensions)
@@ -683,19 +683,6 @@ namespace EasySave_graphical
                     {
                         _ = waitHandle.WaitOne();
                     }
-                }
-            }
-        }
-
-        // This will permit the comparison of file based on their md5 signature
-        private static string CalculateMD5(string filename)
-        {
-            using (var md5 = MD5.Create())
-            {
-                using (var stream = File.OpenRead(filename))
-                {
-                    var hash = md5.ComputeHash(stream);
-                    return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
                 }
             }
         }
