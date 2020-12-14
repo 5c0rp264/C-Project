@@ -542,7 +542,6 @@ namespace EasySave_graphical
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("es-ES");
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.RightToLeftLayout = false;
             changeLanguage();
         }
 
@@ -550,7 +549,6 @@ namespace EasySave_graphical
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("");
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.RightToLeftLayout = false;
             changeLanguage();
         }
 
@@ -558,7 +556,6 @@ namespace EasySave_graphical
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("fr-FR");
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.RightToLeftLayout = false;
             changeLanguage();
         }
 
@@ -566,7 +563,6 @@ namespace EasySave_graphical
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("zh-CN");
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.RightToLeftLayout = false;
             changeLanguage();
         }
 
@@ -574,7 +570,6 @@ namespace EasySave_graphical
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("pt-PT");
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.RightToLeftLayout = false;
             changeLanguage();
         }
 
@@ -582,7 +577,6 @@ namespace EasySave_graphical
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("ar-DZ");
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RightToLeftLayout = true;
             changeLanguage();
         }
 
@@ -590,7 +584,6 @@ namespace EasySave_graphical
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("de-DE");
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.RightToLeftLayout = false;
             changeLanguage();
         }
 
@@ -598,7 +591,6 @@ namespace EasySave_graphical
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("ru-RU");
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.RightToLeftLayout = false;
             changeLanguage();
         }
 
@@ -606,7 +598,6 @@ namespace EasySave_graphical
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("he-IL");
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RightToLeftLayout = true;
             changeLanguage();
         }
 
