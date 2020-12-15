@@ -14,7 +14,7 @@ namespace EasySave_graphical
     {
 
         //process watching to stop execution if openned :
-        public string processNameToWatch = "Calculator";
+        public string processNameToWatch = "rien";
         private Thread watchThread;
         private Thread stopWatchThread;
         private static readonly EventWaitHandle waitHandle = new ManualResetEvent(initialState: true);
@@ -169,6 +169,7 @@ namespace EasySave_graphical
             for (int i = 0; i < backupJobIDList.Count; i++)
             {
                 this.controller.View.addProgressBar(i);
+                this.controller.View.sendText("AddProgressBar," + i);
                 BUJStateList[i].ISACtive = true;
                 // Update the state file
                 stateManager.getInstance().writeStateFile(BUJStateList);

@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+
 
 namespace EasySave_graphical
 {
@@ -19,11 +23,171 @@ namespace EasySave_graphical
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("");
             InitializeComponent();
             //reloadListView();
+            init();
         }
         public void SetController(Controller controller)
         {
             this.controller = controller;
         }
+        private List<TcpClient> clients = new List<TcpClient>();
+
+        public void init()
+        {
+            TcpListener server = new TcpListener(localaddr: IPAddress.Parse("127.0.0.1"), port: 5000);
+            server.Start();
+
+            Model a = new Model();
+            Thread t = new Thread(() =>
+            {
+                while (true)
+                {
+                    TcpClient client = server.AcceptTcpClient();
+                    clients.Add(client);
+                    Thread t2 = new Thread(() =>
+                    {
+                        Stream stream = client.GetStream();
+                        StreamReader reader = new StreamReader(stream);
+
+
+
+                        while (true)
+                        {
+                            try
+                            {
+
+
+                                String txt = reader.ReadLine();
+                                string[] Text = txt.Split(',');
+                                Debug.Print(txt);
+                                Console.Write(txt);
+
+                                Console.Read();
+
+                                if (Text[0] == "Connection")
+                                {
+                                    String msg = "";
+                                    for (int i = 0; i < this.controller.Model.BackupJobList.Count; i++)
+                                    {
+                                        msg += this.controller.Model.BackupJobList[i].Name;
+                                        msg += ",";
+                                    }
+                                    StreamWriter writer = new StreamWriter(client.GetStream());
+                                    writer.WriteLine(msg);
+                                    writer.Flush();
+
+                                }
+                                if (Text[0] == "Pause")
+                                {
+                                    DelegPause();
+                                }
+                                if (Text[0] == "Stop")
+                                {
+                                    DelegStop();
+                                }
+                                if (Text[0] == "Resume")
+                                {
+                                    DelegResume();
+                                }
+                                if (Text[0] == "Edit")
+                                {
+                                    List<string> extToCrypt = new List<string>();
+                                    extToCrypt.Add(Text[5]);
+                                    bool full = false;
+                                    if (Text[4] == "true") { full = true; }
+
+                                    SetText(Text[1], Text[2], Text[3], full, Text[5]);
+                                    Edit(Int32.Parse(Text[6]), Text[1], Text[2], Text[3], full, extToCrypt);
+                                    
+                                    DelegRefresh();
+                                }
+
+
+                                if (Text[0] == "Delete")
+                                {
+                                    Delete(Int32.Parse(Text[1]));
+                                    DelegRefresh();
+                                }
+
+
+                                if (Text[0] == "Execute")
+                                {
+                                    
+                                    DelegExe(Int32.Parse(Text[1]));
+                                    DelegRefresh();
+                                }
+
+                                if (Text[0] == "Add")
+                                {
+                                    List<string> extToCrypt = new List<string>();
+                                    extToCrypt.Add(Text[5]);
+                                    bool full = false;
+                                    if (Text[4] == "true") { full = true; }
+                                    Add(Text[1], Text[2], Text[3], full, extToCrypt);
+                                    
+                                    DelegRefresh();
+                                }
+
+                            }
+                            catch (IOException e)
+                            {
+                                clients.Remove(client);
+                                break;
+                            }
+
+                        }
+                    })
+                    {
+                        IsBackground = true
+                    };
+                    t2.Start();
+                }
+            })
+            {
+                IsBackground = true
+            };
+            t.Start();
+        }
+
+        public void sendText(string text)
+        {
+            foreach (TcpClient client in clients)
+            {
+                StreamWriter writer = new StreamWriter(client.GetStream());
+                writer.WriteLine(text);
+                writer.Flush();
+            }
+
+        }
+
+        delegate void SetTextCallback(string text, string text2, string text3, bool text4, string text5);
+
+        private void SetText(string text, string text2, string text3, bool text4, string text5)
+        {
+            // InvokeRequired required compares the thread ID of the
+            // calling thread to the thread ID of the creating thread.
+            // If these threads are different, it returns true.
+
+            if (this.edit_name.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(SetText);
+                this.Invoke(d, new object[] { text, text2, text3, text4, text5 });
+            }
+
+            else
+            {
+                this.edit_name.Text = text;
+                this.edit_sourceFolderValue = text2;
+                this.edit_destinationFolderValue = text3;
+                this.edit_full.Checked = text4;
+                if (edit_full.Checked == false) { edit_differential.Checked = true; }
+                //this.edit_name.Text = text4;
+                this.edit_extension.Text = text5;
+
+                this.reloadListView();
+            }
+        }
+
+
         // Homepage ---------------------------------------------------------------------------------------------------------------------------------------------------
         private void homepageToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -267,6 +431,7 @@ namespace EasySave_graphical
         // Execute ---------------------------------------------------------------------------------------------------------------------------------------------------
         private void execute_play_Click(object sender, EventArgs e)
         {
+            
             Process[] processes = Process.GetProcessesByName(this.controller.Model.processNameToWatch);
             //Console.WriteLine(processes.Length);
             if (processes.Length >= 1)
@@ -332,7 +497,11 @@ namespace EasySave_graphical
             trackingDelegate = new addProgressBarDelegate(() => { newProgressBar(id); });
             Invoke(trackingDelegate);
         }
-
+        public void DelegExe(int id)
+        {
+            trackingDelegate = new addProgressBarDelegate(() => { Execute(id); });
+            Invoke(trackingDelegate);
+        }
         public void newProgressBar(int id)
         {
             ProgressBar myProgressBar = new ProgressBar();
@@ -343,8 +512,184 @@ namespace EasySave_graphical
         }
 
         public delegate void removeProgressBarDelegate();
+        public delegate void removeStopDelegate();
         public removeProgressBarDelegate removeTrackingDelegate;
+        public removeStopDelegate StopDelegate;
+        public void Execute(int a)
+        {
+            Process[] processes = Process.GetProcessesByName(this.controller.Model.processNameToWatch);
+            List<int> slectedBUJ = new List<int>();
+            List<String> dirFullForDiff = new List<string>();
+            
+                slectedBUJ.Add(a);// Add selected indexes to the List<int>
+                if (!this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].IsFull)
+                {
+                    using (var fbd = new FolderBrowserDialog())
+                    {
 
+                        MessageBox.Show(Properties.Resources.reference + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, Properties.Resources.information, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        DialogResult result = fbd.ShowDialog();
+                        if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                        {
+                            dirFullForDiff.Add(fbd.SelectedPath);
+                        }
+                        else
+                        {
+                            while (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                            {
+                                MessageBox.Show(Properties.Resources.please + this.controller.Model.BackupJobList[slectedBUJ[slectedBUJ.Count - 1]].Name, Properties.Resources.error, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                result = fbd.ShowDialog();
+                            }
+                        }
+                    }
+                
+            }
+
+            this.controller.Model.executeBUJList(slectedBUJ, dirFullForDiff);
+        }
+        public void Delete(int i)
+        {
+            this.controller.Model.deleteBackupJob(i);
+            MessageBox.Show(Properties.Resources.delete_confirm);
+            DelegRefresh();
+
+        }
+        private void Add(String name, String source, String destination, bool full, List<string> extToCrypt)
+        {
+            addIsValid = true;
+            errorMessage_add = "";
+
+
+            if (name == "")
+            {
+                editIsValid = false;
+                errorMessage = Properties.Resources.error_message2;
+            }
+
+            if (source.Length < 2 || source == "Source")
+            {
+                editIsValid = false;
+                errorMessage = Properties.Resources.error_message3;
+            }
+
+            if (destination.Length < 2 || destination == "Destination")
+            {
+                editIsValid = false;
+                errorMessage = Properties.Resources.error_message4;
+            }
+
+            if (addIsValid)
+            {
+                // add the backup
+                BackupJob backupJob = new BackupJob(name, source, destination, full, extToCrypt);
+                if (this.controller.Model.createBackupJob(backupJob))
+                {
+                    MessageBox.Show(Properties.Resources.success, Properties.Resources.information, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    DelegRefresh();
+                }
+                else
+                {
+                    MessageBox.Show(errorMessage_add, Properties.Resources.error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show(errorMessage_add, Properties.Resources.information, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        //Int32.Parse(Text[6]), Text[1], Text[2], Text[3], full, extToCrypt
+        public void Edit(int id, String name, String source, String destination, bool full, List<string> extToCrypt)
+        {
+            editIsValid = true;
+            errorMessage = "";
+
+            
+
+            if (name == "")
+            {
+                editIsValid = false;
+                errorMessage = Properties.Resources.error_message2;
+            }
+
+            if (source.Length < 2 || source == "Source")
+            {
+                editIsValid = false;
+                errorMessage = Properties.Resources.error_message3;
+            }
+
+            if (destination.Length < 2 || destination == "Destination")
+            {
+                editIsValid = false;
+                errorMessage = Properties.Resources.error_message4;
+            }
+
+            if (editIsValid)
+            {
+                // Edit the backup
+                this.controller.Model.editBackupJob(id, name, source, destination, full, extToCrypt);
+                MessageBox.Show(Properties.Resources.all_good, Properties.Resources.information,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show(errorMessage, Properties.Resources.error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            DelegRefresh();
+        }
+        public void DelegStop()
+        {
+            StopDelegate = new removeStopDelegate(StopExec);
+            Invoke(StopDelegate);
+        }
+        public void DelegResume()
+        {
+            StopDelegate = new removeStopDelegate(Resume);
+            Invoke(StopDelegate);
+            
+        }
+        public void Resume()
+        {
+            this.controller.Model.resumeThread();
+            execute_pause.Enabled = true;
+            execute_resume.Visible = false;
+        }
+        public void DelegRefresh()
+        {
+            StopDelegate = new removeStopDelegate(reloadListView);
+            Invoke(StopDelegate);
+        }
+        public void DelegPause()
+        {
+            StopDelegate = new removeStopDelegate(PauseExec);
+            Invoke(StopDelegate);
+        }
+        public void StopExec()
+        {
+            this.controller.Model.abortThread();
+            deleteProgressBar();
+            sendText("Stop");
+            MessageBox.Show(Properties.Resources.thread_stop, Properties.Resources.information,
+                                                 MessageBoxButtons.OK,
+                                                 MessageBoxIcon.Exclamation);
+            execute_stop.Enabled = false;
+            execute_pause.Enabled = false;
+            execute_resume.Visible = false;
+        }
+        public void PauseExec()
+        {
+            execute_pause.Enabled = false;
+            execute_resume.Visible = true;
+            execute_resume.Enabled = true;
+
+            foreach (var item in execute_backup_pause.Items)
+            {
+                this.controller.Model.backupToPause.Add(item.ToString());
+            }
+
+            this.controller.Model.suspendThread();
+        }
         public void removeProgressBar()
         {
             removeTrackingDelegate = new removeProgressBarDelegate(deleteProgressBar);
@@ -374,12 +719,15 @@ namespace EasySave_graphical
                 //TODO: add persistent "complete"
                 item.CreateGraphics().DrawString(bname + " : " + percent.ToString() + "COMPLETE", new Font("Arial", (float)8.25, FontStyle.Regular), Brushes.Black, new PointF(item.Width / 2 - 40, item.Height / 2 - 7));
                 item.Value = 100;
+                sendText("Finish," + id + "," + bname + "," + (item.Value).ToString());
 
             }
             else
             {
                 item.CreateGraphics().DrawString(bname + " : " + percent.ToString() + "%", new Font("Arial", (float)8.25, FontStyle.Regular), Brushes.Black, new PointF(item.Width / 2 - 20, item.Height / 2 - 7));
                 item.Value = percent;
+                sendText("Bar," + id + "," + bname + "," + (item.Value).ToString());
+                Debug.WriteLine("Bar," + id + "," + bname + "," + (item.Value).ToString());
             }
         }
 
@@ -427,6 +775,7 @@ namespace EasySave_graphical
         {
             this.controller.Model.abortThread();
             deleteProgressBar();
+            sendText("Stop");
             MessageBox.Show(Properties.Resources.thread_stop, Properties.Resources.information,
                                                  MessageBoxButtons.OK,
                                                  MessageBoxIcon.Exclamation);
@@ -702,5 +1051,9 @@ namespace EasySave_graphical
 
         }
 
+        private void delete_label_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
