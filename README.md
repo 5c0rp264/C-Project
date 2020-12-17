@@ -223,10 +223,3 @@ Jérémy Gabriel - jeremy.gabriel@viacesi.fr
 Rémi Mounier - remi.mounier@viacesi.fr  
 
 Project Link: [https://github.com/5c0rp264/C-Project/](https://github.com/5c0rp264/C-Project/)
-
-
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [NOTHING HERE YET](https://example.com/)
-
