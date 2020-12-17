@@ -7,6 +7,7 @@ namespace EasySave_graphical
     public class Controller //: IController
     {
         private static Mutex mutex;
+        public bool singleInstanceValidated = false;
 
         // Our attributes to define the MVC pattern
         private Model model;
@@ -31,6 +32,7 @@ namespace EasySave_graphical
                 MessageBox.Show(appName + " is already running ! The application will now close.", "Instantiation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            singleInstanceValidated = true;
 
             //The model and the view can be instantiate in the controller, or in the main program(see graphicalApp)
             this.model = model ?? throw new ArgumentNullException(nameof(model));

@@ -950,11 +950,12 @@ namespace EasySave_graphical
             this.sizeLimit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.sizeLimit.LargeChange = 100;
             this.sizeLimit.Location = new System.Drawing.Point(33, 185);
-            this.sizeLimit.Maximum = 100000;
+            this.sizeLimit.Maximum = 1000000;
             this.sizeLimit.Name = "sizeLimit";
             this.sizeLimit.Size = new System.Drawing.Size(513, 45);
             this.sizeLimit.TabIndex = 0;
             this.sizeLimit.TickFrequency = 0;
+            this.sizeLimit.TickStyle = System.Windows.Forms.TickStyle.None;
             this.sizeLimit.Scroll += new System.EventHandler(this.sizeLimit_Scroll);
             // 
             // settingsToolStripMenuItem

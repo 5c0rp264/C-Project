@@ -22,130 +22,128 @@ namespace EasySave_graphical
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("");
             InitializeComponent();
-            //reloadListView();
-            init();
         }
         public void SetController(Controller controller)
         {
             this.controller = controller;
+            //reloadListView();
+            init();
         }
         private List<TcpClient> clients = new List<TcpClient>();
 
         public void init()
         {
-            TcpListener server = new TcpListener(localaddr: IPAddress.Parse("127.0.0.1"), port: 5000);
-            server.Start();
+                TcpListener server = new TcpListener(localaddr: IPAddress.Parse("127.0.0.1"), port: 5000);
+                server.Start();
 
-            Model a = new Model();
-            Thread t = new Thread(() =>
-            {
-                while (true)
+                Model a = new Model();
+                Thread t = new Thread(() =>
                 {
-                    TcpClient client = server.AcceptTcpClient();
-                    clients.Add(client);
-                    Thread t2 = new Thread(() =>
+                    while (true)
                     {
-                        Stream stream = client.GetStream();
-                        StreamReader reader = new StreamReader(stream);
-
-
-
-                        while (true)
+                        TcpClient client = server.AcceptTcpClient();
+                        clients.Add(client);
+                        Thread t2 = new Thread(() =>
                         {
-                            try
+                            Stream stream = client.GetStream();
+                            StreamReader reader = new StreamReader(stream);
+
+                            while (true)
                             {
-
-
-                                String txt = reader.ReadLine();
-                                string[] Text = txt.Split(',');
-                                Debug.Print(txt);
-                                Console.Write(txt);
-
-                                Console.Read();
-
-                                if (Text[0] == "Connection")
+                                try
                                 {
-                                    String msg = "";
-                                    for (int i = 0; i < this.controller.Model.BackupJobList.Count; i++)
+
+
+                                    String txt = reader.ReadLine();
+                                    string[] Text = txt.Split(',');
+                                    Debug.Print(txt);
+                                    Console.Write(txt);
+
+                                    Console.Read();
+
+                                    if (Text[0] == "Connection")
                                     {
-                                        msg += this.controller.Model.BackupJobList[i].Name;
-                                        msg += ",";
+                                        String msg = "";
+                                        for (int i = 0; i < this.controller.Model.BackupJobList.Count; i++)
+                                        {
+                                            msg += this.controller.Model.BackupJobList[i].Name;
+                                            msg += ",";
+                                        }
+                                        StreamWriter writer = new StreamWriter(client.GetStream());
+                                        writer.WriteLine(msg);
+                                        writer.Flush();
+
                                     }
-                                    StreamWriter writer = new StreamWriter(client.GetStream());
-                                    writer.WriteLine(msg);
-                                    writer.Flush();
+                                    if (Text[0] == "Pause")
+                                    {
+                                        DelegPause();
+                                    }
+                                    if (Text[0] == "Stop")
+                                    {
+                                        DelegStop();
+                                    }
+                                    if (Text[0] == "Resume")
+                                    {
+                                        DelegResume();
+                                    }
+                                    if (Text[0] == "Edit")
+                                    {
+                                        List<string> extToCrypt = new List<string>();
+                                        extToCrypt.Add(Text[5]);
+                                        bool full = false;
+                                        if (Text[4] == "true") { full = true; }
 
-                                }
-                                if (Text[0] == "Pause")
-                                {
-                                    DelegPause();
-                                }
-                                if (Text[0] == "Stop")
-                                {
-                                    DelegStop();
-                                }
-                                if (Text[0] == "Resume")
-                                {
-                                    DelegResume();
-                                }
-                                if (Text[0] == "Edit")
-                                {
-                                    List<string> extToCrypt = new List<string>();
-                                    extToCrypt.Add(Text[5]);
-                                    bool full = false;
-                                    if (Text[4] == "true") { full = true; }
+                                        SetText(Text[1], Text[2], Text[3], full, Text[5]);
+                                        Edit(Int32.Parse(Text[6]), Text[1], Text[2], Text[3], full, extToCrypt);
 
-                                    SetText(Text[1], Text[2], Text[3], full, Text[5]);
-                                    Edit(Int32.Parse(Text[6]), Text[1], Text[2], Text[3], full, extToCrypt);
-                                    
-                                    DelegRefresh();
-                                }
+                                        DelegRefresh();
+                                    }
 
 
-                                if (Text[0] == "Delete")
-                                {
-                                    Delete(Int32.Parse(Text[1]));
-                                    DelegRefresh();
+                                    if (Text[0] == "Delete")
+                                    {
+                                        Delete(Int32.Parse(Text[1]));
+                                        DelegRefresh();
+                                    }
+
+
+                                    if (Text[0] == "Execute")
+                                    {
+
+                                        DelegExe(Int32.Parse(Text[1]));
+                                        DelegRefresh();
+                                    }
+
+                                    if (Text[0] == "Add")
+                                    {
+                                        List<string> extToCrypt = new List<string>();
+                                        extToCrypt.Add(Text[5]);
+                                        bool full = false;
+                                        if (Text[4] == "true") { full = true; }
+                                        Add(Text[1], Text[2], Text[3], full, extToCrypt);
+
+                                        DelegRefresh();
+                                    }
+
                                 }
-
-
-                                if (Text[0] == "Execute")
+                                catch (IOException e)
                                 {
-                                    
-                                    DelegExe(Int32.Parse(Text[1]));
-                                    DelegRefresh();
-                                }
-
-                                if (Text[0] == "Add")
-                                {
-                                    List<string> extToCrypt = new List<string>();
-                                    extToCrypt.Add(Text[5]);
-                                    bool full = false;
-                                    if (Text[4] == "true") { full = true; }
-                                    Add(Text[1], Text[2], Text[3], full, extToCrypt);
-                                    
-                                    DelegRefresh();
+                                    clients.Remove(client);
+                                    break;
                                 }
 
                             }
-                            catch (IOException e)
-                            {
-                                clients.Remove(client);
-                                break;
-                            }
-
-                        }
-                    })
-                    {
-                        IsBackground = true
-                    };
-                    t2.Start();
-                }
-            })
-            {
-                IsBackground = true
-            };
-            t.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        t2.Start();
+                    }
+                })
+                {
+                    IsBackground = true
+                };
+                t.Start();
         }
 
         public void sendText(string text)
